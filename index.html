@@ -302,6 +302,9 @@ td.num,th.num{text-align:right;white-space:nowrap}
 const SUPABASE_URL = 'https://mvisirsyzydnciyernof.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_YASOr_-tSWIKznm4cElajw_yT_M8zX8';
 const ONLINE = !!(SUPABASE_URL && SUPABASE_ANON_KEY);
+/* Domaine technique utilisé pour transformer un pseudo en identifiant Supabase (aucun e-mail n'est envoyé).
+   À ne plus modifier une fois des comptes créés. */
+const PSEUDO_EMAIL_DOMAIN = 'sigles-cyber.invalid';
 /* ============ BANQUE ============
    Format : terme | signification ou définition | traduction FR (si terme anglais) | explication | niveau (1 Facile, 2 Moyen, 3 Expert, 0 = réglementation uniquement) | réglementations | groupe de synonymes | 1 si mot-clé (pas un acronyme) */
 const RAW = `
@@ -1960,7 +1963,8 @@ $('#importFile').addEventListener('change',async e=>{
 
 /* ============ MODE EN LIGNE (SUPABASE) ============ */
 let sb=null,session=null,syncTimer=null,dirty=false;
-const authHashType=new URLSearchParams(location.hash.slice(1)).get('type');
+const PSEUDO_RE=/^[A-Za-z0-9_.-]{3,20}$/;
+const pseudoEmail=p=>p.trim().toLowerCase()+'@'+PSEUDO_EMAIL_DOMAIN;
 function setSync(t){const el=$('#syncState');if(el)el.textContent=t}
 function scheduleSync(){dirty=true;setSync('Enregistrement…');clearTimeout(syncTimer);syncTimer=setTimeout(flushSync,700)}
 async function flushSync(){
@@ -1972,97 +1976,111 @@ async function flushSync(){
 }
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushSync()});
 function authMsg(e){const m=(e&&e.message)||'';
-  if(/invalid login credentials/i.test(m))return'E-mail ou mot de passe incorrect.';
-  if(/email not confirmed/i.test(m))return"Adresse e-mail non confirmée : utilisez le lien reçu par e-mail.";
+  if(/invalid login credentials/i.test(m))return'Pseudo ou mot de passe incorrect.';
+  if(/already registered|already exists/i.test(m))return'Ce pseudo est déjà utilisé.';
   if(/rate limit|too many/i.test(m))return'Trop de tentatives, réessayez dans quelques minutes.';
-  if(/password/i.test(m)&&/(least|short|weak)/i.test(m))return'Mot de passe trop faible ou trop court.';
+  if(/signups? not allowed|disabled/i.test(m))return"Les inscriptions sont fermées. Contactez l'organisateur.";
+  if(/password/i.test(m)&&/(least|short|weak|characters)/i.test(m))return'Mot de passe trop faible ou trop court.';
+  if(/database error/i.test(m))return"Inscription refusée : pseudo invalide ou nombre maximal de joueurs atteint.";
   return 'Une erreur est survenue. Réessayez plus tard.'}
 async function init(){
   if(!ONLINE){goLogin();return}
   if(!window.supabase||!window.supabase.createClient){$('#login').innerHTML='<section class="panel"><h2>Service indisponible</h2><p class="hint" style="margin-top:6px">Impossible de charger le module de connexion. Vérifiez votre connexion Internet puis rechargez la page.</p></section>';show('login');return}
   sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
   const r=await sb.auth.getSession();session=r.data.session;
-  sb.auth.onAuthStateChange((ev,s)=>{session=s;if(ev==='PASSWORD_RECOVERY')showSetPassword('recovery')});
-  if(session&&(authHashType==='invite'||authHashType==='recovery')){showSetPassword(authHashType);return}
+  sb.auth.onAuthStateChange((ev,s)=>{session=s});
   if(session){await loadAccount();return}
   renderOnlineLogin();show('login');
 }
 async function loadAccount(){
   const {data,error}=await sb.from('profils').select('pseudo,data').eq('id',session.user.id).maybeSingle();
-  if(error){$('#login').innerHTML='<section class="panel"><h2>Erreur de chargement</h2><p class="hint" style="margin-top:6px">Impossible de récupérer votre profil. Réessayez plus tard.</p></section>';show('login');return}
-  if(!data){showPseudoForm();return}
+  if(error||!data){$('#login').innerHTML=`<section class="panel"><h2>Profil introuvable</h2><p class="hint" style="margin-top:6px">${error?'Impossible de récupérer votre profil. Réessayez plus tard.':"Votre compte n'a pas de profil de jeu. Contactez l'organisateur."}</p><div style="margin-top:12px"><button class="ghost" id="doLogout">Se déconnecter</button></div></section>`;show('login');$('#doLogout').addEventListener('click',logout);return}
   const player=sanitizePlayer(data.data&&typeof data.data==='object'?{cards:{},games:[],...data.data}:{cards:{},games:[]})||{created:Date.now(),cards:{},games:[]};
   DB={current:data.pseudo,players:{[data.pseudo]:player}};dirty=false;setSync('');
   cfg.mode='train';renderHome();show('home');
 }
+const pwdStyle='style="width:100%;border:1.5px solid var(--line);border-radius:9px;padding:9px 12px;background:var(--panel)"';
+let loginTab='login';
 function renderOnlineLogin(){
   if(session&&DB.current){
-    $('#login').innerHTML=`<div><h1>Mon compte</h1><p class="lead">Connecté en tant que <strong>${esc(DB.current)}</strong> (${esc(session.user.email||'')}).</p></div>
+    $('#login').innerHTML=`<div><h1>Mon compte</h1><p class="lead">Connecté en tant que <strong>${esc(DB.current)}</strong>.</p></div>
     <div class="row"><button class="primary" id="goPlay">Jouer</button><button class="ghost" id="doLogout">Se déconnecter</button></div>`;
     $('#goPlay').addEventListener('click',()=>{cfg.mode='train';renderHome();show('home')});
     $('#doLogout').addEventListener('click',logout);return;
   }
-  $('#login').innerHTML=`<div><h1>Connexion</h1><p class="lead">Connectez-vous pour retrouver vos statistiques sur tous vos appareils. Les comptes sont créés sur invitation de l'organisateur.</p></div>
+  const signup=loginTab==='signup';
+  $('#login').innerHTML=`<div><h1>${signup?'Créer un compte':'Connexion'}</h1><p class="lead">${signup?'Créez votre compte pour sauvegarder votre progression.':'Connectez-vous pour retrouver vos statistiques sur tous vos appareils.'}</p></div>
+  <div class="tabs" role="tablist"><button role="tab" data-lt="login" aria-selected="${!signup}">Se connecter</button><button role="tab" data-lt="signup" aria-selected="${signup}">Créer un compte</button></div>
   <section class="panel"><div class="stack" style="max-width:420px">
-    <label class="field"><span class="label">Adresse e-mail</span><input type="text" id="lgEmail" autocomplete="username" inputmode="email" style="width:100%"></label>
-    <label class="field"><span class="label">Mot de passe</span><input type="password" id="lgPwd" autocomplete="current-password" style="width:100%;border:1.5px solid var(--line);border-radius:9px;padding:9px 12px;background:var(--panel)"></label>
-    <div class="row"><button class="primary" id="lgBtn">Se connecter</button><button class="linkbtn" id="lgForgot">Mot de passe oublié ?</button></div>
-    <p class="err" id="lgErr" hidden></p><p class="okmsg" id="lgOk" hidden></p>
+    <label class="field"><span class="label">Pseudo</span><input type="text" id="lgUser" autocomplete="username" maxlength="20" autocapitalize="off" spellcheck="false" style="width:100%">${signup?'<span class="hint">3 à 20 caractères : lettres sans accent, chiffres, « . », « _ » ou « - ». Évitez votre nom complet.</span>':''}</label>
+    <label class="field"><span class="label">Mot de passe${signup?' (12 caractères minimum)':''}</span><input type="password" id="lgPwd" autocomplete="${signup?'new-password':'current-password'}" ${pwdStyle}></label>
+    ${signup?`<label class="field"><span class="label">Confirmation du mot de passe</span><input type="password" id="lgPwd2" autocomplete="new-password" ${pwdStyle}></label>`:''}
+    <div><button class="primary" id="lgBtn">${signup?'Créer mon compte':'Se connecter'}</button></div>
+    <p class="err" id="lgErr" hidden></p>
+    ${signup?'':'<p class="hint">Mot de passe oublié ? Demandez à l\'organisateur de le réinitialiser.</p>'}
   </div></section>
   <p><button class="linkbtn" id="guestBtn">Jouer sans compte (mode Basique, rien n'est enregistré)</button></p>`;
-  const err=t=>{$('#lgOk').hidden=true;$('#lgErr').textContent=t;$('#lgErr').hidden=false};
-  const go=async()=>{const email=$('#lgEmail').value.trim(),password=$('#lgPwd').value;if(!email||!password){err('Saisissez votre e-mail et votre mot de passe.');return}
-    $('#lgBtn').disabled=true;const {data,error}=await sb.auth.signInWithPassword({email,password});$('#lgBtn').disabled=false;
+  $$('[data-lt]').forEach(b=>b.addEventListener('click',()=>{loginTab=b.dataset.lt;renderOnlineLogin()}));
+  const err=t=>{$('#lgErr').textContent=t;$('#lgErr').hidden=false};
+  const busy=v=>{$('#lgBtn').disabled=v};
+  const doLogin=async()=>{const u=$('#lgUser').value.trim(),pw=$('#lgPwd').value;
+    if(!u||!pw){err('Saisissez votre pseudo et votre mot de passe.');return}
+    if(!PSEUDO_RE.test(u)){err('Pseudo ou mot de passe incorrect.');return}
+    busy(true);const {data,error}=await sb.auth.signInWithPassword({email:pseudoEmail(u),password:pw});busy(false);
     if(error){err(authMsg(error));return}session=data.session;await loadAccount()};
-  $('#lgBtn').addEventListener('click',go);$('#lgPwd').addEventListener('keydown',e=>{if(e.key==='Enter')go()});
-  $('#lgForgot').addEventListener('click',async()=>{const email=$('#lgEmail').value.trim();if(!email){err("Saisissez d'abord votre adresse e-mail.");return}
-    await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
-    $('#lgErr').hidden=true;$('#lgOk').textContent='Si un compte existe pour cette adresse, un e-mail de réinitialisation vient d\'être envoyé.';$('#lgOk').hidden=false});
+  const doSignup=async()=>{const u=$('#lgUser').value.trim(),pw=$('#lgPwd').value,pw2=$('#lgPwd2').value;
+    if(!PSEUDO_RE.test(u)){err('Pseudo invalide : 3 à 20 caractères, lettres sans accent, chiffres, « . », « _ » ou « - ».');return}
+    if(pw.length<12){err('Le mot de passe doit contenir au moins 12 caractères.');return}
+    if(pw!==pw2){err('Les deux mots de passe ne correspondent pas.');return}
+    busy(true);
+    const chk=await sb.rpc('verifier_inscription',{p_pseudo:u});
+    if(chk.error){busy(false);err('Une erreur est survenue. Réessayez plus tard.');return}
+    const msg={complet:'Le nombre maximal de joueurs est atteint.',pseudo_pris:'Ce pseudo est déjà utilisé.',pseudo_invalide:'Pseudo invalide.'}[chk.data];
+    if(msg){busy(false);err(msg);return}
+    const {data,error}=await sb.auth.signUp({email:pseudoEmail(u),password:pw,options:{data:{pseudo:u}}});
+    busy(false);
+    if(error){err(authMsg(error));return}
+    if(!data.session){err("Compte créé, mais la confirmation d'e-mail est activée dans Supabase : l'organisateur doit la désactiver.");return}
+    session=data.session;await loadAccount()};
+  const go=signup?doSignup:doLogin;
+  $('#lgBtn').addEventListener('click',go);
+  $$('#login input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')go()}));
   $('#guestBtn').addEventListener('click',()=>{cfg.mode='basic';renderHome();show('home')});
 }
-function showSetPassword(kind){
-  $('#login').innerHTML=`<div><h1>${kind==='invite'?'Bienvenue !':'Nouveau mot de passe'}</h1><p class="lead">${kind==='invite'?'Choisissez votre mot de passe pour activer votre compte.':'Choisissez un nouveau mot de passe.'}</p></div>
+function showSetPassword(){
+  $('#login').innerHTML=`<div><h1>Changer de mot de passe</h1></div>
   <section class="panel"><div class="stack" style="max-width:420px">
-    <label class="field"><span class="label">Mot de passe (12 caractères minimum)</span><input type="password" id="np1" autocomplete="new-password" style="width:100%;border:1.5px solid var(--line);border-radius:9px;padding:9px 12px;background:var(--panel)"></label>
-    <label class="field"><span class="label">Confirmation</span><input type="password" id="np2" autocomplete="new-password" style="width:100%;border:1.5px solid var(--line);border-radius:9px;padding:9px 12px;background:var(--panel)"></label>
-    <div><button class="primary" id="npBtn">Valider</button></div><p class="err" id="npErr" hidden></p>
+    <label class="field"><span class="label">Nouveau mot de passe (12 caractères minimum)</span><input type="password" id="np1" autocomplete="new-password" ${pwdStyle}></label>
+    <label class="field"><span class="label">Confirmation</span><input type="password" id="np2" autocomplete="new-password" ${pwdStyle}></label>
+    <div class="row"><button class="primary" id="npBtn">Valider</button><button class="ghost" id="npCancel">Annuler</button></div><p class="err" id="npErr" hidden></p>
   </div></section>`;
   show('login');
+  $('#npCancel').addEventListener('click',()=>{renderProfile();show('profile')});
   $('#npBtn').addEventListener('click',async()=>{const a=$('#np1').value,b=$('#np2').value,e=$('#npErr');
     if(a.length<12){e.textContent='Le mot de passe doit contenir au moins 12 caractères.';e.hidden=false;return}
     if(a!==b){e.textContent='Les deux mots de passe ne correspondent pas.';e.hidden=false;return}
     const {error}=await sb.auth.updateUser({password:a});if(error){e.textContent=authMsg(error);e.hidden=false;return}
-    history.replaceState(null,'',location.pathname+location.search);await loadAccount()});
+    await ask('Mot de passe modifié.',[{label:'OK',value:true,primary:true}]);renderProfile();show('profile')});
 }
-function showPseudoForm(){
-  $('#login').innerHTML=`<div><h1>Choisissez votre pseudo</h1><p class="lead">Il sera affiché dans le jeu. Évitez votre nom complet.</p></div>
-  <section class="panel"><div class="row"><input type="text" id="psIn" maxlength="30" autocomplete="off" placeholder="Votre pseudo" aria-label="Pseudo"><button class="primary" id="psBtn">Valider</button></div><p class="err" id="psErr" hidden></p></section>`;
-  show('login');
-  const go=async()=>{const n=$('#psIn').value.trim(),e=$('#psErr');if(!n){e.textContent='Saisissez un pseudo.';e.hidden=false;return}
-    const {error}=await sb.from('profils').insert({id:session.user.id,pseudo:n,data:{created:Date.now(),cards:{},games:[]}});
-    if(error){e.textContent=error.code==='23505'?'Ce pseudo est déjà utilisé.':'Impossible de créer le profil.';e.hidden=false;return}
-    await loadAccount()};
-  $('#psBtn').addEventListener('click',go);$('#psIn').addEventListener('keydown',ev=>{if(ev.key==='Enter')go()});
-}
-async function logout(){await flushSync();await sb.auth.signOut();session=null;DB={current:null,players:{}};setSync('');renderOnlineLogin();show('login')}
+async function logout(){await flushSync();await sb.auth.signOut();session=null;DB={current:null,players:{}};setSync('');loginTab='login';renderOnlineLogin();show('login')}
 async function deleteAccount(){
   const ok=await ask('Supprimer définitivement votre compte et toutes vos statistiques ? Pensez à exporter votre profil avant si vous voulez le conserver.',[{label:'Annuler',value:false},{label:'Supprimer mon compte',value:true,primary:true,danger:true}]);
   if(!ok)return;
   const {error}=await sb.rpc('supprimer_mon_compte');
   if(error){await ask('La suppression a échoué. Réessayez plus tard.',[{label:'OK',value:true,primary:true}]);return}
-  dirty=false;await sb.auth.signOut();session=null;DB={current:null,players:{}};renderOnlineLogin();show('login');
+  dirty=false;await sb.auth.signOut();session=null;DB={current:null,players:{}};loginTab='login';renderOnlineLogin();show('login');
 }
 if(ONLINE){
   $('#logoutBtn').addEventListener('click',logout);
   $('#importBtn2').addEventListener('click',()=>{$('#importFile').value='';$('#importFile').click()});
-  $('#pwdBtn').addEventListener('click',()=>showSetPassword('change'));
+  $('#pwdBtn').addEventListener('click',showSetPassword);
   $('#switchPlayer').textContent='Mon compte';
 }
 $('#privacyBtn').addEventListener('click',()=>ask('Confidentialité et données personnelles',[{label:'Fermer',value:true,primary:true}],`<div style="max-height:55vh;overflow:auto;font-size:.94rem" class="stack">
 <p><strong>Responsable du traitement :</strong> [À COMPLÉTER : nom, qualité, contact].</p>
 <p><strong>Finalité :</strong> permettre aux joueurs de suivre leur progression dans le quiz (statistiques par acronyme, historique des parties).</p>
 <p><strong>Base légale :</strong> [À COMPLÉTER, par exemple l'intérêt légitime de l'organisateur de la formation ou le consentement].</p>
-<p><strong>Données :</strong> adresse e-mail et mot de passe (gérés par le service d'authentification), pseudo, résultats de jeu. Aucune autre donnée n'est collectée. En mode Basique, rien n'est enregistré.</p>
+<p><strong>Données :</strong> pseudo, mot de passe (stocké sous forme chiffrée par le service d'authentification) et résultats de jeu. Aucune adresse e-mail ni autre donnée n'est collectée. En mode Basique, rien n'est enregistré.</p>
 <p><strong>Hébergement :</strong> Supabase, dans une région de l'Union européenne ; site hébergé par [À COMPLÉTER].</p>
 <p><strong>Durée de conservation :</strong> [À COMPLÉTER, par exemple jusqu'à la fin de la formation + 6 mois], ou jusqu'à la suppression du compte.</p>
 <p><strong>Vos droits :</strong> accès, rectification, effacement (bouton « Supprimer mon compte » dans le profil), portabilité (bouton « Exporter le profil »), opposition. Contact : [À COMPLÉTER]. Vous pouvez introduire une réclamation auprès de la CNIL.</p></div>`));
