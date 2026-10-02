@@ -175,6 +175,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
       <button class="navbtn" data-nav="home" aria-current="page">Jouer</button>
       <button class="navbtn" data-nav="board">Classement</button>
       <button class="navbtn" data-nav="profile">Profil</button>
+      <button class="navbtn" id="switchTop" hidden>Changer de joueur</button>
       <button class="whobtn" id="whoBtn"></button>
       <span class="hint" id="syncState" role="status"></span>
     </nav>
@@ -187,20 +188,9 @@ td.num,th.num{text-align:right;white-space:nowrap}
   <main id="home" class="stack">
     <div>
       <h1>Testez vos acronymes cyber</h1>
-      <p class="lead">Un QCM à quatre choix, tiré au hasard dans une banque d'acronymes et de termes réglementaires. Choisissez un mode, une banque et c'est parti.</p>
+      <p class="lead">Un QCM à quatre choix, tiré au hasard dans une banque d'acronymes et de termes réglementaires. Choisissez une banque et c'est parti.</p>
     </div>
     <section class="panel stack">
-      <div class="field">
-        <span class="label">Mode de jeu</span>
-        <div class="seg" role="group" aria-label="Mode de jeu">
-          <button class="modecard" data-mode="train" aria-pressed="false"><span class="bn">Entraînement</span><small>Vos réponses sont suivies sur votre profil. 5 bonnes réponses d'affilée = acronyme retenu.</small></button>
-          <button class="modecard" data-mode="basic" aria-pressed="false"><span class="bn">Basique</span><small>Partie rapide, rien n'est enregistré.</small></button>
-        </div>
-      </div>
-      <div class="field" id="pseudoRow" hidden>
-        <span class="label">Joueur</span>
-        <div class="curp"><strong id="curPlayer"></strong><button class="linkbtn" id="switchPlayer">Changer de joueur</button></div>
-      </div>
       <div class="field">
         <span class="label">Banque</span>
         <div class="group">
@@ -244,14 +234,6 @@ td.num,th.num{text-align:right;white-space:nowrap}
             <button data-bank="reg:incidents"><span class="bn">Grands incidents</span><span class="n"></span></button>
             <button data-bank="reg:acteurs"><span class="bn">Acteurs de la cyber</span><span class="n"></span></button>
           </div>
-        </div>
-      </div>
-      <div class="field">
-        <span class="label">Sens des questions</span>
-        <div class="seg" role="group" aria-label="Sens des questions">
-          <button data-dir="fwd" aria-pressed="true">Acronyme → signification</button>
-          <button data-dir="rev" aria-pressed="false">Signification → acronyme</button>
-          <button data-dir="mix" aria-pressed="false">Mixte</button>
         </div>
       </div>
       <div class="field">
@@ -311,7 +293,6 @@ td.num,th.num{text-align:right;white-space:nowrap}
         <button class="ghost" id="avatarBtn">Changer d'avatar</button>
         <button class="ghost" id="exportBtn">Exporter le profil</button>
         <button class="ghost" id="importBtn2" hidden>Importer des données</button>
-        <button class="ghost" id="logoutBtn" hidden>Se déconnecter</button>
         <span class="okmsg" id="exportMsg" role="status" hidden></span>
         <button class="linkbtn danger" id="delProfile">Supprimer ce profil</button>
       </div>
@@ -1646,8 +1627,9 @@ function ask(text,buttons,extraHTML){return new Promise(res=>{
   $$('#mBtns button').forEach(b=>b.addEventListener('click',()=>close(buttons[+b.dataset.i].value)));
   ($('#mExtra input')||$$('#mBtns button').pop()).focus();
 })}
-function updateWho(){const b=$('#whoBtn');if(DB.current){const p=DB.players[DB.current];b.innerHTML=`${avatarSVG(avatarOf(DB.current,p&&p.avatar),24)}<span>${esc(DB.current)}</span>`}else b.textContent='Se connecter';b.title=DB.current?'Changer de joueur':'Choisir ou créer un joueur'}
-$('#whoBtn').addEventListener('click',async()=>{if(!await leaveGameOK())return;goLogin()});
+function updateWho(){const b=$('#whoBtn');$('#switchTop').hidden=!DB.current;b.title=DB.current?'Voir mon profil':'Choisir ou créer un joueur';if(DB.current){const p=DB.players[DB.current];b.innerHTML=`${avatarSVG(avatarOf(DB.current,p&&p.avatar),24)}<span>${esc(DB.current)}</span>`}else b.textContent='Se connecter';}
+$('#whoBtn').addEventListener('click',async()=>{if(!await leaveGameOK())return;if(DB.current){renderProfile();show('profile')}else goLogin()});
+$('#switchTop').addEventListener('click',async()=>{if(!await leaveGameOK())return;goLogin()});
 
 /* ============ CONNEXION ============ */
 function goLogin(){if(ONLINE){flushSync();DB={current:null,players:{}};setSync('');renderOnlineLogin().then(()=>show('login'));return}renderLogin();show('login')}
@@ -1659,8 +1641,7 @@ function renderLogin(){
   <section class="panel"><h2>Nouveau joueur</h2>
     <div class="row" style="margin-top:12px"><input type="text" id="newName" maxlength="30" autocomplete="off" placeholder="Votre pseudo" aria-label="Pseudo du nouveau joueur"><button class="primary" id="createBtn">Créer et jouer</button></div>
     <p class="err" id="newErr" hidden></p></section>
-  <section class="panel"><h2>Retrouver un joueur</h2><p class="hint" style="margin-top:4px">Vous avez joué sur un autre appareil ou navigateur ? Importez le fichier exporté depuis son profil.</p><div style="margin-top:12px"><button class="ghost" id="importBtn">Importer un profil</button></div></section>
-  <p><button class="linkbtn" id="guestBtn">Jouer sans joueur (mode Basique, rien n'est enregistré)</button></p>`;
+  <section class="panel"><h2>Retrouver un joueur</h2><p class="hint" style="margin-top:4px">Vous avez joué sur un autre appareil ou navigateur ? Importez le fichier exporté depuis son profil.</p><div style="margin-top:12px"><button class="ghost" id="importBtn">Importer un profil</button></div></section>`;
   $('#importBtn').addEventListener('click',()=>{$('#importFile').value='';$('#importFile').click()});
   $$('#login [data-player]').forEach(b=>b.addEventListener('click',()=>login(b.dataset.player)));
   const create=async()=>{const n=$('#newName').value.trim();const e=$('#newErr');
@@ -1669,36 +1650,28 @@ function renderLogin(){
     login(n);const av=await pickAvatar(avatarOf(n));if(av)setAvatar(av)};
   $('#createBtn').addEventListener('click',create);
   $('#newName').addEventListener('keydown',e=>{if(e.key==='Enter')create()});
-  $('#guestBtn').addEventListener('click',()=>{cfg.mode='basic';renderHome();show('home')});
   if(!names.length)$('#newName').focus();
 }
 
 /* ============ ACCUEIL ============ */
-let cfg={mode:'train',bank:'lv1',dir:'fwd',count:'10'};
+let cfg={mode:'train',bank:'lv1',dir:'fwd',count:'10'}; // sens unique : acronyme → signification ; mode Entraînement uniquement
 function currentHomePlayer(){return cfg.mode==='train'&&DB.current&&DB.players[DB.current]?DB.players[DB.current]:null}
 function renderHome(){
-  $$('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===cfg.mode));
-  $('#pseudoRow').hidden=cfg.mode!=='train';
-  $('#curPlayer').textContent=DB.current||'';
   const p=currentHomePlayer();
   $$('[data-bank]').forEach(b=>{
     const cs=bankCards(b.dataset.bank);
     b.setAttribute('aria-pressed',b.dataset.bank===cfg.bank);
     b.querySelector('.n').textContent=p?`${cs.filter(c=>!isRet(p,c)).length} à apprendre sur ${cs.length}`:`${cs.length} termes`;
   });
-  $$('[data-dir]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.dir===cfg.dir));
   $$('[data-count]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.count===cfg.count));
   {const cs=bankCards(cfg.bank);const n=p?cs.filter(c=>!isRet(p,c)).length:cs.length;$('#allN').textContent=`(${n})`;}
   $('#customWrap').hidden=cfg.count!=='custom';
 }
-$$('[data-mode]').forEach(b=>b.addEventListener('click',()=>{cfg.mode=b.dataset.mode;if(cfg.mode==='train'&&!DB.current){goLogin();return}renderHome()}));
-$('#switchPlayer').addEventListener('click',goLogin);
 $$('[data-bank]').forEach(b=>b.addEventListener('click',()=>{
   cfg.bank=b.dataset.bank;
   if(cfg.bank.startsWith('reg:')){if(cfg.count!=='all'){cfg.prevCount=cfg.count;cfg.count='all'}cfg.autoAll=true}
   else if(cfg.autoAll){cfg.count=cfg.prevCount||'10';cfg.autoAll=false}
   renderHome()}));
-$$('[data-dir]').forEach(b=>b.addEventListener('click',()=>{cfg.dir=b.dataset.dir;renderHome()}));
 $$('[data-count]').forEach(b=>b.addEventListener('click',()=>{cfg.count=b.dataset.count;cfg.autoAll=false;renderHome();if(cfg.count==='custom')$('#customN').focus()}));
 $('#startBtn').addEventListener('click',()=>start(cfg));
 
@@ -1879,7 +1852,7 @@ function renderProfile(){
     return;
   }
   sel.disabled=false;$('#delProfile').hidden=false;$('#exportBtn').hidden=false;$('#avatarBtn').hidden=false;
-  if(ONLINE){sel.hidden=true;$('label[for=profSelect]').hidden=true;['importBtn2','logoutBtn'].forEach(id=>$('#'+id).hidden=false);$('#logoutBtn').textContent='Changer de joueur'}
+  if(ONLINE){sel.hidden=true;$('label[for=profSelect]').hidden=true;$('#importBtn2').hidden=false}
   sel.innerHTML=names.map(n=>`<option ${n===DB.current?'selected':''}>${esc(n)}</option>`).join('');
   $('#profTitle').innerHTML=`<span class="rkname">${avatarSVG(avatarOf(DB.current,DB.players[DB.current].avatar),48)}<span>${esc(DB.current)}</span></span>`;
   const p=DB.players[DB.current];
@@ -2061,8 +2034,7 @@ async function renderOnlineLogin(){
   <section class="panel"><h2>Nouveau joueur</h2>
     <div class="row" style="margin-top:12px"><input type="text" id="newName" maxlength="20" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Votre pseudo" aria-label="Pseudo du nouveau joueur"><button class="primary" id="createBtn">Créer et jouer</button></div>
     <p class="hint" style="margin-top:6px">3 à 20 caractères : lettres sans accent, chiffres, « . », « _ » ou « - ».</p>
-    <p class="err" id="newErr" hidden></p></section>
-  <p><button class="linkbtn" id="guestBtn">Jouer sans profil (mode Basique, rien n'est enregistré)</button></p>`;
+    <p class="err" id="newErr" hidden></p></section>`;
   $$('#login [data-player]').forEach(b=>b.addEventListener('click',()=>selectPlayer(b.dataset.player)));
   const create=async()=>{const n=$('#newName').value.trim(),e=$('#newErr');const fail=t=>{e.textContent=t;e.hidden=false};
     if(!PSEUDO_RE.test(n)){fail('Pseudo invalide : 3 à 20 caractères, lettres sans accent, chiffres, « . », « _ » ou « - ».');return}
@@ -2073,7 +2045,6 @@ async function renderOnlineLogin(){
     await selectPlayer(n);const av=await pickAvatar(avatarOf(n));if(av)setAvatar(av)};
   $('#createBtn').addEventListener('click',create);
   $('#newName').addEventListener('keydown',ev=>{if(ev.key==='Enter')create()});
-  $('#guestBtn').addEventListener('click',()=>{cfg.mode='basic';renderHome();show('home')});
 }
 async function switchPlayer(){await flushSync();DB={current:null,players:{}};setSync('');await renderOnlineLogin();show('login')}
 async function deleteAccount(){
@@ -2087,15 +2058,13 @@ async function deleteAccount(){
   DB={current:null,players:{}};await renderOnlineLogin();show('login');
 }
 if(ONLINE){
-  $('#logoutBtn').addEventListener('click',switchPlayer);
   $('#importBtn2').addEventListener('click',()=>{$('#importFile').value='';$('#importFile').click()});
-  $('#switchPlayer').textContent='Changer de joueur';
 }
 $('#privacyBtn').addEventListener('click',()=>ask('Confidentialité et données personnelles',[{label:'Fermer',value:true,primary:true}],`<div style="max-height:55vh;overflow:auto;font-size:.94rem" class="stack">
 <p><strong>Responsable du traitement :</strong> [À COMPLÉTER : nom, qualité, contact].</p>
 <p><strong>Finalité :</strong> permettre aux joueurs de suivre leur progression dans le quiz (statistiques par acronyme, historique des parties).</p>
 <p><strong>Base légale :</strong> [À COMPLÉTER, par exemple l'intérêt légitime de l'organisateur de la formation ou le consentement].</p>
-<p><strong>Données :</strong> pseudo et résultats de jeu uniquement. Aucun mot de passe, aucune adresse e-mail ni autre donnée n'est collectée. La liste des pseudos est visible par toutes les personnes qui accèdent au site. En mode Basique, rien n'est enregistré.</p>
+<p><strong>Données :</strong> pseudo et résultats de jeu uniquement. Aucun mot de passe, aucune adresse e-mail ni autre donnée n'est collectée. La liste des pseudos est visible par toutes les personnes qui accèdent au site.</p>
 <p><strong>Hébergement :</strong> Supabase, dans une région de l'Union européenne ; site hébergé par [À COMPLÉTER].</p>
 <p><strong>Durée de conservation :</strong> [À COMPLÉTER, par exemple jusqu'à la fin de la formation + 6 mois], ou jusqu'à la suppression du compte.</p>
 <p><strong>Vos droits :</strong> accès, rectification, effacement (bouton « Supprimer ce profil » dans le profil), portabilité (bouton « Exporter le profil »), opposition. Contact : [À COMPLÉTER]. Vous pouvez introduire une réclamation auprès de la CNIL.</p></div>`));
