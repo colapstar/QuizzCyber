@@ -56,6 +56,28 @@ p{margin:0}
 .player .pn{display:block;font-family:var(--display);font-weight:800;font-size:1.2rem}
 .player .n{display:block;font-size:.85rem;color:var(--muted);margin-top:2px}
 .curp{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.avatar{display:block;flex:none;border-radius:50%}
+.whobtn{display:inline-flex;align-items:center;gap:7px}
+.player{display:flex;align-items:center;gap:12px}
+.player .pt{min-width:0}
+.avgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin-top:12px;max-height:52vh;overflow:auto;padding:2px}
+.avopt{border:2px solid transparent;background:var(--soft);border-radius:12px;padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.8rem}
+.avopt[aria-pressed="true"]{border-color:var(--a);background:var(--panel)}
+.mbox{max-height:90vh;overflow:auto}
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:end;max-width:560px;margin:8px auto 22px}
+.pod{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-width:0}
+.pod .pn{font-family:var(--display);font-weight:800;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pod .pv{font-size:.9rem;color:var(--muted)}
+.pod .step{width:100%;border-radius:10px 10px 0 0;color:#fff;font-family:var(--display);font-weight:800;font-size:1.6rem;display:grid;place-items:center}
+.pod.p1 .step{height:110px;background:var(--b);color:#1D1400}.pod.p2 .step{height:80px;background:var(--a)}.pod.p3 .step{height:56px;background:var(--d)}
+.rkname{display:flex;align-items:center;gap:10px}
+.rkbar{height:8px;border-radius:4px;background:var(--soft);overflow:hidden;min-width:80px}
+.rkbar>i{display:block;height:100%;background:var(--c)}
+tr.me td{background:color-mix(in srgb,var(--a) 10%,transparent)}
+.mx td.num{font-variant-numeric:tabular-nums}
+.mx .best{font-weight:800}
+.mx th:first-child,.mx td:first-child{position:sticky;left:0;background:var(--panel);z-index:1}
+.mx thead th:first-child{background:var(--soft)}
 .modal{position:fixed;inset:0;background:rgba(10,15,30,.55);display:grid;place-items:center;padding:20px;z-index:50}
 .mbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;max-width:460px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.25)}
 .mbox .row{justify-content:flex-end;margin-top:18px}
@@ -151,6 +173,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
     <div class="brand"><span class="mark" aria-hidden="true">SI</span>Sigles cyber</div>
     <nav>
       <button class="navbtn" data-nav="home" aria-current="page">Jouer</button>
+      <button class="navbtn" data-nav="board">Classement</button>
       <button class="navbtn" data-nav="profile">Profil</button>
       <button class="whobtn" id="whoBtn"></button>
       <span class="hint" id="syncState" role="status"></span>
@@ -272,6 +295,12 @@ td.num,th.num{text-align:right;white-space:nowrap}
   <!-- OBJECTIF RÉUSSI -->
   <main id="done" hidden></main>
 
+  <!-- CLASSEMENT -->
+  <main id="board" class="stack" hidden>
+    <div><h1>Classement</h1><p class="lead">Comparez votre progression avec celle des autres joueurs, banque par banque.</p></div>
+    <div id="boardBody"></div>
+  </main>
+
   <!-- PROFIL -->
   <main id="profile" class="stack" hidden>
     <div class="row" style="justify-content:space-between">
@@ -279,6 +308,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
       <div class="row">
         <label class="hint" for="profSelect">Profil</label>
         <select id="profSelect"></select>
+        <button class="ghost" id="avatarBtn">Changer d'avatar</button>
         <button class="ghost" id="exportBtn">Exporter le profil</button>
         <button class="ghost" id="importBtn2" hidden>Importer des données</button>
         <button class="ghost" id="logoutBtn" hidden>Se déconnecter</button>
@@ -1555,6 +1585,33 @@ function bankCards(k){if(k==='lvall')return CARDS.filter(c=>c.lv>0);if(k.startsW
 function bankLabel(k){return k==='lvall'?'Tous niveaux':k.startsWith('lv')?LEVELS[+k.slice(2)]:REGS[k.slice(4)]}
 function cardBanks(c){const a=[];if(c.lv)a.push(LEVELS[c.lv]);c.r.forEach(r=>a.push(REGS[r]));return a.join(', ')}
 
+/* ============ AVATARS (illustrations originales) ============ */
+const EYE=(x,y,r=6)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff"/><circle cx="${x+1}" cy="${y+1}" r="${(r*0.5).toFixed(1)}" fill="#1b1b2f"/>`;
+const SMILE=(y,c)=>`<path d="M50 ${y} q-4 5 -8 2 M50 ${y} q4 5 8 2" stroke="${c}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+const AVATARS={
+ chat:{nom:'Chat',bg:'#7c5cff',svg:`<path d="M24 46 L28 18 L46 34 Z" fill="#f4a03c"/><path d="M76 46 L72 18 L54 34 Z" fill="#f4a03c"/><path d="M29 40 L31 25 L41 34 Z" fill="#ffc9d6"/><path d="M71 40 L69 25 L59 34 Z" fill="#ffc9d6"/><ellipse cx="50" cy="56" rx="30" ry="26" fill="#f4a03c"/><path d="M50 31 v9 M42 32 l2 7 M58 32 l-2 7" stroke="#d9822b" stroke-width="3" stroke-linecap="round"/>${EYE(39,54)}${EYE(61,54)}<path d="M46 63 h8 l-4 4 z" fill="#ff7aa2"/>${SMILE(67,'#7a3e10')}<path d="M27 64 h12 M27 70 l12 -3 M73 64 h-12 M73 70 l-12 -3" stroke="#7a3e10" stroke-width="1.5" stroke-linecap="round"/>`},
+ renard:{nom:'Renard',bg:'#1fa38a',svg:`<path d="M22 44 L26 14 L46 32 Z" fill="#e8590c"/><path d="M78 44 L74 14 L54 32 Z" fill="#e8590c"/><path d="M28 38 L29 22 L40 32 Z" fill="#3b1f0e"/><path d="M72 38 L71 22 L60 32 Z" fill="#3b1f0e"/><path d="M18 48 Q50 18 82 48 Q78 72 50 84 Q22 72 18 48 Z" fill="#e8590c"/><path d="M21 53 Q38 58 50 84 Q28 76 21 53 Z" fill="#fff"/><path d="M79 53 Q62 58 50 84 Q72 76 79 53 Z" fill="#fff"/>${EYE(38,51,5)}${EYE(62,51,5)}<ellipse cx="50" cy="78" rx="5" ry="4" fill="#1b1b2f"/>`},
+ panda:{nom:'Panda',bg:'#e85d75',svg:`<circle cx="27" cy="31" r="11" fill="#1b1b2f"/><circle cx="73" cy="31" r="11" fill="#1b1b2f"/><ellipse cx="50" cy="57" rx="31" ry="28" fill="#fff"/><ellipse cx="38" cy="53" rx="8" ry="10" transform="rotate(-25 38 53)" fill="#1b1b2f"/><ellipse cx="62" cy="53" rx="8" ry="10" transform="rotate(25 62 53)" fill="#1b1b2f"/><circle cx="39" cy="52" r="3.2" fill="#fff"/><circle cx="61" cy="52" r="3.2" fill="#fff"/><ellipse cx="50" cy="66" rx="5" ry="3.5" fill="#1b1b2f"/>${SMILE(69,'#1b1b2f')}`},
+ hibou:{nom:'Hibou',bg:'#3d7be0',svg:`<path d="M22 42 L30 18 L41 32 Q50 28 59 32 L70 18 L78 42 Q84 78 50 88 Q16 78 22 42 Z" fill="#8a5a3c"/><ellipse cx="50" cy="72" rx="16" ry="13" fill="#d9b38c"/><path d="M42 68 q4 3 8 0 q4 3 8 0 M44 75 q3 3 6 0 q3 3 6 0" stroke="#a87b55" stroke-width="1.5" fill="none"/><circle cx="38" cy="46" r="12" fill="#fff"/><circle cx="62" cy="46" r="12" fill="#fff"/><circle cx="39" cy="47" r="6" fill="#1b1b2f"/><circle cx="61" cy="47" r="6" fill="#1b1b2f"/><circle cx="41" cy="45" r="2" fill="#fff"/><circle cx="63" cy="45" r="2" fill="#fff"/><path d="M45 56 h10 l-5 9 z" fill="#f7a400"/>`},
+ grenouille:{nom:'Grenouille',bg:'#f2b705',svg:`<circle cx="33" cy="35" r="13" fill="#3cb04a"/><circle cx="67" cy="35" r="13" fill="#3cb04a"/><ellipse cx="50" cy="61" rx="35" ry="24" fill="#3cb04a"/>${EYE(33,35,8)}${EYE(67,35,8)}<path d="M30 64 Q50 80 70 64" stroke="#1d6b28" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="27" cy="66" r="4.5" fill="#ff8fab" opacity=".75"/><circle cx="73" cy="66" r="4.5" fill="#ff8fab" opacity=".75"/>`},
+ pingouin:{nom:'Pingouin',bg:'#4fc3f7',svg:`<ellipse cx="50" cy="56" rx="31" ry="31" fill="#1f2a44"/><path d="M50 40 Q30 33 28 58 Q30 81 50 83 Q70 81 72 58 Q70 33 50 40 Z" fill="#fff"/><circle cx="41" cy="55" r="4" fill="#1b1b2f"/><circle cx="59" cy="55" r="4" fill="#1b1b2f"/><path d="M42 63 h16 l-8 8 z" fill="#ff9f1c"/><circle cx="34" cy="66" r="4" fill="#ff8fab" opacity=".6"/><circle cx="66" cy="66" r="4" fill="#ff8fab" opacity=".6"/>`},
+ lapin:{nom:'Lapin',bg:'#ff8c42',svg:`<ellipse cx="38" cy="25" rx="7" ry="20" fill="#eceff4"/><ellipse cx="62" cy="25" rx="7" ry="20" fill="#eceff4"/><ellipse cx="38" cy="27" rx="3.5" ry="14" fill="#ffc9d6"/><ellipse cx="62" cy="27" rx="3.5" ry="14" fill="#ffc9d6"/><ellipse cx="50" cy="61" rx="28" ry="25" fill="#eceff4"/>${EYE(40,57,5)}${EYE(60,57,5)}<ellipse cx="50" cy="66" rx="3.5" ry="2.5" fill="#ff7aa2"/><rect x="46" y="70" width="8" height="7" rx="1.5" fill="#fff" stroke="#c9ced8"/><path d="M50 70 v7" stroke="#c9ced8"/>`},
+ ours:{nom:'Ours',bg:'#10b981',svg:`<circle cx="28" cy="34" r="11" fill="#8b5a2b"/><circle cx="72" cy="34" r="11" fill="#8b5a2b"/><circle cx="28" cy="34" r="5" fill="#d9a066"/><circle cx="72" cy="34" r="5" fill="#d9a066"/><circle cx="50" cy="58" r="29" fill="#8b5a2b"/><ellipse cx="50" cy="69" rx="13" ry="10" fill="#d9a066"/><circle cx="40" cy="53" r="3.5" fill="#1b1b2f"/><circle cx="60" cy="53" r="3.5" fill="#1b1b2f"/><ellipse cx="50" cy="64" rx="5" ry="3.5" fill="#1b1b2f"/>${SMILE(68,'#1b1b2f')}`},
+ robot:{nom:'Robot',bg:'#ef476f',svg:`<path d="M50 22 v10" stroke="#9aa5b8" stroke-width="3"/><circle cx="50" cy="20" r="4.5" fill="#ffd166"/><rect x="16" y="46" width="8" height="16" rx="3" fill="#9aa5b8"/><rect x="76" y="46" width="8" height="16" rx="3" fill="#9aa5b8"/><rect x="22" y="32" width="56" height="46" rx="12" fill="#c7d0dd"/><rect x="30" y="40" width="40" height="22" rx="6" fill="#1f2a44"/><rect x="36" y="47" width="8" height="8" rx="2" fill="#4dd9ff"/><rect x="56" y="47" width="8" height="8" rx="2" fill="#4dd9ff"/><rect x="38" y="67" width="24" height="5" rx="2.5" fill="#9aa5b8"/><path d="M44 67 v5 M50 67 v5 M56 67 v5" stroke="#c7d0dd" stroke-width="1.5"/>`},
+ alien:{nom:'Alien',bg:'#5b2a86',svg:`<path d="M38 30 L32 16 M62 30 L68 16" stroke="#7ed957" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="15" r="4" fill="#ffd166"/><circle cx="68" cy="15" r="4" fill="#ffd166"/><path d="M50 24 Q82 26 78 54 Q74 80 50 86 Q26 80 22 54 Q18 26 50 24 Z" fill="#7ed957"/><ellipse cx="38" cy="52" rx="9" ry="12" transform="rotate(-20 38 52)" fill="#1b1b2f"/><ellipse cx="62" cy="52" rx="9" ry="12" transform="rotate(20 62 52)" fill="#1b1b2f"/><circle cx="36" cy="48" r="2.5" fill="#fff"/><circle cx="60" cy="48" r="2.5" fill="#fff"/><path d="M44 72 q6 4 12 0" stroke="#2f6b1f" stroke-width="2.5" fill="none" stroke-linecap="round"/>`},
+ ninja:{nom:'Ninja',bg:'#ffd166',svg:`<circle cx="50" cy="55" r="30" fill="#2b2d42"/><rect x="24" y="45" width="52" height="16" rx="8" fill="#f1c27d"/><path d="M33 54 q6 -5 12 0 M55 54 q6 -5 12 0" stroke="#1b1b2f" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M23 39 Q50 30 77 39" stroke="#e63946" stroke-width="6" fill="none"/><path d="M77 39 l11 -5 M77 39 l11 6" stroke="#e63946" stroke-width="4" stroke-linecap="round"/>`},
+ astronaute:{nom:'Astronaute',bg:'#264653',svg:`<circle cx="20" cy="55" r="5" fill="#e63946"/><circle cx="80" cy="55" r="5" fill="#e63946"/><circle cx="50" cy="55" r="31" fill="#f1f3f7"/><rect x="27" y="39" width="46" height="32" rx="16" fill="#1f2a44"/><path d="M35 45 q6 -4 12 -2" stroke="#7fd1ff" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="42" cy="57" r="3.2" fill="#7fd1ff"/><circle cx="58" cy="57" r="3.2" fill="#7fd1ff"/><path d="M45 64 q5 3 10 0" stroke="#7fd1ff" stroke-width="2" fill="none" stroke-linecap="round"/>`},
+ pirate:{nom:'Pirate',bg:'#2a9d8f',svg:`<circle cx="50" cy="58" r="26" fill="#e0ac69"/><path d="M23 51 Q23 26 50 26 Q77 26 77 51 Z" fill="#d62828"/><circle cx="40" cy="37" r="2.5" fill="#fff"/><circle cx="55" cy="33" r="2.5" fill="#fff"/><circle cx="65" cy="42" r="2.5" fill="#fff"/><path d="M28 50 L74 63" stroke="#1b1b2f" stroke-width="2.5"/><ellipse cx="60" cy="59" rx="7" ry="6" fill="#1b1b2f"/><circle cx="40" cy="58" r="3.5" fill="#1b1b2f"/><path d="M40 70 q10 7 20 0" stroke="#7a3e10" stroke-width="2.5" fill="none" stroke-linecap="round"/>`},
+ hacker:{nom:'Hacker',bg:'#00b4d8',svg:`<path d="M14 100 Q12 30 50 20 Q88 30 86 100 Z" fill="#2d3a5a"/><ellipse cx="50" cy="57" rx="18" ry="21" fill="#e0ac69"/><path d="M30 46 Q50 26 70 46" stroke="#1f2a44" stroke-width="6" fill="none" stroke-linecap="round"/><rect x="36" y="51" width="11" height="8" rx="2" fill="#22d36b"/><rect x="53" y="51" width="11" height="8" rx="2" fill="#22d36b"/><path d="M47 55 h6" stroke="#1b1b2f" stroke-width="2"/><path d="M45 69 q5 3 10 0" stroke="#7a3e10" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M40 86 v14 M60 86 v14" stroke="#1f2a44" stroke-width="2"/>`},
+ dragon:{nom:'Dragon',bg:'#f4a261',svg:`<path d="M30 34 L24 14 L40 28 Z" fill="#e9c46a"/><path d="M70 34 L76 14 L60 28 Z" fill="#e9c46a"/><path d="M50 26 Q80 28 80 56 Q80 82 50 84 Q20 82 20 56 Q20 28 50 26 Z" fill="#2a9d8f"/><path d="M44 27 l6 -9 l6 9" fill="#e76f51"/><ellipse cx="50" cy="70" rx="18" ry="11" fill="#8ad3c5"/><circle cx="44" cy="69" r="2" fill="#1b5e55"/><circle cx="56" cy="69" r="2" fill="#1b5e55"/>${EYE(38,50,6)}${EYE(62,50,6)}`},
+ fantome:{nom:'Fantôme',bg:'#8338ec',svg:`<path d="M24 86 V52 Q24 24 50 24 Q76 24 76 52 V86 l-9 -7 l-9 7 l-8 -7 l-8 7 l-9 -7 Z" fill="#f8f9fb"/><ellipse cx="40" cy="52" rx="5" ry="7" fill="#1b1b2f"/><ellipse cx="60" cy="52" rx="5" ry="7" fill="#1b1b2f"/><ellipse cx="50" cy="67" rx="5" ry="6" fill="#1b1b2f"/><circle cx="33" cy="61" r="4" fill="#ff8fab" opacity=".6"/><circle cx="67" cy="61" r="4" fill="#ff8fab" opacity=".6"/>`},
+};
+const AVATAR_IDS=Object.keys(AVATARS);
+let avSeq=0;
+function avatarOf(pseudo,stored){if(stored&&AVATARS[stored])return stored;let h=0;for(const ch of String(pseudo||''))h=(h*31+ch.charCodeAt(0))>>>0;return AVATAR_IDS[h%AVATAR_IDS.length]}
+function avatarSVG(id,size=40){const a=AVATARS[id]||AVATARS.chat;const k='av'+(++avSeq);
+  return `<svg class="avatar" width="${size}" height="${size}" viewBox="0 0 100 100" role="img" aria-label="${esc(a.nom)}"><defs><clipPath id="${k}"><circle cx="50" cy="50" r="50"/></clipPath></defs><g clip-path="url(#${k})"><rect width="100" height="100" fill="${a.bg}"/>${a.svg}</g></svg>`}
+
 /* ============ STOCKAGE ============ */
 const KEY='sigles-cyber.v1';
 function loadDB(){try{const s=localStorage.getItem(KEY);if(s){const o=JSON.parse(s);if(o&&o.players)return o}}catch(e){}return{current:null,players:{}}}
@@ -1572,11 +1629,11 @@ const pc=v=>v==null?'—':Math.round(v*100)+' %';
 const fmtDate=t=>new Date(t).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 
 /* ============ NAVIGATION ============ */
-const SCREENS=['login','home','quiz','result','done','profile'];
+const SCREENS=['login','home','quiz','result','done','profile','board'];
 function show(id){updateWho();SCREENS.forEach(s=>$('#'+s).hidden=s!==id);$$('[data-nav]').forEach(b=>{b.toggleAttribute('aria-current',b.dataset.nav===id);if(b.dataset.nav===id)b.setAttribute('aria-current','page')});window.scrollTo(0,0)}
 $$('[data-nav]').forEach(b=>b.addEventListener('click',async()=>{
   if(!await leaveGameOK())return;
-  if(b.dataset.nav==='home'){renderHome();show('home')}else{renderProfile();show('profile')}
+  if(b.dataset.nav==='home'){renderHome();show('home')}else if(b.dataset.nav==='board'){show('board');renderBoard()}else{renderProfile();show('profile')}
 }));
 async function leaveGameOK(){if($('#quiz').hidden||!G||G.finished)return true;const ok=await ask('Quitter la partie en cours ?',[{label:'Continuer la partie',value:false},{label:'Quitter',value:true,primary:true}]);if(ok)G.finished=true;return ok}
 /* ============ BOÎTE DE DIALOGUE ============ */
@@ -1589,7 +1646,7 @@ function ask(text,buttons,extraHTML){return new Promise(res=>{
   $$('#mBtns button').forEach(b=>b.addEventListener('click',()=>close(buttons[+b.dataset.i].value)));
   ($('#mExtra input')||$$('#mBtns button').pop()).focus();
 })}
-function updateWho(){const b=$('#whoBtn');b.textContent=DB.current?'👤 '+DB.current:'Se connecter';b.title=DB.current?'Changer de joueur':'Choisir ou créer un joueur'}
+function updateWho(){const b=$('#whoBtn');if(DB.current){const p=DB.players[DB.current];b.innerHTML=`${avatarSVG(avatarOf(DB.current,p&&p.avatar),24)}<span>${esc(DB.current)}</span>`}else b.textContent='Se connecter';b.title=DB.current?'Changer de joueur':'Choisir ou créer un joueur'}
 $('#whoBtn').addEventListener('click',async()=>{if(!await leaveGameOK())return;goLogin()});
 
 /* ============ CONNEXION ============ */
@@ -1598,7 +1655,7 @@ function login(name){DB.current=name;const p=ensurePlayer(name);p.last=Date.now(
 function renderLogin(){
   const names=Object.keys(DB.players).sort((a,b)=>(DB.players[b].last||DB.players[b].created||0)-(DB.players[a].last||DB.players[a].created||0));
   $('#login').innerHTML=`<div><h1>Qui joue ?</h1><p class="lead">Choisissez votre joueur pour retrouver vos statistiques, ou créez-en un nouveau. Les joueurs sont enregistrés dans ce navigateur uniquement.</p></div>
-  ${names.length?`<section class="panel"><h2>Joueurs enregistrés</h2><div class="players">${names.map(n=>{const p=DB.players[n];const r=agg(p,CARDS).ret;return `<button class="player" data-player="${esc(n)}"><span class="pn">${esc(n)}</span><span class="n">${p.games.length} partie${p.games.length>1?'s':''} · ${r} retenu${r>1?'s':''}</span></button>`}).join('')}</div></section>`:''}
+  ${names.length?`<section class="panel"><h2>Joueurs enregistrés</h2><div class="players">${names.map(n=>{const p=DB.players[n];const r=agg(p,CARDS).ret;return `<button class="player" data-player="${esc(n)}">${avatarSVG(avatarOf(n,p.avatar),48)}<span class="pt"><span class="pn">${esc(n)}</span><span class="n">${p.games.length} partie${p.games.length>1?'s':''} · ${r} retenu${r>1?'s':''}</span></span></button>`}).join('')}</div></section>`:''}
   <section class="panel"><h2>Nouveau joueur</h2>
     <div class="row" style="margin-top:12px"><input type="text" id="newName" maxlength="30" autocomplete="off" placeholder="Votre pseudo" aria-label="Pseudo du nouveau joueur"><button class="primary" id="createBtn">Créer et jouer</button></div>
     <p class="err" id="newErr" hidden></p></section>
@@ -1606,10 +1663,10 @@ function renderLogin(){
   <p><button class="linkbtn" id="guestBtn">Jouer sans joueur (mode Basique, rien n'est enregistré)</button></p>`;
   $('#importBtn').addEventListener('click',()=>{$('#importFile').value='';$('#importFile').click()});
   $$('#login [data-player]').forEach(b=>b.addEventListener('click',()=>login(b.dataset.player)));
-  const create=()=>{const n=$('#newName').value.trim();const e=$('#newErr');
+  const create=async()=>{const n=$('#newName').value.trim();const e=$('#newErr');
     if(!n){e.textContent='Saisissez un pseudo.';e.hidden=false;return}
     if(DB.players[n]){e.textContent=`Le joueur « ${n} » existe déjà : sélectionnez-le dans la liste.`;e.hidden=false;return}
-    login(n)};
+    login(n);const av=await pickAvatar(avatarOf(n));if(av)setAvatar(av)};
   $('#createBtn').addEventListener('click',create);
   $('#newName').addEventListener('keydown',e=>{if(e.key==='Enter')create()});
   $('#guestBtn').addEventListener('click',()=>{cfg.mode='basic';renderHome();show('home')});
@@ -1810,21 +1867,21 @@ function renderProfile(){
   const names=Object.keys(DB.players);
   const sel=$('#profSelect');
   if(!names.length){
-    sel.innerHTML='';sel.disabled=true;$('#delProfile').hidden=true;$('#exportBtn').hidden=true;$('#profTitle').textContent='Profil';
+    sel.innerHTML='';sel.disabled=true;$('#delProfile').hidden=true;$('#exportBtn').hidden=true;$('#avatarBtn').hidden=true;$('#profTitle').textContent='Profil';
     $('#profileBody').innerHTML=`<section class="panel"><p>Aucun profil pour l'instant.</p><p class="hint" style="margin-top:6px">Créez un joueur pour suivre vos progrès en mode Entraînement.</p><div style="margin-top:14px"><button class="primary" id="goTrain">Créer un joueur</button></div></section>`;
     $('#goTrain').addEventListener('click',goLogin);
     return;
   }
   if(!DB.current||!DB.players[DB.current]){
-    sel.innerHTML='';sel.disabled=true;$('#delProfile').hidden=true;$('#exportBtn').hidden=true;$('#profTitle').textContent='Profil';
+    sel.innerHTML='';sel.disabled=true;$('#delProfile').hidden=true;$('#exportBtn').hidden=true;$('#avatarBtn').hidden=true;$('#profTitle').textContent='Profil';
     $('#profileBody').innerHTML=`<section class="panel"><p>Aucun joueur sélectionné.</p><div style="margin-top:14px"><button class="primary" id="goTrain">Choisir un joueur</button></div></section>`;
     $('#goTrain').addEventListener('click',goLogin);
     return;
   }
-  sel.disabled=false;$('#delProfile').hidden=false;$('#exportBtn').hidden=false;
+  sel.disabled=false;$('#delProfile').hidden=false;$('#exportBtn').hidden=false;$('#avatarBtn').hidden=false;
   if(ONLINE){sel.hidden=true;$('label[for=profSelect]').hidden=true;['importBtn2','logoutBtn'].forEach(id=>$('#'+id).hidden=false);$('#logoutBtn').textContent='Changer de joueur'}
   sel.innerHTML=names.map(n=>`<option ${n===DB.current?'selected':''}>${esc(n)}</option>`).join('');
-  $('#profTitle').textContent=DB.current;
+  $('#profTitle').innerHTML=`<span class="rkname">${avatarSVG(avatarOf(DB.current,DB.players[DB.current].avatar),48)}<span>${esc(DB.current)}</span></span>`;
   const p=DB.players[DB.current];
   const tabs=[['overview',"Vue d'ensemble"],['cards','Par acronyme'],['ret','Retenus'],['hist','Historique']];
   let body=`<div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-tab="${k}" aria-selected="${k===profTab}">${l}</button>`).join('')}</div><div style="margin-top:18px" id="tabBody"></div>`;
@@ -1910,7 +1967,7 @@ function sanitizePlayer(o){
     const h=Array.isArray(c.h)?c.h.slice(-5).map(x=>x?1:0):[];
     cards[id]={n:num(c.n),ok:Math.min(num(c.ok),num(c.n)),h,st:num(c.st),ret:!!c.ret};if(c.ret&&c.retAt)cards[id].retAt=num(c.retAt)}
   const games=o.games.filter(g=>g&&typeof g==='object').slice(-500).map(g=>({t:num(g.t),key:String(g.key||''),dir:['fwd','rev','mix'].includes(g.dir)?g.dir:'fwd',n:Math.max(1,num(g.n)),score:num(g.score),ret:Array.isArray(g.ret)?g.ret.map(String).slice(0,400):[]}));
-  return{created:num(o.created)||Date.now(),last:Date.now(),cards,games};
+  const out={created:num(o.created)||Date.now(),last:Date.now(),cards,games};if(typeof o.avatar==='string'&&AVATARS[o.avatar])out.avatar=o.avatar;return out;
 }
 async function exportProfile(){
   const name=DB.current;if(!name||!DB.players[name])return;
@@ -1997,7 +2054,7 @@ async function renderOnlineLogin(){
   const list=data||[];let last=null;try{last=localStorage.getItem(LAST_KEY)}catch(e){}
   if(last&&!list.some(j=>j.pseudo===last))last=null;
   const others=list.filter(j=>j.pseudo!==last);
-  const card=j=>`<button class="player" data-player="${esc(j.pseudo)}"><span class="pn">${esc(j.pseudo)}</span><span class="n">${j.nb_parties} partie${j.nb_parties>1?'s':''} · ${j.nb_retenus} retenu${j.nb_retenus>1?'s':''}</span></button>`;
+  const card=j=>`<button class="player" data-player="${esc(j.pseudo)}">${avatarSVG(avatarOf(j.pseudo,j.avatar),48)}<span class="pt"><span class="pn">${esc(j.pseudo)}</span><span class="n">${j.nb_parties} partie${j.nb_parties>1?'s':''} · ${j.nb_retenus} retenu${j.nb_retenus>1?'s':''}</span></span></button>`;
   $('#login').innerHTML=`<div><h1>Qui joue ?</h1><p class="lead">Choisissez votre joueur pour retrouver vos statistiques, ou créez-en un nouveau. La progression est sauvegardée en ligne.</p></div>
   ${last?`<section class="panel"><h2>Continuer</h2><div class="players">${card(list.find(j=>j.pseudo===last))}</div></section>`:''}
   ${others.length?`<section class="panel"><h2>${last?'Autres joueurs':'Joueurs'}</h2><div class="players">${others.map(card).join('')}</div></section>`:''}
@@ -2013,7 +2070,7 @@ async function renderOnlineLogin(){
     if(er){fail('Une erreur est survenue. Réessayez plus tard.');return}
     const msg={pseudo_invalide:'Pseudo invalide.',pseudo_pris:'Ce pseudo est déjà utilisé : sélectionnez-le dans la liste.',complet:'Le nombre maximal de joueurs est atteint.'}[r];
     if(msg){fail(msg);return}
-    await selectPlayer(n)};
+    await selectPlayer(n);const av=await pickAvatar(avatarOf(n));if(av)setAvatar(av)};
   $('#createBtn').addEventListener('click',create);
   $('#newName').addEventListener('keydown',ev=>{if(ev.key==='Enter')create()});
   $('#guestBtn').addEventListener('click',()=>{cfg.mode='basic';renderHome();show('home')});
@@ -2042,6 +2099,85 @@ $('#privacyBtn').addEventListener('click',()=>ask('Confidentialité et données 
 <p><strong>Hébergement :</strong> Supabase, dans une région de l'Union européenne ; site hébergé par [À COMPLÉTER].</p>
 <p><strong>Durée de conservation :</strong> [À COMPLÉTER, par exemple jusqu'à la fin de la formation + 6 mois], ou jusqu'à la suppression du compte.</p>
 <p><strong>Vos droits :</strong> accès, rectification, effacement (bouton « Supprimer ce profil » dans le profil), portabilité (bouton « Exporter le profil »), opposition. Contact : [À COMPLÉTER]. Vous pouvez introduire une réclamation auprès de la CNIL.</p></div>`));
+
+/* ============ AVATAR : CHOIX ============ */
+async function pickAvatar(current){
+  let sel=current;
+  const grid=`<div class="avgrid">${AVATAR_IDS.map(id=>`<button type="button" class="avopt" data-av="${id}" aria-pressed="${id===current}" title="${esc(AVATARS[id].nom)}">${avatarSVG(id,56)}<span>${esc(AVATARS[id].nom)}</span></button>`).join('')}</div>`;
+  const pr=ask('Choisissez votre avatar',[{label:'Plus tard',value:null},{label:'Valider',value:'ok',primary:true}],grid);
+  $$('#mExtra .avopt').forEach(b=>b.addEventListener('click',()=>{sel=b.dataset.av;$$('#mExtra .avopt').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+  return (await pr)?sel:null;
+}
+function setAvatar(id){const p=DB.current&&DB.players[DB.current];if(!p||!AVATARS[id])return;p.avatar=id;saveDB();updateWho();if(!$('#profile').hidden)renderProfile()}
+$('#avatarBtn').addEventListener('click',async()=>{const p=DB.players[DB.current];if(!p)return;const av=await pickAvatar(avatarOf(DB.current,p.avatar));if(av)setAvatar(av)});
+
+/* ============ CLASSEMENT ============ */
+const BOARD_MIN=10;
+let bdBank='all',bdMetric='mastery',bdView='rank';
+const METRICS={
+  mastery:{l:'Maîtrise',d:'Part des termes de la catégorie retenus (5 bonnes réponses d\'affilée)'},
+  total:{l:'Réussite totale',d:`Bonnes réponses / réponses données, à partir de ${BOARD_MIN} réponses dans la catégorie`},
+  rolling:{l:'Réussite récente',d:`Sur les 5 dernières réponses de chaque terme, à partir de ${BOARD_MIN} réponses dans la catégorie`},
+  volume:{l:'Activité',d:'Nombre total de réponses données dans la catégorie'}
+};
+const boardCards=k=>k==='all'?CARDS:bankCards(k);
+const boardLabel=k=>k==='all'?'Toutes les banques':bankLabel(k);
+function metricVal(a,m){if(m==='volume')return a.n;if(a.n===0)return null;if(m==='mastery')return a.total?a.ret/a.total:0;if(a.n<BOARD_MIN)return null;return m==='total'?a.pt:a.pr}
+const fmtMetric=(v,m)=>v==null?'—':m==='volume'?String(v):Math.round(v*100)+' %';
+async function boardPlayers(){
+  if(ONLINE){const {data,error}=await sb.rpc('classement');if(error)throw error;
+    return (data||[]).map(r=>({pseudo:r.pseudo,avatar:avatarOf(r.pseudo,r.avatar),cards:r.cards&&typeof r.cards==='object'?r.cards:{},games:r.nb_parties||0}))}
+  return Object.entries(DB.players).map(([n,p])=>({pseudo:n,avatar:avatarOf(n,p.avatar),cards:p.cards,games:p.games.length}));
+}
+function rankRows(players,k,m){
+  const list=boardCards(k);
+  return players.map(p=>{const a=agg({cards:p.cards},list);return{...p,a,v:metricVal(a,m)}})
+    .sort((x,y)=>(y.v!=null)-(x.v!=null)||(y.v||0)-(x.v||0)||y.a.n-x.a.n||x.pseudo.localeCompare(y.pseudo));
+}
+async function renderBoard(){
+  const el=$('#boardBody');el.innerHTML='<p class="hint">Chargement du classement…</p>';
+  let players;
+  try{if(ONLINE)await flushSync();players=await boardPlayers()}
+  catch(e){el.innerHTML='<p class="empty">Classement indisponible pour le moment. Réessayez dans quelques instants.</p>';return}
+  if(!players.length){el.innerHTML='<p class="empty">Aucun joueur pour l\'instant.</p>';return}
+  const controls=`<div class="tabs" role="tablist"><button role="tab" data-bv="rank" aria-selected="${bdView==='rank'}">Classement par catégorie</button><button role="tab" data-bv="matrix" aria-selected="${bdView==='matrix'}">Comparaison de toutes les catégories</button></div>
+  <div class="stack" style="margin-top:16px">
+    ${bdView==='rank'?`<div class="row"><label class="hint" for="bdBank">Catégorie</label><select id="bdBank">${['all',...BANKS].map(k=>`<option value="${k}" ${k===bdBank?'selected':''}>${esc(boardLabel(k))}</option>`).join('')}</select></div>`:''}
+    <div><div class="seg" role="group" aria-label="Critère">${Object.entries(METRICS).map(([k,x])=>`<button data-metric="${k}" aria-pressed="${k===bdMetric}">${x.l}</button>`).join('')}</div>
+    <p class="hint" style="margin-top:8px">${esc(METRICS[bdMetric].d)}.</p></div>
+  </div>`;
+  el.innerHTML=controls+'<div id="bdContent" style="margin-top:18px"></div>';
+  $$('[data-bv]').forEach(b=>b.addEventListener('click',()=>{bdView=b.dataset.bv;renderBoard()}));
+  $$('[data-metric]').forEach(b=>b.addEventListener('click',()=>{bdMetric=b.dataset.metric;renderBoard()}));
+  if($('#bdBank'))$('#bdBank').addEventListener('change',e=>{bdBank=e.target.value;renderBoard()});
+  $('#bdContent').innerHTML=bdView==='rank'?rankHTML(players):matrixHTML(players);
+}
+function rankHTML(players){
+  const rows=rankRows(players,bdBank,bdMetric),m=bdMetric;
+  const ranked=rows.filter(r=>r.v!=null&&(m!=='volume'||r.v>0));
+  const top=ranked.slice(0,3);
+  const maxV=m==='volume'?Math.max(1,...rows.map(r=>r.v||0)):1;
+  const podium=top.length?`<div class="podium">${[1,0,2].map(i=>{const r=top[i];return r?`<div class="pod p${i+1}">${avatarSVG(r.avatar,i===0?76:60)}<div class="pn">${esc(r.pseudo)}</div><div class="pv">${fmtMetric(r.v,m)}</div><div class="step">${i+1}</div></div>`:'<div class="pod"></div>'}).join('')}</div>`:'<p class="empty">Personne n\'est encore classé dans cette catégorie.</p>';
+  let rank=0;
+  const body=rows.map(r=>{const ok=r.v!=null&&(m!=='volume'||r.v>0);if(ok)rank++;const pct=r.v==null?0:Math.min(100,(m==='volume'?r.v/maxV:r.v)*100);
+    return `<tr class="${r.pseudo===DB.current?'me':''}"><td class="num">${ok?rank:'—'}</td><td><span class="rkname">${avatarSVG(r.avatar,32)}<span><strong>${esc(r.pseudo)}</strong>${r.pseudo===DB.current?' <span class="pill">vous</span>':''}</span></span></td>
+    <td class="num"><strong>${fmtMetric(r.v,m)}</strong>${r.v==null&&r.a.n>0&&m!=='mastery'?`<br><span class="hint">${r.a.n} / ${BOARD_MIN} réponses</span>`:''}</td><td style="width:30%"><div class="rkbar"><i style="width:${pct}%"></i></div></td>
+    <td class="num">${r.a.seen} / ${r.a.total}</td><td class="num">${r.a.ret}</td></tr>`}).join('');
+  return podium+`<div class="tablewrap"><table><thead><tr><th class="num">Rang</th><th>Joueur</th><th class="num">${esc(METRICS[m].l)}</th><th></th><th class="num">Vus</th><th class="num">Retenus</th></tr></thead><tbody>${body}</tbody></table></div>
+  <p class="hint" style="margin-top:8px">Catégorie : ${esc(boardLabel(bdBank))}.</p>`;
+}
+function matrixHTML(players){
+  const m=bdMetric,cols=['all',...BANKS];
+  const vals=players.map(p=>cols.map(k=>metricVal(agg({cards:p.cards},boardCards(k)),m)));
+  const best=cols.map((k,j)=>{const v=vals.map(r=>r[j]).filter(x=>x!=null&&(m!=='volume'||x>0));return v.length?Math.max(...v):null});
+  const colMax=cols.map((k,j)=>Math.max(1,...vals.map(r=>r[j]||0)));
+  const order=players.map((p,i)=>i).sort((a,b)=>(vals[b][0]??-1)-(vals[a][0]??-1));
+  const cell=(v,j)=>{if(v==null)return '<td class="num hint">—</td>';const t=m==='volume'?v/colMax[j]:v;const isBest=best[j]!=null&&v===best[j];
+    return `<td class="num${isBest?' best':''}" style="background:color-mix(in srgb,var(--c) ${Math.round(t*45)}%,transparent)">${isBest?'★ ':''}${fmtMetric(v,m)}</td>`};
+  return `<div class="tablewrap mx"><table><thead><tr><th>Joueur</th>${cols.map(k=>`<th class="num">${esc(k==='all'?'Global':bankLabel(k))}</th>`).join('')}</tr></thead><tbody>
+  ${order.map(i=>{const p=players[i];return `<tr class="${p.pseudo===DB.current?'me':''}"><td><span class="rkname">${avatarSVG(p.avatar,28)}<strong>${esc(p.pseudo)}</strong></span></td>${vals[i].map(cell).join('')}</tr>`}).join('')}
+  </tbody></table></div><p class="hint" style="margin-top:8px">★ meilleur joueur de la catégorie. Critère : ${esc(METRICS[m].l)}.</p>`;
+}
 
 init();
 </script>
