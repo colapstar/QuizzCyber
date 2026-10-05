@@ -1,0 +1,487 @@
+# Dictionnaire des mots fléchés : MOT|définition|thème (i = informatique, g = mot courant)
+# MOT en majuscules sans accent ni espace, 2 lettres minimum. Une ligne par définition (un mot peut avoir plusieurs définitions).
+
+OCTET|Huit bits|i
+BIT|Plus petite unité d'information|i
+PIXEL|Point d'image|i
+ECRAN|Il s'affiche devant vous|i
+CLAVIER|On le tape tous les jours|i
+SOURIS|Rongeur de bureau|i
+BOGUE|Erreur de programme|i
+BUG|Bogue, en anglais|i
+CODE|Écrit par le développeur|i
+CODER|Programmer|i
+SERVEUR|Il répond aux requêtes|i
+CLIENT|Il interroge le serveur|i
+RESEAU|Machines reliées entre elles|i
+ROUTEUR|Aiguilleur de paquets|i
+PAQUET|Unité transmise sur un réseau|i
+CACHE|Mémoire rapide|i
+DISQUE|Dur ou SSD|i
+FICHIER|Il se range dans un dossier|i
+DOSSIER|Il range les fichiers|i
+LOGICIEL|Programme informatique|i
+PUCE|Circuit intégré|i
+OS|Système, en bref|i
+RAM|Mémoire vive|i
+ROM|Mémoire morte|i
+WEB|Toile mondiale|i
+NET|Internet, en bref|i
+WIFI|Réseau sans fil|i
+LIEN|Il mène ailleurs|i
+URL|Adresse web|i
+SITE|Il se visite en ligne|i
+PAGE|Elle se charge dans le navigateur|i
+ICONE|Petite image cliquable|i
+MENU|Liste de choix|i
+FENETRE|Elle s'ouvre à l'écran|i
+ONGLET|Il partage le navigateur|i
+CLIC|Action de souris|i
+CLIQUER|Appuyer sur le bouton|i
+ZIP|Archive compressée|i
+PDF|Document portable|i
+GIF|Image animée|i
+LOGIN|Identifiant de connexion|i
+COMPTE|Il s'ouvre avec un identifiant|i
+PROFIL|Fiche d'utilisateur|i
+AVATAR|Image de profil|i
+EMAIL|Message électronique|i
+SPAM|Courrier indésirable|i
+VIRUS|Il infecte les fichiers|i
+VER|Il se propage tout seul|i
+TROYEN|Cheval malveillant|i
+PIRATE|Il attaque les systèmes|i
+PAREFEU|Il filtre le trafic|i
+CLE|Elle déchiffre|i
+HACHAGE|Empreinte de données|i
+JETON|Preuve d'authentification|i
+SESSION|Ouverte puis fermée|i
+COOKIE|Petit fichier de navigation|i
+DONNEE|Information stockée|i
+BASE|De données|i
+TABLE|Lignes et colonnes|i
+LIGNE|Enregistrement de table|i
+COLONNE|Champ de table|i
+CHAMP|Zone de saisie|i
+REQUETE|Demande au serveur|i
+INDEX|Il accélère la recherche|i
+TRI|Mise en ordre|i
+TRIER|Mettre en ordre|i
+LISTE|Suite d'éléments|i
+TABLEAU|Structure indexée|i
+PILE|Dernier entré, premier sorti|i
+FILE|Premier entré, premier sorti|i
+ARBRE|Structure à racine|i
+GRAPHE|Noeuds et arêtes|i
+NOEUD|Point d'un graphe|i
+RACINE|Sommet d'un arbre|i
+BOUCLE|Répétition dans le code|i
+TEST|Il vérifie le code|i
+DEBOGUER|Corriger le code|i
+COMPILER|Traduire en machine|i
+BINAIRE|Zéros et uns|i
+OCTAL|Base huit|i
+VARIABLE|Elle prend une valeur|i
+FONCTION|Bloc réutilisable|i
+METHODE|Fonction d'objet|i
+OBJET|Instance de classe|i
+CLASSE|Modèle d'objets|i
+SCRIPT|Petit programme|i
+PYTHON|Langage au nom de serpent|i
+JAVA|Langage au nom d'île|i
+RUBY|Langage précieux|i
+RUST|Langage oxydé|i
+PERL|Langage perlé|i
+LISP|Langage à parenthèses|i
+COBOL|Vieux langage de gestion|i
+PASCAL|Langage ou unité de pression|i
+HTML|Langage des pages web|i
+CSS|Feuilles de style|i
+JSON|Format de données léger|i
+XML|Langage à balises|i
+BALISE|Élément de page web|i
+API|Interface de programmation|i
+LINUX|Système au manchot|i
+UNIX|Ancêtre de Linux|i
+WINDOWS|Système aux fenêtres|i
+MAC|Ordinateur à la pomme|i
+ANDROID|Système de smartphone|i
+NOYAU|Coeur du système|i
+PILOTE|Il fait marcher le matériel|i
+BIOS|Premier programme au démarrage|i
+AMORCE|Démarrage du système|i
+VEILLE|Mode économie d'énergie|i
+PATCH|Correctif|i
+CORRECTIF|Il répare une faille|i
+FAILLE|Vulnérabilité|i
+VERSION|Numéro de mise à jour|i
+BETA|Version de test|i
+ALPHA|Toute première version|i
+CLOUD|Nuage informatique|i
+NUAGE|Cloud, en français|i
+GIGA|Milliard, en préfixe|i
+MEGA|Million, en préfixe|i
+KILO|Mille, en préfixe|i
+TERA|Mille milliards, en préfixe|i
+PETA|Après téra|i
+BAUD|Unité de modulation|i
+HERTZ|Unité de fréquence|i
+CPU|Processeur, en bref|i
+GPU|Puce graphique|i
+COEUR|Unité de calcul du processeur|i
+TACHE|Processus en cours|i
+PROCESSUS|Programme en exécution|i
+MEMOIRE|Elle retient tout|i
+CARTE|Mère ou graphique|i
+PORT|Point de connexion|i
+PRISE|Réseau ou électrique|i
+CABLE|Fil de connexion|i
+FIBRE|Optique, elle va vite|i
+MODEM|Il module et démodule|i
+BOX|Boîtier Internet|i
+ANTENNE|Elle capte|i
+SIGNAL|Il transporte l'information|i
+ONDE|Elle porte le wifi|i
+USB|Port universel|i
+DVD|Disque vidéo|i
+SSD|Disque sans plateau|i
+SCANNER|Il numérise|i
+WEBCAM|Caméra de visio|i
+MICRO|Il capte la voix|i
+CASQUE|Sur les oreilles|i
+TOUCHE|Elle se presse|i
+ENTREE|Touche de validation|i
+ECHAP|Touche d'évasion|i
+TAB|Touche de tabulation|i
+COPIER|Ctrl+C|i
+COLLER|Ctrl+V|i
+COUPER|Ctrl+X|i
+ANNULER|Ctrl+Z|i
+SAUVER|Enregistrer|i
+FORMAT|Type de fichier|i
+TEXTE|Suite de caractères|i
+POLICE|Style de caractères|i
+EMOJI|Petit visage numérique|i
+FORUM|Lieu de discussion en ligne|i
+BLOG|Journal en ligne|i
+WIKI|Encyclopédie collaborative|i
+TCHAT|Discussion instantanée|i
+VISIO|Réunion à distance|i
+ROBOT|Machine automatique|i
+BOT|Robot logiciel|i
+IA|Intelligence artificielle|i
+ALGO|Recette de calcul, en bref|i
+CRYPTO|Monnaie numérique, en bref|i
+BITCOIN|Cryptomonnaie pionnière|i
+BLOC|Maillon de la chaîne|i
+CHAINE|De caractères|i
+PIRATER|Attaquer un système|i
+LOG|Journal d'événements|i
+ALERTE|Signal d'incident|i
+COPIE|Double de sauvegarde|i
+ARCHIVE|Fichier compressé|i
+DOMAINE|Nom sur Internet|i
+HOTE|Machine du réseau|i
+IP|Adresse réseau|i
+ADRESSE|IP ou électronique|i
+PING|Test de connexion|i
+TRAFIC|Flux de données|i
+DEBIT|Vitesse de connexion|i
+LATENCE|Temps de réponse|i
+FLUX|Continu de données|i
+MOTEUR|De recherche|i
+FIREFOX|Navigateur au renard|i
+CHROME|Navigateur de Google|i
+SAFARI|Navigateur à la pomme|i
+EDGE|Navigateur de Microsoft|i
+GEEK|Passionné d'informatique|i
+CONSOLE|Pour jouer ou taper des commandes|i
+SHELL|Interface en ligne de commande|i
+TERMINAL|Fenêtre de commandes|i
+PROMPT|Invite de commande|i
+SUDO|Pouvoirs d'admin sous Linux|i
+ROOT|Administrateur Unix|i
+ADMIN|Il gère le système|i
+GIT|Gestion de versions|i
+BRANCHE|Version parallèle du code|i
+FUSION|Merge, en français|i
+COMMIT|Enregistrement Git|i
+DEPOT|Il héberge le code|i
+CLONE|Copie de dépôt|i
+LIBRE|Logiciel ouvert|i
+LICENCE|Droit d'utilisation|i
+SOURCE|Code lisible|i
+OCTETS|Groupes de huit bits|i
+OUTIL|Logiciel utile|i
+MODULE|Brique de programme|i
+LIBRAIRIE|Bibliothèque de code|i
+PLUGIN|Extension logicielle|i
+THEME|Habillage d'interface|i
+MODE|Sombre ou clair|i
+PUSH|Envoi vers le dépôt|i
+PULL|Récupération du dépôt|i
+RESET|Remise à zéro|i
+RAID|Disques en grappe|i
+TUTO|Leçon en ligne, en bref|i
+DEMO|Version d'essai|i
+APP|Application, en bref|i
+APPLI|Programme mobile|i
+MOBILE|Téléphone portable|i
+TABLETTE|Écran tactile|i
+TACTILE|Qui réagit au doigt|i
+ECRANS|Moniteurs|i
+PC|Ordinateur personnel|i
+MO|Mégaoctet|i
+GO|Gigaoctet|i
+KO|Kilooctet|i
+TO|Téraoctet|i
+ET|Conjonction|g
+OU|Autre conjonction|g
+EN|Préposition|g
+UN|Article|g
+UNE|Article féminin|g
+LE|Article|g
+LA|Note de musique|g
+LES|Article pluriel|g
+DE|Préposition|g
+DU|Article partitif|g
+AU|Contraction|g
+AUX|Contraction plurielle|g
+IL|Pronom|g
+ON|Pronom indéfini|g
+SI|Note ou condition|g
+RE|Note de musique|g
+MI|Note de musique|g
+DO|Note de musique|g
+FA|Note de musique|g
+SOL|Note ou terre|g
+NE|Négation|g
+NI|Ni l'un ni l'autre|g
+SA|Possessif|g
+SE|Pronom réfléchi|g
+TA|Possessif|g
+TE|Pronom|g
+ME|Pronom|g
+MA|Possessif|g
+MON|Possessif|g
+TON|Possessif ou nuance|g
+SON|Bruit|g
+NU|Sans vêtement|g
+EU|Participe d'avoir|g
+VU|Participe de voir|g
+LU|Participe de lire|g
+SU|Participe de savoir|g
+PU|Participe de pouvoir|g
+EH|Interjection|g
+OH|Exclamation|g
+AH|Soupir|g
+HA|Hectare|g
+AS|Champion|g
+IF|Arbre toujours vert|g
+RU|Petit ruisseau|g
+PI|Nombre irrationnel|g
+OK|D'accord|g
+UT|Ancien do|g
+ES|Tu y ... allé|g
+TU|Pronom|g
+VA|Bouge|g
+AN|Douze mois|g
+AI|Paresseux d'Amérique|g
+EUX|Pronom pluriel|g
+ETE|Saison chaude|g
+EAU|H2O|g
+AIR|On le respire|g
+ARC|Arme de jet|g
+ANE|Baudet|g
+BAS|Pas haut|g
+BEC|Bouche d'oiseau|g
+BOL|Récipient|g
+BON|Pas mauvais|g
+CAR|Autocar|g
+CEP|Pied de vigne|g
+CIL|Poil de paupière|g
+COL|Passage en montagne|g
+COU|Entre tête et épaules|g
+CRI|Appel bruyant|g
+DIX|Nombre|g
+DOS|Envers|g
+DUO|À deux|g
+ELU|Choisi|g
+EPI|Tête de blé|g
+ERE|Époque|g
+EST|Point cardinal|g
+ETA|Lettre grecque|g
+FEE|Elle a une baguette|g
+FER|Métal|g
+FIL|Brin|g
+FIN|Terme|g
+GAI|Joyeux|g
+GEL|Glace|g
+ILE|Terre entourée d'eau|g
+IRE|Colère|g
+LAC|Étendue d'eau|g
+LIT|Meuble pour dormir|g
+LOI|Règle|g
+LUI|Pronom|g
+MAI|Mois|g
+MER|Grande étendue salée|g
+MIE|Intérieur du pain|g
+MOI|Pronom|g
+MOT|Assemblage de lettres|g
+MUR|Paroi|g
+NEZ|Organe de l'odorat|g
+NID|Maison d'oiseau|g
+NUL|Sans valeur|g
+OIE|Volaille|g
+OSE|Audacieux|g
+OUI|Approbation|g
+PAS|Enjambée|g
+PEU|Pas beaucoup|g
+PIE|Oiseau bavard|g
+PLI|Marque sur le papier|g
+PRE|Champ d'herbe|g
+RAT|Rongeur|g
+RIZ|Céréale asiatique|g
+ROI|Monarque|g
+RUE|Voie urbaine|g
+SAC|Contenant|g
+SEL|Assaisonnement|g
+SET|Manche au tennis|g
+SOI|Pronom|g
+SUD|Point cardinal|g
+TAS|Amas|g
+TEE|Support de golf|g
+THE|Boisson chaude|g
+TOI|Pronom|g
+UNI|Lisse|g
+USE|Abîmé|g
+VIE|Existence|g
+VIN|Jus de raisin fermenté|g
+VUE|Sens de la vision|g
+ART|Création|g
+AMI|Copain|g
+ARE|Unité de surface|g
+OTE|Retire|g
+IDE|Poisson d'eau douce|g
+AIE|Cri de douleur|g
+ALE|Bière anglaise|g
+ANS|Années|g
+EMU|Touché|g
+ERS|Plante fourragère|g
+ETAT|Nation|g
+AIDE|Coup de main|g
+AILE|Membre d'oiseau|g
+AIME|Apprécie|g
+AIRE|Surface|g
+AMIE|Copine|g
+ANGE|Être céleste|g
+ARME|Moyen de défense|g
+ASIE|Continent|g
+AUBE|Lever du jour|g
+AVIS|Opinion|g
+BAIE|Petit fruit|g
+BAIN|Moment dans la baignoire|g
+BOIS|Matière d'arbre|g
+BRAS|Membre supérieur|g
+CAFE|Boisson noire|g
+CAGE|Prison d'oiseau|g
+CAPE|Manteau sans manches|g
+CIEL|Firmament|g
+COTE|Bord de mer|g
+DAME|Pièce d'échecs|g
+DENT|Elle croque|g
+DOUX|Agréable au toucher|g
+DUNE|Colline de sable|g
+ECHO|Son renvoyé|g
+EGAL|Pareil|g
+ELAN|Impulsion|g
+EPEE|Arme blanche|g
+ETRE|Exister|g
+FAIM|Envie de manger|g
+FETE|Célébration|g
+GARE|Pour les trains|g
+GENE|Embarras|g
+IDEE|Pensée|g
+IRIS|Fleur ou partie de l'oeil|g
+LAIT|Boisson blanche|g
+LAME|Tranchant|g
+LIRE|Déchiffrer un texte|g
+LOUP|Canidé sauvage|g
+LUNE|Satellite naturel|g
+MAIN|Elle a cinq doigts|g
+MAIS|Céréale ou conjonction|g
+MERE|Maman|g
+MIEL|Produit des abeilles|g
+MORT|Fin de vie|g
+NOEL|Fête de décembre|g
+NOIR|Couleur sombre|g
+NUIT|Après le jour|g
+ONZE|Équipe de foot|g
+OURS|Gros mammifère|g
+PAIN|Baguette ou miche|g
+PAIX|Fin de guerre|g
+PERE|Papa|g
+PEUR|Frayeur|g
+PIED|Au bout de la jambe|g
+PNEU|Il roule|g
+POIS|Petit légume rond|g
+RAME|Aviron ou métro|g
+RIRE|Éclat de joie|g
+ROSE|Fleur|g
+ROUE|Elle tourne|g
+SAGE|Raisonnable|g
+SAUT|Bond|g
+SOIE|Tissu précieux|g
+SOIR|Fin de journée|g
+TARD|Pas tôt|g
+THON|Gros poisson|g
+TIGE|Elle porte la fleur|g
+TOIT|Il couvre la maison|g
+TOUR|Elle domine|g
+USER|Abîmer|g
+VASE|Pour les fleurs|g
+VENT|Il souffle|g
+VERT|Couleur de l'herbe|g
+VOIE|Chemin|g
+YEUX|Organes de la vue|g
+ZERO|Rien|g
+TRAIN|Il roule sur des rails|g
+TEMPS|Il passe|g
+OASIS|Point d'eau dans le désert|g
+ARENE|Lieu de combat|g
+ETOILE|Astre|g
+SOLEIL|Il brille|g
+SALLE|Pièce|g
+ROUTE|Chemin|g
+TERRE|Planète bleue|g
+PORTE|Elle s'ouvre|g
+CRAIE|Pour le tableau|g
+ENTRE|Parmi|g
+AVANT|Pas après|g
+APRES|Pas avant|g
+TROIS|Nombre|g
+QUATRE|Nombre|g
+SEPT|Nombre|g
+HUIT|Nombre|g
+NEUF|Nombre ou nouveau|g
+DEUX|Paire|g
+CINQ|Nombre|g
+ARTS|Beaux-...|g
+ROSES|Fleurs|g
+EPICE|Assaisonnement|g
+SIRENE|Alarme ou créature|g
+NAGE|Crawl ou brasse|g
+RIRES|Éclats de joie|g
+REVE|Songe|g
+SERRE|Pour les plantes|g
+ETAPE|Phase|g
+ARETE|Os de poisson|g
+TETE|Elle pense|g
+NOTE|Sur la partition|g
+RIEN|Néant|g
+LIEU|Endroit|g
+ROLE|Fonction|g
+SALE|Pas propre|g
+SOLE|Poisson plat|g
+TALON|Arrière du pied|g
+RAMER|Galérer|g

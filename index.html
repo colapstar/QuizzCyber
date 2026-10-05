@@ -94,9 +94,21 @@ tr.me td{background:color-mix(in srgb,var(--a) 10%,transparent)}
 .fqp+.fqp{border-top:1px solid #9aa6ba}
 .fqp span{font-size:clamp(4.5px,1.02vw,7.6px);line-height:1.08;text-transform:uppercase;font-weight:700;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-align:center;overflow-wrap:anywhere;max-height:100%}
 .fqp:only-child span{-webkit-line-clamp:7}
-.fqp.qh::after{content:'';position:absolute;right:0;top:50%;margin-top:-4px;border-style:solid;border-width:4px 0 4px 5px;border-color:transparent transparent transparent #16213E}
-.fqp.qv::after{content:'';position:absolute;bottom:0;left:50%;margin-left:-4px;border-style:solid;border-width:5px 4px 0 4px;border-color:#16213E transparent transparent transparent}
-.fqp.act{background:#ffc94d}.fqp.ok{color:#1c8a4c}
+.fqp.qr::after{content:'';position:absolute;right:0;top:50%;margin-top:-4px;border-style:solid;border-width:4px 0 4px 5px;border-color:transparent transparent transparent #16213E}
+.fqp.qd::after{content:'';position:absolute;bottom:0;left:50%;margin-left:-4px;border-style:solid;border-width:5px 4px 0 4px;border-color:#16213E transparent transparent transparent}
+.fqp.qrd::after{content:'↴';position:absolute;right:0;top:50%;transform:translateY(-35%);font-size:11px;line-height:1;color:#16213E;font-weight:900}
+.fqp.qdr::after{content:'↳';position:absolute;bottom:-1px;left:2px;font-size:11px;line-height:1;color:#16213E;font-weight:900}
+.fl.okc{color:#fff;background:#1C8A4C;cursor:default}
+.fl.okc.inw,.fl.okc.sel{background:#156b3a}
+.fl.pop{animation:flpop .55s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes flpop{0%{transform:scale(1);background:#ffc94d;color:#16213E}45%{transform:scale(1.22) rotate(-4deg);background:#2ecc71;color:#fff;z-index:2}100%{transform:scale(1);background:#1C8A4C;color:#fff}}
+.flchip.bump{animation:flbump .5s ease}
+@keyframes flbump{50%{transform:scale(1.18);background:#E2F3E9;border-color:#1C8A4C}}
+.flclue.done{background:#1C8A4C}
+.flgrid.win{animation:flwin 1s ease}
+@keyframes flwin{30%{box-shadow:0 0 0 6px #2ecc71}100%{box-shadow:none}}
+@media (prefers-reduced-motion:reduce){.fl.pop,.flchip.bump,.flgrid.win{animation:none}}
+.fqp.act{background:#ffc94d}.fqp.ok{color:#1c8a4c;opacity:.7}
 .flkb{display:none;margin:12px auto 0;max-width:620px;gap:6px;flex-direction:column}
 .flkb div{display:flex;gap:4px;justify-content:center}
 .flkb button{flex:1;max-width:44px;padding:11px 0;border:1px solid var(--line);background:var(--panel);border-radius:6px;font-weight:700;cursor:pointer}
@@ -306,7 +318,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
 
   <!-- MOT FLÉCHÉ -->
   <main id="fleche" hidden>
-    <div style="margin-bottom:14px"><h1>Mot fléché du jour</h1><p class="lead">Une nouvelle grille de termes cyber chaque jour, la même pour tous les joueurs.</p></div>
+    <div style="margin-bottom:14px"><h1>Mot fléché du jour</h1><p class="lead">Une nouvelle grille sur le thème de l'informatique chaque jour, la même pour tous les joueurs.</p></div>
     <div id="flBody"></div>
   </main>
 
@@ -2186,116 +2198,66 @@ function matrixHTML(players){
   </tbody></table></div><p class="hint" style="margin-top:8px">★ meilleur joueur de la catégorie. Critère : ${esc(METRICS[m].l)}.</p>`;
 }
 
-/* ============ MOTS FLÉCHÉS : GÉNÉRATION ============ */
-const FL_W=10,FL_H=12;
-const flNorm=t=>String(t).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
-function flSeed(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0}
-function flRng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-let FL_POOL=null;
-function flPool(){
-  if(FL_POOL)return FL_POOL;
-  const seen=new Set(),out=[];
-  for(const c of CARDS){
-    if(c.fmt==='2'||c.fmt==='3'||c.fmt==='5')continue;
-    const a=flNorm(c.t);
-    if(!/^[A-Z]{3,9}$/.test(a)||seen.has(a))continue;
-    if(flNorm(c.d).split(/[^A-Z0-9]+/).includes(a))continue;   // la définition ne doit pas contenir la réponse
-    seen.add(a);out.push({a,clue:c.d,id:c.id});
-  }
-  out.sort((x,y)=>x.a<y.a?-1:1);
-  return FL_POOL=out;
-}
-function flShuffle(arr,rnd){for(let i=arr.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
-function flTry(pool,rnd){
-  const W=FL_W,H=FL_H;
-  const cells=Array.from({length:H},()=>Array.from({length:W},()=>({t:'e',h:null,v:null,ch:''})));
-  const at=(r,c)=>r>=0&&r<H&&c>=0&&c<W?cells[r][c]:null;
-  const words=[],used=new Set();
-  function check(w,r,c,dir){
-    const L=w.length,dr=dir==='v'?1:0,dc=dir==='h'?1:0;
-    const cl=at(r-dr,c-dc);if(!cl||cl.t==='l'||(cl.t==='c'&&cl[dir]!=null))return -1;
-    if(r+dr*(L-1)>=H||c+dc*(L-1)>=W||r<0||c<0)return -1;
-    const end=at(r+dr*L,c+dc*L);if(end&&end.t==='l')return -1;
-    let cross=0;
-    for(let i=0;i<L;i++){const rr=r+dr*i,cc=c+dc*i,x=cells[rr][cc];
-      if(x.t==='c')return -1;
-      if(x.t==='l'){if(x.ch!==w[i]||x[dir]!=null)return -1;cross++}
-      else{const s1=at(rr+dc,cc+dr),s2=at(rr-dc,cc-dr);if((s1&&s1.t==='l')||(s2&&s2.t==='l'))return -1}
-    }
-    return cross;
-  }
-  function place(item,r,c,dir){
-    const dr=dir==='v'?1:0,dc=dir==='h'?1:0,cl=cells[r-dr][c-dc],idx=words.length;
-    cl.t='c';cl[dir]=idx;
-    for(let i=0;i<item.a.length;i++){const x=cells[r+dr*i][c+dc*i];x.t='l';x.ch=item.a[i];x[dir]=idx}
-    words.push({a:item.a,clue:item.clue,id:item.id,r,c,dir,cr:r-dr,cc:c-dc});used.add(item.a);
-  }
-  const order=flShuffle(pool.slice(),rnd);
-  const first=order.find(x=>x.a.length>=6);
-  place(first,1+Math.floor(rnd()*(H-2)),1+Math.floor(rnd()*(W-first.a.length)),'h');
-  const crossPass=()=>{let placed=0;
-    for(const it of order){if(used.has(it.a))continue;let best=[],bk=0;
-      for(let r=0;r<H;r++)for(let c=0;c<W;c++){const x=cells[r][c];if(x.t!=='l')continue;
-        for(let i=0;i<it.a.length;i++){if(it.a[i]!==x.ch)continue;
-          for(const dir of ['h','v']){if(x[dir]!=null)continue;const sr=dir==='v'?r-i:r,sc=dir==='h'?c-i:c;const k=check(it.a,sr,sc,dir);
-            if(k>bk){bk=k;best=[{r:sr,c:sc,dir}]}else if(k===bk&&k>0)best.push({r:sr,c:sc,dir})}}}
-      if(bk>0){const p=best[Math.floor(rnd()*best.length)];place(it,p.r,p.c,p.dir);placed++}}
-    return placed};
-  const fillPass=()=>{let placed=0;
-    for(const it of order){if(used.has(it.a))continue;const opts=[];
-      for(let r=0;r<H;r++)for(let c=0;c<W;c++)for(const dir of ['h','v'])if(check(it.a,r,c,dir)>=0)opts.push({r,c,dir});
-      if(opts.length){const p=opts[Math.floor(rnd()*opts.length)];place(it,p.r,p.c,p.dir);placed++}}
-    return placed};
-  for(let k=0;k<4;k++){while(crossPass()>0){} if(k<3&&fillPass()===0)break}
-  let letters=0,cross=0;for(const row of cells)for(const x of row)if(x.t==='l'){letters++;if(x.h!=null&&x.v!=null)cross++}
-  return{cells,words,letters,cross};
-}
-const FL_CACHE={};
-function flGrid(date){
-  if(FL_CACHE[date])return FL_CACHE[date];
-  const pool=flPool(),base=flSeed('sigles-cyber|'+date);let best=null,bs=-1;
-  for(let a=0;a<18;a++){const g=flTry(pool,flRng(base+a*7919));const sc=g.letters+g.cross*2;if(sc>bs){bs=sc;best=g}}
-  best.date=date;best.sig=flSeed(best.words.map(w=>w.a+w.r+w.c+w.dir).join('|')).toString(36);
-  return FL_CACHE[date]=best;
-}
-
-/* ============ MOTS FLÉCHÉS : JEU ============ */
+/* ============ MOTS FLÉCHÉS (grilles générées chaque nuit dans grilles/) ============ */
 const flToday=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 const flFmtDate=d=>{const [y,m,j]=d.split('-').map(Number);return new Date(y,m-1,j).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})};
 const flFmtTime=t=>`${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,'0')}`;
-let FL={date:null,g:null,s:null,sel:null,wrong:new Set(),timer:null,tick:0};
+const flNorm=t=>String(t).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+function flSeed(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0}
+function flRng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function flDecode(b64,date){const R=flRng(flSeed('cle|'+date));return [...atob(b64)].map(ch=>String.fromCharCode(ch.charCodeAt(0)^Math.floor(R()*256))).join('')}
+let FL={date:null,g:null,s:null,sel:null,wrong:new Set(),solved:new Set(),timer:null,tick:0,index:null};
+const FL_CACHE={};
+async function flLoadIndex(){if(FL.index)return FL.index;try{const r=await fetch('grilles/index.json',{cache:'no-cache'});FL.index=r.ok?(await r.json()).dates||[]:[]}catch(e){FL.index=[]}return FL.index}
+async function flLoad(date){
+  if(FL_CACHE[date])return FL_CACHE[date];
+  const r=await fetch(`grilles/${date}.json`,{cache:'no-cache'});if(!r.ok)throw new Error('absente');
+  const j=await r.json();const W=j.w,H=j.h,sol=flDecode(j.sol,date);
+  const cells=Array.from({length:H},(_,rr)=>Array.from({length:W},(_,cc)=>j.pattern[rr][cc]==='#'?{t:'c',defs:[]}:{t:'l',ch:sol[rr*W+cc],h:null,v:null}));
+  const words=j.words.map((w,i)=>{let a='';for(let k=0;k<w.l;k++)a+=w.d==='h'?sol[w.r*W+w.c+k]:sol[(w.r+k)*W+w.c];
+    for(let k=0;k<w.l;k++){const x=w.d==='h'?cells[w.r][w.c+k]:cells[w.r+k][w.c];x[w.d]=i}
+    cells[w.cr][w.cc].defs.push(i);return{a,clue:w.def,r:w.r,c:w.c,dir:w.d,cr:w.cr,cc:w.cc,arrow:w.a,t:w.t}});
+  // dans une case définition : en haut les mots qui partent à droite, en bas ceux qui partent en dessous
+  for(const row of cells)for(const x of row)if(x.t==='c')x.defs.sort((p,q)=>(['r','rd'].includes(words[p].arrow)?0:1)-(['r','rd'].includes(words[q].arrow)?0:1));
+  let letters=0;for(const row of cells)for(const x of row)if(x.t==='l')letters++;
+  return FL_CACHE[date]={date,W,H,cells,words,letters,sig:'v1-'+date};
+}
 function flState(date){const p=DB.current&&DB.players[DB.current];if(!p)return null;p.fleche=p.fleche||{};return p.fleche[date]||null}
 function flSave(){const p=DB.current&&DB.players[DB.current];if(!p||!FL.g)return;p.fleche=p.fleche||{};
-  const old=p.fleche[FL.date]||{};p.fleche[FL.date]={g:FL.g.sig,s:FL.s.join(''),t:Math.round(FL.t),h:FL.h,done:FL.done,at:Date.now()};
-  const keys=Object.keys(p.fleche).sort();while(keys.length>120)delete p.fleche[keys.shift()];
-  saveDB()}
-function flOpen(date){
-  FL.date=date||flToday();FL.g=flGrid(FL.date);
-  const st=flState(FL.date),n=FL_W*FL_H;
-  const valid=st&&st.g===FL.g.sig&&typeof st.s==='string'&&st.s.length===n;
+  p.fleche[FL.date]={g:FL.g.sig,s:FL.s.join(''),t:Math.round(FL.t),h:FL.h,done:FL.done,at:Date.now()};
+  const keys=Object.keys(p.fleche).sort();while(keys.length>120)delete p.fleche[keys.shift()];saveDB()}
+async function flOpen(date){
+  const el=$('#flBody');el.innerHTML='<p class="hint">Chargement de la grille…</p>';
+  const dates=await flLoadIndex(),today=flToday();
+  const avail=dates.filter(d=>d<=today);
+  FL.date=date&&avail.includes(date)?date:(avail.includes(today)?today:avail[avail.length-1]);
+  if(!FL.date){el.innerHTML='<section class="panel"><h2>Grille indisponible</h2><p class="hint" style="margin-top:6px">Aucune grille n\'a encore été générée. Elles sont créées chaque nuit automatiquement.</p></section>';return}
+  try{FL.g=await flLoad(FL.date)}catch(e){el.innerHTML='<section class="panel"><h2>Grille indisponible</h2><p class="hint" style="margin-top:6px">Impossible de charger la grille. Réessayez plus tard.</p></section>';return}
+  const st=flState(FL.date),n=FL.g.W*FL.g.H,valid=st&&st.g===FL.g.sig&&typeof st.s==='string'&&st.s.length===n;
   FL.s=valid?st.s.split(''):Array(n).fill('.');FL.t=valid?st.t||0:0;FL.h=valid?st.h||0:0;FL.done=valid?!!st.done:false;
-  FL.wrong=new Set();const w0=FL.g.words[0];FL.sel={r:w0.r,c:w0.c,dir:w0.dir};
-  renderFleche();flStartTimer();
+  FL.wrong=new Set();FL.solved=new Set(FL.g.words.map((w,i)=>flWordSolved(w)?i:-1).filter(i=>i>=0));
+  const w0=FL.g.words.find((w,i)=>!FL.solved.has(i))||FL.g.words[0];FL.sel={r:w0.r,c:w0.c,dir:w0.dir};
+  FL.availDates=avail;renderFleche();flStartTimer();
 }
 function flStartTimer(){clearInterval(FL.timer);FL.lastTick=Date.now();FL.timer=setInterval(()=>{
-  if($('#fleche').hidden||FL.done||document.visibilityState!=='visible'||!$('#modal').hidden){FL.lastTick=Date.now();return}
+  if($('#fleche').hidden||!FL.g||FL.done||document.visibilityState!=='visible'||!$('#modal').hidden){FL.lastTick=Date.now();return}
   const now=Date.now();FL.t+=(now-FL.lastTick)/1000;FL.lastTick=now;const el=$('#flTime');if(el)el.textContent=flFmtTime(FL.t);
   if(++FL.tick%15===0)flSave()},1000)}
-const flIdx=(r,c)=>r*FL_W+c;
+const flIdx=(r,c)=>r*FL.g.W+c;
 const flCell=(r,c)=>FL.g.cells[r]&&FL.g.cells[r][c];
 function flWordCells(w){const out=[];for(let i=0;i<w.a.length;i++)out.push(w.dir==='h'?[w.r,w.c+i]:[w.r+i,w.c]);return out}
-function flCurWord(){const x=flCell(FL.sel.r,FL.sel.c);if(!x||x.t!=='l')return null;const id=x[FL.sel.dir]!=null?x[FL.sel.dir]:x[FL.sel.dir==='h'?'v':'h'];return FL.g.words[id]}
+function flCurWord(){const x=flCell(FL.sel.r,FL.sel.c);if(!x||x.t!=='l')return null;const id=x[FL.sel.dir]!=null?x[FL.sel.dir]:x[FL.sel.dir==='h'?'v':'h'];return id==null?null:FL.g.words[id]}
 function flWordSolved(w){return flWordCells(w).every(([r,c])=>FL.s[flIdx(r,c)].toUpperCase()===FL.g.cells[r][c].ch)}
+function flLocked(r,c){const x=flCell(r,c);return(x.h!=null&&FL.solved.has(x.h))||(x.v!=null&&FL.solved.has(x.v))}
 function renderFleche(){
-  const g=FL.g,el=$('#flBody');
-  const days=[];for(let i=0;i<14;i++){const d=new Date();d.setDate(d.getDate()-i);days.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`)}
+  const g=FL.g,el=$('#flBody'),dates=[...FL.availDates].reverse().slice(0,14),today=flToday();
   el.innerHTML=`<div class="fltop">
-    <div class="row"><select id="flDate" aria-label="Grille">${days.map((d,i)=>`<option value="${d}" ${d===FL.date?'selected':''}>${i===0?"Aujourd'hui":esc(flFmtDate(d))}${(()=>{const s=flState(d);return s&&s.done?' ✓':''})()}</option>`).join('')}</select>
+    <div class="row"><select id="flDate" aria-label="Grille">${dates.map(d=>`<option value="${d}" ${d===FL.date?'selected':''}>${d===today?"Aujourd'hui":esc(flFmtDate(d))}${(()=>{const s=flState(d);return s&&s.done?' ✓':''})()}</option>`).join('')}</select>
     <span class="flchip">⏱ <span id="flTime">${flFmtTime(FL.t)}</span></span><span id="flStats"></span></div>
     <div class="row">${FL.done?'<span class="pill ret">Grille terminée</span>':`<button class="ghost" id="flCheck">Vérifier</button><button class="ghost" id="flHintL">Lettre</button><button class="ghost" id="flHintW">Mot</button><button class="linkbtn" id="flReset">Recommencer</button>`}</div>
   </div>
   <div class="flclue" id="flClue"></div>
-  <div class="flgrid" id="flGrid" style="grid-template-columns:repeat(${FL_W},1fr)"></div>
+  <div class="flgrid" id="flGrid" style="grid-template-columns:repeat(${g.W},1fr);max-width:${Math.min(620,g.W*66)}px"></div>
   <div class="flkb" id="flKb">${['AZERTYUIOP','QSDFGHJKLM','WXCVBN⌫'].map(r=>`<div>${[...r].map(k=>`<button data-k="${k}">${k}</button>`).join('')}</div>`).join('')}</div>
   <section class="panel" style="margin-top:22px"><h2>Classement du jour</h2><div id="flBoard" style="margin-top:10px"><p class="hint">Chargement…</p></div></section>`;
   $('#flDate').addEventListener('change',e=>{flSave();flOpen(e.target.value)});
@@ -2303,53 +2265,61 @@ function renderFleche(){
   $$('#flKb [data-k]').forEach(b=>b.addEventListener('click',()=>flKey(b.dataset.k==='⌫'?'Backspace':b.dataset.k)));
   drawGrid();flBoard();
 }
-function drawGrid(){
-  const g=FL.g,cw=flCurWord(),cur=new Set(cw?flWordCells(cw).map(([r,c])=>r+','+c):[]);
+const FL_ARROW={r:'qr',d:'qd',rd:'qrd',dr:'qdr'};
+function drawGrid(anim){
+  const g=FL.g,cw=flCurWord(),cwi=cw?g.words.indexOf(cw):-1,cur=new Set(cw?flWordCells(cw).map(([r,c])=>r+','+c):[]);
+  const animSet=new Map();if(anim)flWordCells(g.words[anim]).forEach(([r,c],k)=>animSet.set(r+','+c,k));
   let html='';
-  for(let r=0;r<FL_H;r++)for(let c=0;c<FL_W;c++){const x=g.cells[r][c];
-    if(x.t==='e'){html+='<div class="fc fe"></div>';continue}
-    if(x.t==='c'){const parts=['h','v'].filter(d=>x[d]!=null);
-      html+=`<div class="fc fq">${parts.map(d=>{const w=g.words[x[d]];const act=cw&&g.words.indexOf(cw)===x[d];
-        return `<button class="fqp q${d}${act?' act':''}${flWordSolved(w)?' ok':''}" data-w="${x[d]}" title="${esc(w.clue)}"><span>${esc(w.clue)}</span></button>`}).join('')}</div>`;continue}
-    const v=FL.s[flIdx(r,c)],sel=FL.sel.r===r&&FL.sel.c===c;
-    html+=`<button class="fc fl${cur.has(r+','+c)?' inw':''}${sel?' sel':''}${FL.wrong.has(flIdx(r,c))?' bad':''}${v!=='.'&&v===v.toLowerCase()?' rev':''}" data-r="${r}" data-c="${c}" aria-label="Case ${r+1}-${c+1}">${v==='.'?'':v.toUpperCase()}</button>`}
+  for(let r=0;r<g.H;r++)for(let c=0;c<g.W;c++){const x=g.cells[r][c];
+    if(x.t==='c'){html+=x.defs.length?`<div class="fc fq">${x.defs.map(i=>{const w=g.words[i];
+        return `<button class="fqp ${FL_ARROW[w.arrow]}${i===cwi?' act':''}${FL.solved.has(i)?' ok':''}" data-w="${i}" title="${esc(w.clue)}"><span>${esc(w.clue)}</span></button>`}).join('')}</div>`:'<div class="fc fe"></div>';continue}
+    const v=FL.s[flIdx(r,c)],sel=FL.sel.r===r&&FL.sel.c===c,ok=flLocked(r,c),k=animSet.get(r+','+c);
+    html+=`<button class="fc fl${cur.has(r+','+c)?' inw':''}${sel?' sel':''}${ok?' okc':''}${k!=null?' pop':''}${FL.wrong.has(flIdx(r,c))?' bad':''}${v!=='.'&&v===v.toLowerCase()?' rev':''}" ${k!=null?`style="animation-delay:${k*70}ms"`:''} data-r="${r}" data-c="${c}" aria-label="Case ${r+1}-${c+1}">${v==='.'?'':v.toUpperCase()}</button>`}
   $('#flGrid').innerHTML=html;
   $$('#flGrid .fl').forEach(b=>b.addEventListener('click',()=>flClick(+b.dataset.r,+b.dataset.c)));
-  $$('#flGrid .fqp').forEach(b=>b.addEventListener('click',()=>{const w=g.words[+b.dataset.w];FL.sel={r:w.r,c:w.c,dir:w.dir};drawGrid()}));
-  const solved=g.words.filter(flWordSolved).length;$('#flStats').innerHTML=`<span class="flchip">${solved}/${g.words.length} mots</span>${FL.h?` <span class="flchip">${FL.h} aide${FL.h>1?'s':''}</span>`:''}`;
-  $('#flClue').innerHTML=cw?`<span class="flarrow">${cw.dir==='h'?'→':'↓'}</span><span>${esc(cw.clue)}</span><span class="hint">${cw.a.length} lettres</span>`:'';
+  $$('#flGrid .fqp').forEach(b=>b.addEventListener('click',()=>{const w=g.words[+b.dataset.w];const st=flWordCells(w).find(([r,c])=>!flLocked(r,c))||[w.r,w.c];FL.sel={r:st[0],c:st[1],dir:w.dir};drawGrid()}));
+  $('#flStats').innerHTML=`<span class="flchip${anim!=null?' bump':''}">${FL.solved.size}/${g.words.length} mots</span>${FL.h?` <span class="flchip">${FL.h} aide${FL.h>1?'s':''}</span>`:''}`;
+  $('#flClue').innerHTML=cw?`<span class="flarrow">${cw.dir==='h'?'→':'↓'}</span><span>${esc(cw.clue)}</span><span class="hint">${FL.solved.has(cwi)?'✓ trouvé':cw.a.length+' lettres'}</span>`:'';
+  $('#flClue').classList.toggle('done',cwi>=0&&FL.solved.has(cwi));
 }
 function flClick(r,c){const x=flCell(r,c);
   if(FL.sel.r===r&&FL.sel.c===c){if(x.h!=null&&x.v!=null)FL.sel.dir=FL.sel.dir==='h'?'v':'h'}
-  else{FL.sel={r,c,dir:x[FL.sel.dir]!=null?FL.sel.dir:(x.h!=null?'h':'v')}}
+  else FL.sel={r,c,dir:x[FL.sel.dir]!=null?FL.sel.dir:(x.h!=null?'h':'v')};
   drawGrid()}
-function flMove(step){const w=flCurWord();if(!w)return;const cells=flWordCells(w);const i=cells.findIndex(([r,c])=>r===FL.sel.r&&c===FL.sel.c);const j=i+step;
-  if(j>=0&&j<cells.length){FL.sel.r=cells[j][0];FL.sel.c=cells[j][1];FL.sel.dir=w.dir}}
+function flMove(step,skipLocked){const w=flCurWord();if(!w)return;const cells=flWordCells(w);let i=cells.findIndex(([r,c])=>r===FL.sel.r&&c===FL.sel.c);
+  for(let j=i+step;j>=0&&j<cells.length;j+=step){if(skipLocked&&flLocked(cells[j][0],cells[j][1]))continue;FL.sel.r=cells[j][0];FL.sel.c=cells[j][1];FL.sel.dir=w.dir;return}}
 function flKey(k){
   if(!FL.g||FL.done)return;
-  const i=flIdx(FL.sel.r,FL.sel.c),cur=FL.s[i],locked=cur!=='.'&&cur===cur.toLowerCase();
-  if(k==='Backspace'){if(cur!=='.'&&!locked){FL.s[i]='.'}else{flMove(-1);const j=flIdx(FL.sel.r,FL.sel.c),v=FL.s[j];if(v!=='.'&&v!==v.toLowerCase())FL.s[j]='.'}FL.wrong.clear();flAfter();return}
+  const r=FL.sel.r,c=FL.sel.c,i=flIdx(r,c),cur=FL.s[i],locked=flLocked(r,c)||(cur!=='.'&&cur===cur.toLowerCase());
+  if(k==='Backspace'){if(cur!=='.'&&!locked)FL.s[i]='.';else{flMove(-1,true);const j=flIdx(FL.sel.r,FL.sel.c);if(!flLocked(FL.sel.r,FL.sel.c)&&FL.s[j]!==FL.s[j].toLowerCase())FL.s[j]='.'}FL.wrong.clear();flAfter();return}
   const ch=flNorm(k);if(!/^[A-Z]$/.test(ch))return;
-  if(!locked)FL.s[i]=ch;FL.wrong.delete(i);flMove(1);flAfter()}
+  if(locked){flMove(1,true);const r2=FL.sel.r,c2=FL.sel.c,i2=flIdx(r2,c2),v2=FL.s[i2];if(flLocked(r2,c2)||(v2!=='.'&&v2===v2.toLowerCase()))return;FL.s[i2]=ch;FL.wrong.delete(i2)}
+  else{FL.s[i]=ch;FL.wrong.delete(i)}
+  flMove(1,true);flAfter()}
 function flArrow(dr,dc){let r=FL.sel.r+dr,c=FL.sel.c+dc;while(flCell(r,c)&&flCell(r,c).t!=='l'){r+=dr;c+=dc}
   if(flCell(r,c)){const x=flCell(r,c),d=dc?'h':'v';FL.sel={r,c,dir:x[d]!=null?d:FL.sel.dir};drawGrid()}}
-function flAfter(){drawGrid();flSave();flCheckDone()}
+function flAfter(){
+  // validation : détection des mots qui viennent d'être complétés correctement
+  let newly=null;FL.g.words.forEach((w,i)=>{if(!FL.solved.has(i)&&flWordSolved(w)){FL.solved.add(i);newly=i}});
+  if(newly!=null){const w=FL.g.words[newly];const cw=flCurWord();
+    if(cw&&FL.solved.has(FL.g.words.indexOf(cw))){const nx=FL.g.words.findIndex((x,i)=>!FL.solved.has(i));if(nx>=0){const n=FL.g.words[nx];const st=flWordCells(n).find(([r,c])=>!flLocked(r,c))||[n.r,n.c];FL.sel={r:st[0],c:st[1],dir:n.dir}}}}
+  drawGrid(newly);flSave();flCheckDone()}
 function flCheckDone(){
-  const g=FL.g;for(let r=0;r<FL_H;r++)for(let c=0;c<FL_W;c++){const x=g.cells[r][c];if(x.t==='l'&&FL.s[flIdx(r,c)].toUpperCase()!==x.ch)return}
-  FL.done=true;flSave();if(ONLINE)flushSync();renderFleche();
-  ask(`Bravo ! Grille terminée en ${flFmtTime(FL.t)}${FL.h?` avec ${FL.h} aide${FL.h>1?'s':''}`:' sans aide'}.`,[{label:'Voir le classement',value:true,primary:true}]).then(()=>{const b=$('#flBoard');if(b)b.scrollIntoView({behavior:'smooth'})});
-}
+  if(FL.solved.size<FL.g.words.length)return;
+  FL.done=true;flSave();if(ONLINE)flushSync();
+  setTimeout(()=>{renderFleche();$('#flGrid').classList.add('win');
+    ask(`Bravo ! Grille terminée en ${flFmtTime(FL.t)}${FL.h?` avec ${FL.h} aide${FL.h>1?'s':''}`:' sans aide'}.`,[{label:'Voir le classement',value:true,primary:true}]).then(()=>{const b=$('#flBoard');if(b)b.scrollIntoView({behavior:'smooth'})})},700)}
 function flCheck(){FL.wrong=new Set();const g=FL.g;
-  for(let r=0;r<FL_H;r++)for(let c=0;c<FL_W;c++){const x=g.cells[r][c],v=FL.s[flIdx(r,c)];if(x.t==='l'&&v!=='.'&&v.toUpperCase()!==x.ch)FL.wrong.add(flIdx(r,c))}
+  for(let r=0;r<g.H;r++)for(let c=0;c<g.W;c++){const x=g.cells[r][c],v=FL.s[flIdx(r,c)];if(x.t==='l'&&v!=='.'&&v.toUpperCase()!==x.ch)FL.wrong.add(flIdx(r,c))}
   drawGrid();if(!FL.wrong.size)ask('Aucune erreur dans les lettres saisies.',[{label:'OK',value:true,primary:true}])}
 function flHint(word){const w=flCurWord();if(!w)return;
   const cells=word?flWordCells(w):[[FL.sel.r,FL.sel.c]];let changed=false;
-  for(const [r,c] of cells){const i=flIdx(r,c);if(FL.s[i].toUpperCase()!==FL.g.cells[r][c].ch||FL.s[i]==='.'){FL.s[i]=FL.g.cells[r][c].ch.toLowerCase();changed=true}}
-  if(changed){FL.h++;FL.wrong.clear();if(!word)flMove(1);flAfter()}}
+  for(const [r,c] of cells){const i=flIdx(r,c);if(FL.s[i]==='.'||FL.s[i].toUpperCase()!==FL.g.cells[r][c].ch){FL.s[i]=FL.g.cells[r][c].ch.toLowerCase();changed=true}}
+  if(changed){FL.h++;FL.wrong.clear();if(!word)flMove(1,true);flAfter()}}
 async function flReset(){if(!await ask('Effacer toutes les lettres de cette grille ? Le chronomètre continue.',[{label:'Annuler',value:false},{label:'Effacer',value:true,primary:true}]))return;
-  FL.s=FL.s.map(()=>'.');FL.wrong.clear();flSave();renderFleche()}
+  FL.s=FL.s.map(()=>'.');FL.solved=new Set();FL.wrong.clear();flSave();renderFleche()}
 document.addEventListener('keydown',e=>{
-  if($('#fleche').hidden||!$('#modal').hidden||e.target.matches('input,select,textarea')||e.ctrlKey||e.metaKey||e.altKey)return;
+  if($('#fleche').hidden||!FL.g||!$('#modal').hidden||e.target.matches('input,select,textarea')||e.ctrlKey||e.metaKey||e.altKey)return;
   if(e.key==='ArrowLeft'){e.preventDefault();flArrow(0,-1)}else if(e.key==='ArrowRight'){e.preventDefault();flArrow(0,1)}
   else if(e.key==='ArrowUp'){e.preventDefault();flArrow(-1,0)}else if(e.key==='ArrowDown'){e.preventDefault();flArrow(1,0)}
   else if(e.key===' '){e.preventDefault();const x=flCell(FL.sel.r,FL.sel.c);if(x&&x.h!=null&&x.v!=null){FL.sel.dir=FL.sel.dir==='h'?'v':'h';drawGrid()}}
@@ -2365,8 +2335,8 @@ async function flBoard(){
     else rows=Object.entries(DB.players).filter(([n,p])=>p.fleche&&p.fleche[FL.date]).map(([n,p])=>({pseudo:n,avatar:avatarOf(n,p.avatar),res:p.fleche[FL.date]}))
   }catch(e){el.innerHTML='<p class="empty">Classement indisponible pour le moment.</p>';return}
   if(!$('#flBoard'))return;
-  const g=FL.g,total=g.letters;
-  rows=rows.filter(r=>r.res&&r.res.g===g.sig).map(r=>{const s=String(r.res.s||'');let ok=0;for(let i=0;i<s.length;i++){const x=g.cells[Math.floor(i/FL_W)][i%FL_W];if(x.t==='l'&&s[i].toUpperCase()===x.ch)ok++}return{...r,pct:Math.round(ok/total*100)}})
+  const g=FL.g;
+  rows=rows.filter(r=>r.res&&r.res.g===g.sig).map(r=>{const s=String(r.res.s||'');let ok=0;for(let i=0;i<s.length;i++){const x=g.cells[Math.floor(i/g.W)][i%g.W];if(x.t==='l'&&s[i].toUpperCase()===x.ch)ok++}return{...r,pct:Math.round(ok/g.letters*100)}})
     .sort((a,b)=>(!!b.res.done)-(!!a.res.done)||(a.res.done?(a.res.h||0)-(b.res.h||0)||(a.res.t||0)-(b.res.t||0):b.pct-a.pct));
   if(!rows.length){el.innerHTML='<p class="empty">Personne n\'a encore commencé cette grille.</p>';return}
   let rank=0;
