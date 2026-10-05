@@ -1,0 +1,37 @@
+name: Grilles de mots fléchés
+
+on:
+  schedule:
+    - cron: '17 1 * * *'   # chaque nuit vers 3 h (heure de Paris)
+  workflow_dispatch:        # lancement manuel depuis l'onglet Actions
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  generer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Générer les grilles des 7 prochains jours
+        run: node scripts/mots-fleches/generer.js --jours 7
+      - name: Publier les nouvelles grilles
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
+          git add grilles
+          if git diff --cached --quiet; then
+            echo "Aucune nouvelle grille."
+          else
+            git commit -m "Grilles de mots fléchés du $(date -u +%F)"
+            git push
+          fi
+      - name: Relancer la publication GitHub Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "/repos/${{ github.repository }}/pages/builds" || echo "Relance de Pages non nécessaire."
