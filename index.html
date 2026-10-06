@@ -244,6 +244,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
         <div class="group">
           <div class="glabel">Réglementations et normes (tous niveaux, mots-clés inclus)</div>
           <div class="seg" role="group" aria-label="Réglementations">
+            <button data-bank="reg:textes"><span class="bn">Noms des textes</span><span class="n"></span></button>
             <button data-bank="reg:rgpd"><span class="bn">RGPD</span><span class="n"></span></button>
             <button data-bank="reg:nis2"><span class="bn">NIS2</span><span class="n"></span></button>
             <button data-bank="reg:dora"><span class="bn">DORA</span><span class="n"></span></button>
@@ -370,8 +371,8 @@ CIO|Chief Information Officer|Directeur des systèmes d'information|Équivalent 
 SI|Système d'Information||Ensemble des ressources (personnes, processus, matériels, logiciels, données) qui traitent l'information.|1|||
 ANSSI|Agence Nationale de la Sécurité des Systèmes d'Information||Autorité nationale française en cybersécurité, rattachée au SGDSN.|1|nis2||
 CNIL|Commission Nationale de l'Informatique et des Libertés||Autorité française de protection des données personnelles, qui contrôle l'application du RGPD.|1|rgpd||
-RGPD|Règlement Général sur la Protection des Données||Règlement (UE) 2016/679, applicable depuis le 25 mai 2018.|1|rgpd|gdpr|
-GDPR|General Data Protection Regulation|Règlement général sur la protection des données|Nom anglais du RGPD.|1|rgpd|gdpr|
+RGPD|Règlement Général sur la Protection des Données||Règlement (UE) 2016/679, applicable depuis le 25 mai 2018.|1|rgpd textes|gdpr|
+GDPR|General Data Protection Regulation|Règlement général sur la protection des données|Nom anglais du RGPD.|1|rgpd textes|gdpr|
 DPO|Data Protection Officer|Délégué à la protection des données|Conseille et contrôle la conformité RGPD ; obligatoire notamment pour les autorités publiques et certains traitements à grande échelle.|1|rgpd|dpo|
 VPN|Virtual Private Network|Réseau privé virtuel|Tunnel chiffré entre un poste et un réseau distant.|1|||
 MFA|Multi-Factor Authentication|Authentification multifacteur|Combine au moins deux facteurs : ce que je sais, ce que je possède, ce que je suis.|1|nis2|mfa|
@@ -450,9 +451,9 @@ MCS|Maintien en Condition de Sécurité||Garantit le niveau de sécurité dans l
 PASSI|Prestataire d'Audit de la Sécurité des Systèmes d'Information||Prestataire d'audit qualifié par l'ANSSI.|2|hyg lpm||
 OIV|Opérateur d'Importance Vitale||Opérateur dont l'activité est indispensable à la Nation, soumis à la LPM.|2|nis2 lpm||
 OSE|Opérateur de Services Essentiels||Catégorie issue de NIS1, remplacée par les entités essentielles et importantes de NIS2.|2|nis2||
-LPM|Loi de Programmation Militaire||La LPM 2013 a imposé des règles de cybersécurité aux OIV.|2|lpm||
-PCI DSS|Payment Card Industry Data Security Standard|Norme de sécurité des données de l'industrie des cartes de paiement|S'applique à toute entité qui traite des données de cartes bancaires.|2|pci||
-HDS|Hébergeur de Données de Santé||Certification obligatoire en France pour héberger des données de santé.|2|hds||
+LPM|Loi de Programmation Militaire||La LPM 2013 a imposé des règles de cybersécurité aux OIV.|2|lpm textes||
+PCI DSS|Payment Card Industry Data Security Standard|Norme de sécurité des données de l'industrie des cartes de paiement|S'applique à toute entité qui traite des données de cartes bancaires.|2|pci textes||
+HDS|Hébergeur de Données de Santé||Certification obligatoire en France pour héberger des données de santé.|2|hds textes||
 HSM|Hardware Security Module|Module matériel de sécurité|Boîtier qui génère et protège des clés cryptographiques.|2|||
 TPM|Trusted Platform Module|Module de plateforme de confiance|Puce qui stocke des secrets et mesure l'intégrité du démarrage.|2|||
 AES|Advanced Encryption Standard|Norme de chiffrement avancé|Algorithme de chiffrement symétrique de référence.|2|||
@@ -492,12 +493,12 @@ OT|Operational Technology|Technologies opérationnelles|Systèmes qui pilotent d
 ICS|Industrial Control System|Système de contrôle industriel|Système qui commande un processus industriel.|2|||
 CMDB|Configuration Management Database|Base de données de gestion des configurations|Inventaire des actifs et de leurs relations.|2|||
 CC|Common Criteria|Critères communs|Norme ISO/IEC 15408 d'évaluation de la sécurité des produits.|2|||
-CSA|Cybersecurity Act|Règlement européen sur la cybersécurité|Règlement (UE) 2019/881 : mandat permanent de l'ENISA et cadre européen de certification.|2|||
-LIL|Loi Informatique et Libertés||Loi française du 6 janvier 1978, qui complète le RGPD.|2|rgpd||
+CSA|Cybersecurity Act|Règlement européen sur la cybersécurité|Règlement (UE) 2019/881 : mandat permanent de l'ENISA et cadre européen de certification.|2|textes||
+LIL|Loi Informatique et Libertés||Loi française du 6 janvier 1978, qui complète le RGPD.|2|rgpd textes||
 ENISA|European Union Agency for Cybersecurity|Agence de l'Union européenne pour la cybersécurité|Sigle hérité de European Network and Information Security Agency.|2|nis2 cra||
-NIS2|Network and Information Security (directive 2)|Directive sur la sécurité des réseaux et des systèmes d'information|Directive (UE) 2022/2555, qui remplace NIS1.|2|nis2||
-DORA|Digital Operational Resilience Act|Règlement sur la résilience opérationnelle numérique|Règlement (UE) 2022/2554 pour le secteur financier, applicable depuis le 17 janvier 2025.|2|dora||
-CRA|Cyber Resilience Act|Règlement sur la cyberrésilience|Règlement (UE) 2024/2847 sur la sécurité des produits comportant des éléments numériques.|2|cra||
+NIS2|Network and Information Security (directive 2)|Directive sur la sécurité des réseaux et des systèmes d'information|Directive (UE) 2022/2555, qui remplace NIS1.|2|nis2 textes||
+DORA|Digital Operational Resilience Act|Règlement sur la résilience opérationnelle numérique|Règlement (UE) 2022/2554 pour le secteur financier, applicable depuis le 17 janvier 2025.|2|dora textes||
+CRA|Cyber Resilience Act|Règlement sur la cyberrésilience|Règlement (UE) 2024/2847 sur la sécurité des produits comportant des éléments numériques.|2|cra textes||
 TIC|Technologies de l'Information et de la Communication||Terme de la version française de DORA (risque lié aux TIC).|2|dora|ict|
 ICT|Information and Communication Technology|Technologies de l'information et de la communication|Terme anglais de TIC.|2|dora|ict|
 CVD|Coordinated Vulnerability Disclosure|Divulgation coordonnée des vulnérabilités|Processus encadré de signalement et de publication des vulnérabilités, prévu par NIS2 et le CRA.|2|cra nis2||
@@ -555,10 +556,10 @@ PDIS|Prestataire de Détection d'Incidents de Sécurité||Prestataire de détect
 PRIS|Prestataire de Réponse aux Incidents de Sécurité||Prestataire de réponse aux incidents qualifié par l'ANSSI.|3|hyg lpm||
 CSPN|Certification de Sécurité de Premier Niveau||Certification ANSSI rapide d'un produit, en conditions d'attaque réalistes.|3|||
 EAL|Evaluation Assurance Level|Niveau d'assurance d'évaluation|Niveau (EAL1 à EAL7) d'une évaluation selon les Critères communs.|3|||
-EUCC|EU Common Criteria-based cybersecurity certification scheme|Schéma européen de certification fondé sur les Critères communs|Premier schéma de certification adopté au titre du Cybersecurity Act.|3|||
+EUCC|EU Common Criteria-based cybersecurity certification scheme|Schéma européen de certification fondé sur les Critères communs|Premier schéma de certification adopté au titre du Cybersecurity Act.|3|textes||
 SGDSN|Secrétariat Général de la Défense et de la Sécurité Nationale||Assiste le Premier ministre ; l'ANSSI lui est rattachée.|3|lpm||
-RGS|Référentiel Général de Sécurité||Règles de sécurité applicables aux SI des autorités administratives françaises.|3|||
-PSSIE|Politique de Sécurité des Systèmes d'Information de l'État||PSSI applicable aux administrations de l'État.|3|||
+RGS|Référentiel Général de Sécurité||Règles de sécurité applicables aux SI des autorités administratives françaises.|3|textes||
+PSSIE|Politique de Sécurité des Systèmes d'Information de l'État||PSSI applicable aux administrations de l'État.|3|textes||
 CEPD|Comité Européen de la Protection des Données||Réunit les autorités de protection des données de l'UE et publie des lignes directrices.|3|rgpd|edpb|
 EDPB|European Data Protection Board|Comité européen de la protection des données|Nom anglais du CEPD.|3|rgpd|edpb|
 CCT|Clauses Contractuelles Types||Clauses adoptées par la Commission européenne pour encadrer les transferts hors UE.|3|rgpd|scc|
@@ -578,8 +579,8 @@ RoI|Register of Information|Registre d'information|Registre DORA de tous les acc
 PDE|Product with Digital Elements|Produit comportant des éléments numériques|Catégorie de produits couverts par le CRA.|3|cra||
 SRP|Single Reporting Platform|Plateforme unique de signalement|Plateforme gérée par l'ENISA pour les notifications prévues par le CRA.|3|cra||
 CyCLONe|European Cyber Crisis Liaison Organisation Network|Réseau européen pour la préparation et la gestion des crises cyber|Réseau institutionnalisé par NIS2 pour gérer les crises cyber à grande échelle.|3|nis2||
-SREN|Sécuriser et Réguler l'Espace Numérique||Loi française de mai 2024 (filtre anti-arnaque, régulation du cloud…).|3|snc||
-DSA|Digital Services Act|Règlement sur les services numériques|Règlement (UE) 2022/2065 qui encadre les plateformes en ligne.|3|||
+SREN|Sécuriser et Réguler l'Espace Numérique||Loi française de mai 2024 (filtre anti-arnaque, régulation du cloud…).|3|snc textes||
+DSA|Digital Services Act|Règlement sur les services numériques|Règlement (UE) 2022/2065 qui encadre les plateformes en ligne.|3|textes||
 Responsable de traitement|Entité qui détermine les finalités et les moyens d'un traitement de données personnelles.||Art. 4(7) RGPD.|0|rgpd||1
 Sous-traitant|Entité qui traite des données personnelles pour le compte du responsable de traitement.||Art. 4(8) et 28 RGPD : un contrat encadre la relation.|0|rgpd||1
 Base légale|Fondement juridique qui rend un traitement licite : consentement, contrat, obligation légale, intérêts vitaux, mission d'intérêt public ou intérêt légitime.||Art. 6 RGPD.|0|rgpd||1
@@ -642,7 +643,7 @@ Action corrective|Action visant à éliminer la cause d'une non-conformité et �
 Audit interne|Audit mené par l'organisme pour vérifier que le SMSI est conforme et efficacement mis en œuvre.||Clause 9.2 de l'ISO/IEC 27001.|0|iso||1
 Cycle de certification|Certification valable 3 ans, avec des audits de surveillance annuels puis un audit de renouvellement.||Audits réalisés par un organisme de certification accrédité.|0|iso||1
 Traitement du risque|Choix d'une option face à un risque : réduire, conserver, éviter ou partager.||Formalisé dans le plan de traitement des risques.|0|iso||1
-RIA|Règlement sur l'Intelligence Artificielle||Nom français de l'AI Act, règlement (UE) 2024/1689.|0|aiact|aiact|
+RIA|Règlement sur l'Intelligence Artificielle||Nom français de l'AI Act, règlement (UE) 2024/1689.|0|aiact textes|aiact|
 AI Act|Artificial Intelligence Act|Règlement sur l'intelligence artificielle|Nom anglais du RIA, règlement (UE) 2024/1689.|0|aiact|aiact|
 GPAI|General-Purpose AI|IA à usage général|Modèles d'IA polyvalents (ex. grands modèles de langage), soumis à des obligations propres depuis le 2 août 2025.|0|aiact||
 FRIA|Fundamental Rights Impact Assessment|Analyse d'impact sur les droits fondamentaux|Exigée de certains déployeurs de systèmes à haut risque (organismes publics, entités fournissant des services publics…), art. 27 du RIA.|0|aiact||
@@ -844,7 +845,7 @@ Port 6443|API Kubernetes|Serveur d'API Kubernetes|TCP. Point d'entrée d'adminis
 Port 8080|HTTP alternatif|Web non chiffré sur port alternatif (proxy, serveurs d'applications)|TCP.|0|ports|http|2
 Port 27017|MongoDB|Base de données MongoDB|TCP. Nombreuses fuites dues à des instances exposées.|0|ports||2
 Port 51820|WireGuard|VPN WireGuard|UDP, port par défaut.|0|ports||2
-eIDAS|electronic IDentification, Authentication and trust Services|Identification électronique et services de confiance|Règlement (UE) 910/2014, révisé par le règlement (UE) 2024/1183 dit eIDAS 2.|0|eidas||
+eIDAS|electronic IDentification, Authentication and trust Services|Identification électronique et services de confiance|Règlement (UE) 910/2014, révisé par le règlement (UE) 2024/1183 dit eIDAS 2.|0|eidas textes||
 EUDI Wallet|European Digital Identity Wallet|Portefeuille européen d'identité numérique|Chaque État membre doit en proposer au moins un d'ici fin 2026 (eIDAS 2).|0|eidas||
 QTSP|Qualified Trust Service Provider|Prestataire de services de confiance qualifié (PSCQ)|Inscrit sur la liste de confiance nationale. En France, contrôlé par l'ANSSI.|0|eidas||
 QES|Qualified Electronic Signature|Signature électronique qualifiée|Seul niveau ayant d'office l'effet juridique d'une signature manuscrite dans toute l'UE.|0|eidas||
@@ -866,7 +867,7 @@ Organe de contrôle eIDAS en France|ANSSI, chargée de superviser les prestatair
 SAIV|Secteurs d'Activités d'Importance Vitale||Secteurs (énergie, santé, transports, etc.) dans lesquels sont désignés les OIV.|0|lpm||
 SIIV|Système d'Information d'Importance Vitale||SI d'un OIV dont l'atteinte pourrait gravement affecter la Nation ; soumis aux règles de sécurité de la LPM.|0|lpm||
 PIV|Point d'Importance Vitale||Site d'un OIV (installation, établissement) protégé au titre du dispositif SAIV.|0|lpm||
-LOPMI|Loi d'Orientation et de Programmation du Ministère de l'Intérieur||Loi du 24 janvier 2023 : l'indemnisation d'une cyber-rançon par l'assureur exige une plainte sous 72 h.|0|lpm||
+LOPMI|Loi d'Orientation et de Programmation du Ministère de l'Intérieur||Loi du 24 janvier 2023 : l'indemnisation d'une cyber-rançon par l'assureur exige une plainte sous 72 h.|0|lpm textes||
 Obligations cyber des OIV (LPM 2013)|Règles de sécurité imposées aux SIIV, déclaration des incidents à l'ANSSI, contrôles et recours à des prestataires qualifiés.||Introduites par la LPM 2014-2019 (loi du 18 décembre 2013).|0|lpm||1
 Filtrage de noms de domaine (LPM 2024-2030)|Pouvoir de l'ANSSI de demander le blocage ou la redirection de noms de domaine utilisés par une menace contre la sécurité nationale.||Loi n° 2023-703 du 1er août 2023.|0|lpm||1
 Notification par les éditeurs de logiciels|Obligation pour les éditeurs d'informer l'ANSSI et leurs clients d'une vulnérabilité significative ou d'un incident compromettant la sécurité de leurs produits.||Mesure de la LPM 2024-2030.|0|lpm||1
@@ -909,11 +910,11 @@ Tokenisation|Remplacement du PAN par un jeton sans valeur exploitable, pour réd
 SecNumCloud|Qualification de l'ANSSI pour les prestataires de services cloud, combinant sécurité technique et protection contre les lois extraterritoriales.||Couvre notamment l'IaaS, le PaaS et le SaaS.|0|snc||1
 SecNumCloud 3.2|Version du référentiel publiée en mars 2022, qui introduit les critères d'immunité aux lois extraterritoriales.||Siège, décisions et exploitation dans l'UE, capital étranger limité.|0|snc||1
 Durée d'une qualification SecNumCloud|3 ans, avec des audits de surveillance.||Qualification d'État délivrée par l'ANSSI.|0|snc||1
-CLOUD Act|Clarifying Lawful Overseas Use of Data Act|Loi américaine de clarification de l'usage légal des données à l'étranger|Loi de 2018 permettant aux autorités américaines d'exiger des données détenues par des entreprises américaines, même stockées hors des États-Unis.|0|snc||
-FISA|Foreign Intelligence Surveillance Act|Loi américaine sur la surveillance du renseignement étranger|Sa section 702 autorise la collecte de communications de non-Américains auprès de fournisseurs américains.|0|snc||
+CLOUD Act|Clarifying Lawful Overseas Use of Data Act|Loi américaine de clarification de l'usage légal des données à l'étranger|Loi de 2018 permettant aux autorités américaines d'exiger des données détenues par des entreprises américaines, même stockées hors des États-Unis.|0|snc textes||
+FISA|Foreign Intelligence Surveillance Act|Loi américaine sur la surveillance du renseignement étranger|Sa section 702 autorise la collecte de communications de non-Américains auprès de fournisseurs américains.|0|snc textes||
 Doctrine « cloud au centre »|Politique de l'État (circulaire du 5 juillet 2021) imposant SecNumCloud ou un équivalent européen pour les données sensibles hébergées sur une offre commerciale.||Mise à jour en 2023.|0|snc||1
 Article 31 de la loi SREN|Impose aux administrations traitant des données sensibles des prestataires cloud protégés contre les accès non autorisés par des autorités étrangères.||Rendu opérationnel par l'arrêté du 12 août 2026, qui approuve SecNumCloud 3.2.|0|snc||1
-EUCS|EU Cybersecurity Certification Scheme on Cloud Services|Schéma européen de certification de cybersécurité des services cloud|Schéma préparé par l'ENISA au titre du Cybersecurity Act, débattu sur les critères de souveraineté.|0|snc||
+EUCS|EU Cybersecurity Certification Scheme on Cloud Services|Schéma européen de certification de cybersécurité des services cloud|Schéma préparé par l'ENISA au titre du Cybersecurity Act, débattu sur les critères de souveraineté.|0|snc textes||
 Visa de sécurité ANSSI|Label regroupant les qualifications et certifications délivrées par l'ANSSI (SecNumCloud, PASSI, CSPN…).||Garantit un produit ou service évalué par l'ANSSI.|0|snc||1
 WannaCry (mai 2017) : quelle vulnérabilité a permis sa propagation ?|Une faille du protocole SMBv1 de Windows, exploitée par EternalBlue||Le correctif MS17-010 était disponible depuis mars 2017.|0|incidents||5
 WannaCry : comment sa propagation a-t-elle été stoppée ?|Par l'enregistrement d'un nom de domaine servant de « kill switch »||Découvert par le chercheur Marcus Hutchins.|0|incidents||5
@@ -975,6 +976,30 @@ Qui assure la veille et l'accompagnement des incidents de sécurité pour les st
 Quel lieu totem, inauguré en 2022 à La Défense, fédère l'écosystème cyber français ?|Campus Cyber||Réunit entreprises, services de l'État, formations et chercheurs.|0|acteurs||5
 Quel service de renseignement intérieur traite les cybermenaces relevant de l'espionnage ou de l'ingérence ?|DGSI||Direction générale de la sécurité intérieure.|0|acteurs||5
 Quelle instance réunit les autorités de protection des données de l'UE et publie des lignes directrices RGPD ?|CEPD (Comité européen de la protection des données)||À distinguer du Contrôleur européen de la protection des données, qui supervise les institutions de l'UE.|0|acteurs||5
+DMA|Digital Markets Act|Règlement sur les marchés numériques|Règlement (UE) 2022/1925 qui encadre les grandes plateformes « contrôleurs d'accès ».|0|textes||
+DGA|Data Governance Act|Règlement sur la gouvernance des données|Règlement (UE) 2022/868 : réutilisation des données publiques, intermédiaires et altruisme des données.|0|textes||
+CER|Critical Entities Resilience|Directive sur la résilience des entités critiques|Directive (UE) 2022/2557, pendant « physique » de NIS2.|0|textes||
+EHDS|European Health Data Space|Espace européen des données de santé|Règlement (UE) 2025/327 sur le partage et la réutilisation des données de santé.|0|textes||
+PSD2|Payment Services Directive 2|Directive sur les services de paiement 2 (DSP2)|Directive (UE) 2015/2366 : authentification forte du client et ouverture des API bancaires.|0|textes|psd|
+DSP2|Directive sur les Services de Paiement 2||Nom français de PSD2 ; elle impose l'authentification forte des paiements en ligne.|0|textes|psd|
+MiCA|Markets in Crypto-Assets|Marchés de crypto-actifs|Règlement (UE) 2023/1114 qui encadre les crypto-actifs et leurs prestataires.|0|textes||
+LCEN|Loi pour la Confiance dans l'Économie Numérique||Loi française de 2004 : statut des hébergeurs, commerce en ligne, prospection électronique.|0|textes||
+LOPPSI|Loi d'Orientation et de Programmation pour la Performance de la Sécurité Intérieure||Loi française de 2011 (LOPPSI 2) : usurpation d'identité en ligne, captation de données…|0|textes||
+RGAA|Référentiel Général d'Amélioration de l'Accessibilité||Référentiel français d'accessibilité numérique des services en ligne.|0|textes||
+RGESN|Référentiel Général d'Écoconception de Services Numériques||Référentiel français pour réduire l'impact environnemental des services numériques.|0|textes||
+RGI|Référentiel Général d'Interopérabilité||Normes d'interopérabilité imposées aux SI de l'administration française.|0|textes||
+COBIT|Control Objectives for Information and Related Technologies|Objectifs de contrôle de l'information et des technologies associées|Référentiel de gouvernance du SI publié par l'ISACA.|0|textes||
+ITIL|Information Technology Infrastructure Library|Bibliothèque pour l'infrastructure des technologies de l'information|Référentiel de bonnes pratiques de gestion des services informatiques.|0|textes||
+TOGAF|The Open Group Architecture Framework|Cadre d'architecture de l'Open Group|Référentiel d'architecture d'entreprise.|0|textes||
+SOC 2|System and Organization Controls 2|Contrôles du système et de l'organisation 2|Rapport d'audit américain (AICPA) sur les contrôles de sécurité d'un prestataire.|0|textes||
+SOX|Sarbanes-Oxley Act|Loi Sarbanes-Oxley|Loi américaine de 2002 sur la fiabilité de l'information financière des sociétés cotées.|0|textes||
+HIPAA|Health Insurance Portability and Accountability Act|Loi sur la portabilité et la responsabilité de l'assurance maladie|Loi américaine de 1996 qui protège les données de santé.|0|textes||
+CCPA|California Consumer Privacy Act|Loi californienne sur la vie privée des consommateurs|Loi de 2018, souvent comparée au RGPD.|0|textes||
+GLBA|Gramm-Leach-Bliley Act|Loi Gramm-Leach-Bliley|Loi américaine de 1999 sur la protection des données financières des clients.|0|textes||
+FedRAMP|Federal Risk and Authorization Management Program|Programme fédéral de gestion des risques et des autorisations|Programme américain d'autorisation des services cloud utilisés par les agences fédérales.|0|textes||
+CMMC|Cybersecurity Maturity Model Certification|Certification du modèle de maturité en cybersécurité|Exigée par le département américain de la Défense pour ses sous-traitants.|0|textes||
+TISAX|Trusted Information Security Assessment Exchange|Échange d'évaluations de sécurité de l'information de confiance|Standard d'évaluation de sécurité du secteur automobile.|0|textes||
+C5|Cloud Computing Compliance Criteria Catalogue|Catalogue de critères de conformité du cloud|Référentiel d'audit cloud du BSI, l'agence allemande de cybersécurité.|0|textes||
 `;
 const CARDS = RAW.trim().split('\n').filter(Boolean).map(l=>{
   const p=l.split('|');
@@ -1600,11 +1625,35 @@ Qui assure la veille et l'accompagnement des incidents de sécurité pour les st
 Quel lieu totem, inauguré en 2022 à La Défense, fédère l'écosystème cyber français ?|Station F;Pôle d'excellence cyber;Cité de la sécurité numérique;Maison de la cyber|
 Quel service de renseignement intérieur traite les cybermenaces relevant de l'espionnage ou de l'ingérence ?|DGSE;VIGINUM;ANSSI;OFAC|
 Quelle instance réunit les autorités de protection des données de l'UE et publie des lignes directrices RGPD ?|ENISA;Contrôleur européen de la protection des données;Commission européenne;Bureau de l'IA|
+DMA|Digital Media Act;Data Management Act;Digital Monitoring Agreement;Data Minimisation Act|DAM;MDA;DSA;DGA
+DGA|Digital Governance Agreement;Data Guarantee Act;Data Gathering Authority;Digital Growth Act|GDA;DAG;DMA;DSA
+CER|Cyber Emergency Response;Critical Event Reporting;Cybersecurity Evaluation Regulation;Common European Requirements|CRE;REC;CRA;NIS2
+EHDS|European Health Data Standard;Electronic Health Data Security;European Hospital Data System;Electronic Health Directive Scheme|EHSD;EDHS;HDS;EHR
+PSD2|Payment Security Directive 2;Personal Data Security Directive 2;Payment Systems Data 2;Public Sector Directive 2|PDS2;PSD3;EMD2;PSR2
+DSP2|Directive sur la Sécurité des Paiements 2;Dispositif de Supervision des Prestataires 2;Directive sur les Systèmes de Protection 2;Données Sensibles de Paiement 2|DPS2;DSP3;SPD2;DSB2
+MiCA|Monetary Instruments and Crypto Assets;Market Integrity and Compliance Act;Mobile Identity and Crypto Authentication;Managed Investment in Crypto-Assets|MCA;MiFID;CAMI;DORA
+LCEN|Loi sur la Cybersécurité des Entreprises Numériques;Loi de Contrôle des Échanges Numériques;Loi sur la Cryptographie et l'Économie Numérique;Loi pour la Concurrence dans l'Économie Numérique|LCNE;LECN;LPM;SREN
+LOPPSI|Loi d'Organisation et de Protection des Personnes et des Systèmes Informatiques;Loi d'Orientation pour la Protection des Professions de la Sécurité Informatique;Loi sur l'Organisation des Pouvoirs Publics en Sécurité Informatique;Loi d'Ouverture et de Partage des Plateformes et Services Internet|LOPMI;LOPSI;LPM;LCEN
+RGAA|Référentiel Général d'Audit des Applications;Règlement Général sur l'Accessibilité des Administrations;Référentiel Général d'Authentification et d'Accès;Recueil Général des Applications Administratives|RGA;RAGA;RGESN;RGI
+RGESN|Référentiel Général d'Évaluation de la Sécurité Numérique;Règlement Général sur l'Énergie des Serveurs Numériques;Référentiel Général d'Exploitation des Systèmes Numériques;Recueil Général des Exigences de Sécurité Numérique|RGSEN;RGEN;RGAA;RGS
+RGI|Référentiel Général d'Identification;Règlement Général sur l'Informatique;Référentiel de Gestion des Incidents;Recueil Général des Infrastructures|RIG;RGS;RGAA;RGPD
+COBIT|Compliance Objectives for Business IT;Control Organization for Business Information Technology;Corporate Oversight of Business IT;Control Objectives for IT Benchmarking|COBT;COBOL;ITIL;CMMI
+ITIL|IT Integration Lifecycle;Information Technology Incident Log;IT Infrastructure Licensing;Integrated Technology for Information Logistics|ITLI;ITSM;COBIT;TOGAF
+TOGAF|The Organizational Governance Architecture Framework;Technical Operations and Governance Assessment Framework;The Open Governance Assurance Framework;Trusted Open Gateway Architecture Format|TOGF;TOAF;ITIL;COBIT
+SOC 2|Security Operations Center 2;Secure Operations Certification 2;System Oversight Certification 2;Security and Operational Controls 2|SOC 1;ISAE;SOX;SSAE
+SOX|Security Operations Exchange;Systems Oversight eXecutive Act;Standard of Operational eXcellence;Secure Office eXchange|SXO;OSX;GLBA;HIPAA
+HIPAA|Health Information Privacy and Access Act;Hospital Information Protection and Audit Act;Health Industry Privacy Assurance Act;Healthcare Identity Protection and Authentication Act|HIPPA;HIPA;HDS;CCPA
+CCPA|California Cybersecurity Protection Act;Consumer Credit Protection Act;California Child Privacy Act;Consumer Cloud Privacy Agreement|CPRA;CCAP;COPPA;GDPR
+GLBA|Global Legal Banking Act;Guaranteed Loan and Banking Act;Government Liability for Banking Assets;General Ledger Business Act|GBLA;GLAB;SOX;HIPAA
+FedRAMP|Federal Resource and Asset Management Program;Federal Reporting and Monitoring Platform;Federal Readiness and Assurance Management Process;Federal Regulatory Audit and Monitoring Program|FedRAM;FRAMP;FISMA;CMMC
+CMMC|Cyber Maturity Management Certificate;Capability Maturity Model for Cybersecurity;Cybersecurity Monitoring and Management Compliance;Certified Maturity Model for Cloud|CMMI;CMCM;CMM;TISAX
+TISAX|Trusted Industry Security Audit Exchange;Third-party Information Security Audit eXchange;Technical Information Security Assurance eXtension;Total Information Systems Assurance eXchange|TISA;TSAX;CMMC;SOC 2
+C5|Cloud Computing Cybersecurity Control Charter;Certified Cloud Container Compliance Checklist;Common Cloud Cryptographic Control Criteria;Cloud Customer Contract Compliance Code|C4;C3;EUCS;CSPN
 `;
 const DECOYS=Object.fromEntries(RAW_DECOYS.trim().split('\n').filter(Boolean).map(l=>{const p=l.split('|');return[p[0].trim(),{f:p[1].split(';').map(x=>x.trim()).filter(Boolean),r:p[2].split(';').map(x=>x.trim()).filter(Boolean)}]}));
 const LEVELS={1:'Facile',2:'Moyen',3:'Expert'};
-const REGS={rgpd:'RGPD',nis2:'NIS2',dora:'DORA',cra:'CRA',iso:'ISO 27001',aiact:'AI Act',owasp:'OWASP',hyg:'Hygiène ANSSI',nist:'NIST CSF 2.0',attack:'MITRE ATT&CK',ports:'Ports et protocoles',eidas:'eIDAS 2',lpm:'LPM & OIV',hds:'HDS',snc:'SecNumCloud',pci:'PCI DSS',incidents:'Grands incidents',acteurs:'Acteurs de la cyber'};
-const BANKS=['lv1','lv2','lv3','lvall','reg:rgpd','reg:nis2','reg:dora','reg:cra','reg:iso','reg:aiact','reg:owasp','reg:hyg','reg:nist','reg:attack','reg:ports','reg:eidas','reg:lpm','reg:hds','reg:snc','reg:pci','reg:incidents','reg:acteurs'];
+const REGS={rgpd:'RGPD',nis2:'NIS2',dora:'DORA',cra:'CRA',iso:'ISO 27001',aiact:'AI Act',owasp:'OWASP',hyg:'Hygiène ANSSI',nist:'NIST CSF 2.0',attack:'MITRE ATT&CK',ports:'Ports et protocoles',eidas:'eIDAS 2',lpm:'LPM & OIV',hds:'HDS',snc:'SecNumCloud',pci:'PCI DSS',incidents:'Grands incidents',acteurs:'Acteurs de la cyber',textes:'Noms des textes'};
+const BANKS=['lv1','lv2','lv3','lvall','reg:rgpd','reg:nis2','reg:dora','reg:cra','reg:iso','reg:aiact','reg:owasp','reg:hyg','reg:nist','reg:attack','reg:ports','reg:eidas','reg:lpm','reg:hds','reg:snc','reg:pci','reg:incidents','reg:acteurs','reg:textes'];
 const DIRS={fwd:'Acronyme → signification',rev:'Signification → acronyme',mix:'Mixte'};
 const byId=Object.fromEntries(CARDS.map(c=>[c.id,c]));
 function bankCards(k){if(k==='lvall')return CARDS.filter(c=>c.lv>0);if(k.startsWith('lv')){const n=+k.slice(2);return CARDS.filter(c=>c.lv===n)}const r=k.slice(4);return CARDS.filter(c=>c.r.includes(r))}
