@@ -271,6 +271,12 @@ td.num,th.num{text-align:right;white-space:nowrap}
           </div>
         </div>
         <div class="group">
+          <div class="glabel">Système d'information de l'entreprise (applications métier, DSI)</div>
+          <div class="seg" role="group" aria-label="Système d'information de l'entreprise">
+            <button data-bank="reg:si"><span class="bn">SI d'entreprise</span><span class="n"></span></button>
+          </div>
+        </div>
+        <div class="group">
           <div class="glabel">Culture cyber (questions de connaissance)</div>
           <div class="seg" role="group" aria-label="Culture cyber">
             <button data-bank="reg:incidents"><span class="bn">Grands incidents</span><span class="n"></span></button>
@@ -368,23 +374,23 @@ const ONLINE = !!(SUPABASE_URL && SUPABASE_ANON_KEY);
 const RAW = `
 KPI|Key Performance Indicator|Indicateur clé de performance|Mesure chiffrée qui suit l'atteinte d'un objectif (ex. taux de correctifs appliqués sous 30 jours).|1|iso||
 PSSI|Politique de Sécurité des Systèmes d'Information||Document de référence qui fixe les objectifs et les règles de sécurité d'un organisme, validé par la direction.|1|iso||
-RSSI|Responsable de la Sécurité des Systèmes d'Information||Pilote la stratégie et la gouvernance de la sécurité du SI de l'organisme.|1||ciso|
+RSSI|Responsable de la Sécurité des Systèmes d'Information||Pilote la stratégie et la gouvernance de la sécurité du SI de l'organisme.|1|si|ciso|
 CISO|Chief Information Security Officer|Responsable de la sécurité des systèmes d'information|Équivalent anglo-saxon du RSSI.|1||ciso|
-DSI|Direction des Systèmes d'Information||Entité qui conçoit, exploite et fait évoluer le SI de l'organisme.|1||dsi|
+DSI|Direction des Systèmes d'Information||Entité qui conçoit, exploite et fait évoluer le SI de l'organisme.|1|si|dsi|
 CIO|Chief Information Officer|Directeur des systèmes d'information|Équivalent anglo-saxon du DSI.|1||dsi|
 SI|Système d'Information||Ensemble des ressources (personnes, processus, matériels, logiciels, données) qui traitent l'information.|1|||
 ANSSI|Agence Nationale de la Sécurité des Systèmes d'Information||Autorité nationale française en cybersécurité, rattachée au SGDSN.|1|nis2||
 CNIL|Commission Nationale de l'Informatique et des Libertés||Autorité française de protection des données personnelles, qui contrôle l'application du RGPD.|1|rgpd||
 RGPD|Règlement Général sur la Protection des Données||Règlement (UE) 2016/679, applicable depuis le 25 mai 2018.|1|rgpd textes|gdpr|
 GDPR|General Data Protection Regulation|Règlement général sur la protection des données|Nom anglais du RGPD.|1|rgpd textes|gdpr|
-DPO|Data Protection Officer|Délégué à la protection des données|Conseille et contrôle la conformité RGPD ; obligatoire notamment pour les autorités publiques et certains traitements à grande échelle.|1|rgpd|dpo|
+DPO|Data Protection Officer|Délégué à la protection des données|Conseille et contrôle la conformité RGPD ; obligatoire notamment pour les autorités publiques et certains traitements à grande échelle.|1|rgpd si|dpo|
 VPN|Virtual Private Network|Réseau privé virtuel|Tunnel chiffré entre un poste et un réseau distant.|1|||
 MFA|Multi-Factor Authentication|Authentification multifacteur|Combine au moins deux facteurs : ce que je sais, ce que je possède, ce que je suis.|1|nis2|mfa|
 2FA|Two-Factor Authentication|Authentification à deux facteurs|Cas particulier de la MFA avec exactement deux facteurs.|1||mfa|
 DoS|Denial of Service|Déni de service|Attaque visant à rendre un service indisponible.|1|||
 DDoS|Distributed Denial of Service|Déni de service distribué|Déni de service lancé depuis de nombreuses machines, souvent un botnet.|1|||
-PCA|Plan de Continuité d'Activité||Organise le maintien des activités essentielles pendant une crise.|1|iso dora|bcp|
-PRA|Plan de Reprise d'Activité||Organise le redémarrage du SI après un sinistre.|1|dora|drp|
+PCA|Plan de Continuité d'Activité||Organise le maintien des activités essentielles pendant une crise.|1|iso dora si|bcp|
+PRA|Plan de Reprise d'Activité||Organise le redémarrage du SI après un sinistre.|1|dora si|drp|
 IoT|Internet of Things|Internet des objets|Objets connectés (caméras, capteurs…), souvent peu sécurisés ; concernés par le CRA.|1|cra||
 HTTPS|HyperText Transfer Protocol Secure|Protocole HTTP sécurisé|HTTP encapsulé dans TLS pour chiffrer les échanges web.|1|||
 DNS|Domain Name System|Système de noms de domaine|Traduit les noms de domaine en adresses IP.|1|||
@@ -397,25 +403,25 @@ IPS|Intrusion Prevention System|Système de prévention d'intrusion|Détecte et 
 SOC|Security Operations Center|Centre des opérations de sécurité|Équipe qui surveille, détecte et traite les incidents en continu.|1|||
 CERT|Computer Emergency Response Team|Équipe de réponse aux urgences informatiques|Équipe de réponse aux incidents ; ex. le CERT-FR opéré par l'ANSSI.|1||csirt|
 CSIRT|Computer Security Incident Response Team|Équipe de réponse aux incidents de sécurité informatique|Terme retenu par NIS2 pour les équipes nationales de réponse aux incidents.|1|nis2|csirt|
-SMSI|Système de Management de la Sécurité de l'Information||Cadre de gouvernance de la sécurité, objet de la certification ISO/IEC 27001.|1|iso|isms|
+SMSI|Système de Management de la Sécurité de l'Information||Cadre de gouvernance de la sécurité, objet de la certification ISO/IEC 27001.|1|iso si|isms|
 ISMS|Information Security Management System|Système de management de la sécurité de l'information|Nom anglais du SMSI.|1|iso|isms|
 BYOD|Bring Your Own Device|Apportez votre équipement personnel|Usage d'appareils personnels pour travailler.|1|||
-SSO|Single Sign-On|Authentification unique|Une seule authentification donne accès à plusieurs applications.|1|||
-IAM|Identity and Access Management|Gestion des identités et des accès|Gère le cycle de vie des comptes et de leurs droits.|1|||
+SSO|Single Sign-On|Authentification unique|Une seule authentification donne accès à plusieurs applications.|1|si||
+IAM|Identity and Access Management|Gestion des identités et des accès|Gère le cycle de vie des comptes et de leurs droits.|1|si||
 OTP|One-Time Password|Mot de passe à usage unique|Code valable une seule fois, souvent utilisé comme second facteur.|1|||
 SSH|Secure Shell|Shell sécurisé|Protocole d'administration à distance chiffré.|1|||
 FTP|File Transfer Protocol|Protocole de transfert de fichiers|Protocole historique, non chiffré.|1|||
 LAN|Local Area Network|Réseau local|Réseau limité à un site.|1|||
 WAN|Wide Area Network|Réseau étendu|Réseau reliant des sites distants.|1|||
 API|Application Programming Interface|Interface de programmation applicative|Point d'échange entre logiciels, surface d'attaque fréquente.|1|||
-SaaS|Software as a Service|Logiciel en tant que service|Application hébergée et gérée par le fournisseur.|1|||
+SaaS|Software as a Service|Logiciel en tant que service|Application hébergée et gérée par le fournisseur.|1|si||
 IaaS|Infrastructure as a Service|Infrastructure en tant que service|Location de ressources de calcul, de stockage et de réseau.|1|||
 PaaS|Platform as a Service|Plateforme en tant que service|Plateforme d'exécution gérée pour déployer ses applications.|1|||
 FAI|Fournisseur d'Accès à Internet||Opérateur qui fournit la connexion Internet.|1||isp|
 ISP|Internet Service Provider|Fournisseur d'accès à Internet|Nom anglais du FAI.|1||isp|
 CAPTCHA|Completely Automated Public Turing test to tell Computers and Humans Apart|Test de Turing public et automatisé pour distinguer humains et machines|Sert à bloquer les robots sur les formulaires.|1|||
 NDA|Non-Disclosure Agreement|Accord de confidentialité|Contrat interdisant la divulgation d'informations.|1|||
-SLA|Service Level Agreement|Accord de niveau de service|Engagement contractuel sur la qualité d'un service (disponibilité, délais…).|1|dora||
+SLA|Service Level Agreement|Accord de niveau de service|Engagement contractuel sur la qualité d'un service (disponibilité, délais…).|1|dora si||
 GRC|Governance, Risk and Compliance|Gouvernance, risques et conformité|Pilotage de la sécurité par la gouvernance, la gestion des risques et la conformité.|1|||
 DIC|Disponibilité, Intégrité, Confidentialité||Les trois critères fondamentaux de la sécurité de l'information.|1|iso|dic|
 IA|Intelligence Artificielle||Systèmes capables d'apprendre ou de raisonner ; encadrés dans l'UE par l'AI Act.|1|||
@@ -450,8 +456,8 @@ RTO|Recovery Time Objective|Objectif de délai de reprise|Durée maximale accept
 BCP|Business Continuity Plan|Plan de continuité d'activité|Nom anglais du PCA.|2||bcp|
 DRP|Disaster Recovery Plan|Plan de reprise après sinistre|Nom anglais du PRA.|2||drp|
 BIA|Business Impact Analysis|Bilan d'impact sur l'activité|Évalue les impacts d'une interruption pour fixer les objectifs de reprise.|2|iso||
-MCO|Maintien en Condition Opérationnelle||Garantit le bon fonctionnement d'un système dans la durée.|2|||
-MCS|Maintien en Condition de Sécurité||Garantit le niveau de sécurité dans la durée (correctifs, veille, audits).|2|||
+MCO|Maintien en Condition Opérationnelle||Garantit le bon fonctionnement d'un système dans la durée.|2|si||
+MCS|Maintien en Condition de Sécurité||Garantit le niveau de sécurité dans la durée (correctifs, veille, audits).|2|si||
 PASSI|Prestataire d'Audit de la Sécurité des Systèmes d'Information||Prestataire d'audit qualifié par l'ANSSI.|2|hyg lpm||
 OIV|Opérateur d'Importance Vitale||Opérateur dont l'activité est indispensable à la Nation, soumis à la LPM.|2|nis2 lpm||
 OSE|Opérateur de Services Essentiels||Catégorie issue de NIS1, remplacée par les entités essentielles et importantes de NIS2.|2|nis2||
@@ -495,7 +501,7 @@ PoC|Proof of Concept|Preuve de concept|Démonstration qu'une idée ou une vulné
 SDLC|Software Development Life Cycle|Cycle de vie du développement logiciel|Y intégrer la sécurité à chaque phase donne le SSDLC.|2|||
 OT|Operational Technology|Technologies opérationnelles|Systèmes qui pilotent des processus physiques (usines, énergie).|2|||
 ICS|Industrial Control System|Système de contrôle industriel|Système qui commande un processus industriel.|2|||
-CMDB|Configuration Management Database|Base de données de gestion des configurations|Inventaire des actifs et de leurs relations.|2|||
+CMDB|Configuration Management Database|Base de données de gestion des configurations|Inventaire des actifs et de leurs relations.|2|si||
 CC|Common Criteria|Critères communs|Norme ISO/IEC 15408 d'évaluation de la sécurité des produits.|2|||
 CSA|Cybersecurity Act|Règlement européen sur la cybersécurité|Règlement (UE) 2019/881 : mandat permanent de l'ENISA et cadre européen de certification.|2|textes||
 LIL|Loi Informatique et Libertés||Loi française du 6 janvier 1978, qui complète le RGPD.|2|rgpd textes||
@@ -993,7 +999,7 @@ RGAA|Référentiel Général d'Amélioration de l'Accessibilité||Référentiel 
 RGESN|Référentiel Général d'Écoconception de Services Numériques||Référentiel français pour réduire l'impact environnemental des services numériques.|0|textes||
 RGI|Référentiel Général d'Interopérabilité||Normes d'interopérabilité imposées aux SI de l'administration française.|0|textes||
 COBIT|Control Objectives for Information and Related Technologies|Objectifs de contrôle de l'information et des technologies associées|Référentiel de gouvernance du SI publié par l'ISACA.|0|textes||
-ITIL|Information Technology Infrastructure Library|Bibliothèque pour l'infrastructure des technologies de l'information|Référentiel de bonnes pratiques de gestion des services informatiques.|0|textes||
+ITIL|Information Technology Infrastructure Library|Bibliothèque pour l'infrastructure des technologies de l'information|Référentiel de bonnes pratiques de gestion des services informatiques.|0|textes si||
 TOGAF|The Open Group Architecture Framework|Cadre d'architecture de l'Open Group|Référentiel d'architecture d'entreprise.|0|textes||
 SOC 2|System and Organization Controls 2|Contrôles du système et de l'organisation 2|Rapport d'audit américain (AICPA) sur les contrôles de sécurité d'un prestataire.|0|textes||
 SOX|Sarbanes-Oxley Act|Loi Sarbanes-Oxley|Loi américaine de 2002 sur la fiabilité de l'information financière des sociétés cotées.|0|textes||
@@ -1054,6 +1060,31 @@ Campagne iranienne contre les infrastructures américaines (juillet 2026) : quel
 Incident cyber majeur sur un système de surveillance (avril 2026) : quelle agence américaine a été touchée par des espions chinois ?|Le FBI||Des numéros de téléphone de cibles de surveillance pourraient avoir été exposés.|0|y2026||5
 Shadow AI dans le DBIR (mai 2026) : que désigne ce phénomène devenu la 3e action interne non malveillante ?|L'usage d'outils d'IA non autorisés par l'entreprise||Sa part a été multipliée par quatre en un an.|0|y2026||5
 Échéance eIDAS 2 (fin 2026) : que doivent proposer les États membres ?|Proposer au moins un portefeuille européen d'identité numérique (EUDI Wallet)||Les secteurs régulés devront l'accepter fin 2027.|0|y2026||5
+ERP|Enterprise Resource Planning|Progiciel de gestion intégré (PGI)|Logiciel central qui regroupe finance, achats, stocks, production et RH (ex. SAP, Oracle). Sa paralysie arrête toute l'entreprise : cible prioritaire des rançongiciels.|0|si||
+CRM|Customer Relationship Management|Gestion de la relation client|Centralise contacts, ventes et historique client (ex. Salesforce). Contient des données personnelles : soumis au RGPD et souvent visé par les fuites de données.|0|si||
+SIRH|Système d'Information des Ressources Humaines||Gère paie, contrats, congés et carrières. Données personnelles sensibles (salaires, santé, RIB) : accès à restreindre fortement.|0|si||
+WMS|Warehouse Management System|Système de gestion d'entrepôt|Pilote réceptions, stockage, préparation et expéditions. Sa panne bloque la logistique, comme lors de cyberattaques contre des transporteurs.|0|si||
+TMS|Transportation Management System|Système de gestion du transport|Planifie et suit les tournées, transporteurs et livraisons. Souvent interconnecté avec des partenaires externes : surface d'attaque de la chaîne d'approvisionnement.|0|si||
+GMAO|Gestion de Maintenance Assistée par Ordinateur||Planifie la maintenance préventive et curative des équipements. Fait le lien entre l'informatique de gestion et l'informatique industrielle (OT).|0|si||
+MES|Manufacturing Execution System|Système d'exécution de la production|Pilote et trace la production en atelier, entre l'ERP et les automates. Point de jonction IT/OT à segmenter soigneusement.|0|si||
+PLM|Product Lifecycle Management|Gestion du cycle de vie des produits|Gère plans, nomenclatures et versions d'un produit, de la conception à la fin de vie. Contient la propriété intellectuelle : cible de l'espionnage industriel.|0|si||
+SCM|Supply Chain Management|Gestion de la chaîne d'approvisionnement|Coordonne fournisseurs, flux et prévisions. Le risque fournisseur (tiers) est au cœur de NIS2 et DORA.|0|si||
+PIM|Product Information Management|Gestion des informations produit|Référentiel unique des fiches produits (descriptions, prix, visuels) diffusées sur tous les canaux de vente.|0|si||
+GED|Gestion Électronique des Documents||Stocke, indexe, versionne et partage les documents. Les droits d'accès et la durée de conservation doivent y être maîtrisés (RGPD).|0|si||
+BI|Business Intelligence|Informatique décisionnelle|Tableaux de bord et analyses à partir des données de l'entreprise. Agrège beaucoup de données : un compte compromis expose une vue d'ensemble.|0|si||
+EDI|Electronic Data Interchange|Échange de données informatisé|Échange automatisé de documents normalisés (commandes, factures) entre entreprises. Les flux doivent être authentifiés pour éviter la fraude.|0|si||
+ETL|Extract, Transform, Load|Extraire, transformer, charger|Processus qui collecte des données de plusieurs sources, les transforme et les charge dans un entrepôt de données. Ses comptes techniques ont souvent des droits étendus.|0|si||
+GLPI|Gestionnaire Libre de Parc Informatique||Outil open source français de gestion du parc et des tickets d'assistance. Sert d'inventaire des actifs, base de toute démarche de sécurité.|0|si||
+ITSM|IT Service Management|Gestion des services informatiques|Organisation de la DSI autour des services rendus (incidents, demandes, changements), souvent selon ITIL. Ex. : ServiceNow, GLPI.|0|si||
+TMA|Tierce Maintenance Applicative||Maintenance des applications confiée à un prestataire externe. Accès à encadrer par contrat et à tracer (risque tiers).|0|si||
+AD|Active Directory|Annuaire Active Directory|Annuaire Microsoft qui gère comptes, groupes et droits d'un réseau Windows. Sa compromission donne souvent le contrôle de tout le SI.|0|si||
+LDAP|Lightweight Directory Access Protocol|Protocole léger d'accès aux annuaires|Protocole standard d'interrogation des annuaires (port 389, ou 636 en LDAPS chiffré).|0|si||
+MDM|Mobile Device Management|Gestion des appareils mobiles|Administre et sécurise à distance les smartphones et tablettes de la flotte : chiffrement, applications, effacement en cas de perte.|0|si||
+MOA|Maîtrise d'Ouvrage||Le client d'un projet : exprime le besoin, porte le budget et valide le résultat.|0|si||
+MOE|Maîtrise d'Œuvre||Réalise le projet pour le compte de la MOA : conception, développement, tests et livraison.|0|si||
+AMOA|Assistance à Maîtrise d'Ouvrage||Aide la MOA à formuler ses besoins, rédiger le cahier des charges et piloter le projet.|0|si||
+PMO|Project Management Office|Bureau de gestion de projets|Cellule qui pilote le portefeuille de projets : méthodes, suivi, reporting et arbitrages.|0|si||
+ESN|Entreprise de Services du Numérique||Prestataire informatique (ex-SSII) : conseil, développement, infogérance. Fournisseur clé dans l'analyse du risque tiers.|0|si||
 `;
 const CARDS = RAW.trim().split('\n').filter(Boolean).map(l=>{
   const p=l.split('|');
@@ -1753,11 +1784,36 @@ Campagne iranienne contre les infrastructures américaines (juillet 2026) : quel
 Incident cyber majeur sur un système de surveillance (avril 2026) : quelle agence américaine a été touchée par des espions chinois ?|La NASA;La CISA;Le Pentagone;La Réserve fédérale|
 Shadow AI dans le DBIR (mai 2026) : que désigne ce phénomène devenu la 3e action interne non malveillante ?|Le shadow IT matériel;L'envoi de fichiers par clé USB;Le partage de mots de passe;L'impression de documents sensibles|
 Échéance eIDAS 2 (fin 2026) : que doivent proposer les États membres ?|Supprimer les cartes d'identité physiques;Rendre la signature qualifiée obligatoire;Créer une monnaie numérique européenne;Interdire les mots de passe|
+ERP|Enterprise Risk Protocol;External Resource Provisioning;Enterprise Reporting Platform;Event Response Procedure|EPR;REP;ERM;PGI
+CRM|Customer Risk Management;Central Resource Monitor;Compliance Reporting Module;Contract Renewal Manager|CMR;CRP;RCM;CSM
+SIRH|Service d'Intervention et de Reprise Hébergée;Système Intégré de Routage Hybride;Système d'Identification des Risques Humains;Suivi Informatisé des Relations Hiérarchiques|SIHR;SRH;SIRT;GRH
+WMS|Web Monitoring Service;Workstation Management Suite;Wireless Messaging System;Workflow Modeling Software|WSM;MWS;WMI;WIS
+TMS|Threat Monitoring Service;Ticket Management System;Time Measurement Software;Trusted Messaging Server|TSM;MTS;TPS;TMT
+GMAO|Gestion des Menaces et Alertes Opérationnelles;Gouvernance des Moyens d'Accès Ouverts;Gestion de la Mobilité et des Applications Organisationnelles;Guide de Mise en Application Obligatoire|GAMO;GMO;GMAC;GTA
+MES|Managed Endpoint Security;Message Encryption Standard;Multi-factor Enrollment Service;Monitoring and Event System|MSE;EMS;MEP;SEM
+PLM|Privileged Login Monitor;Patch Lifecycle Management;Policy Lifecycle Manager;Platform License Management|PML;LPM;PDM;PLC
+SCM|Security Configuration Management;Source Code Monitoring;Service Continuity Management;Secure Cloud Migration|SMC;CSM;SCP;SRM
+PIM|Privileged Identity Management;Patch Inventory Manager;Process Integration Module;Personal Information Masking|PMI;MIP;PDM;PAM
+GED|Gestion des Événements de Détection;Gouvernance des Échanges de Données;Garantie d'Exploitation Délocalisée;Gestion des Exigences Documentaires|GDE;EDG;GEC;DMS
+BI|Backup Infrastructure;Binary Inspection;Breach Investigation;Business Integration|IB;BIA;DI;BA
+EDI|Endpoint Detection Interface;Encrypted Data Integrity;External Device Inspection;Enterprise Directory Integration|EID;DEI;EDR;IDE
+ETL|Encrypt, Tokenize, Log;Event Tracking Layer;Enterprise Trust List;Endpoint Threat Locator|ELT;TLE;ETC;EDL
+GLPI|Gestion des Licences et Postes Informatiques;Guide Libre des Pratiques Informatiques;Gouvernance Locale de la Protection de l'Information;Gestion des Logs et Preuves d'Incident|GPLI;GLIP;GPI;CMDB
+ITSM|IT Security Monitoring;Integrated Threat Surveillance Model;IT Systems Migration;Information Technology Standards Manual|ISTM;ITMS;SIEM;ITOM
+TMA|Test de Maintien des Accès;Traitement des Menaces Avancées;Tableau de Mesure d'Activité;Transfert de Maîtrise Applicative|TAM;MTA;TME;MCO
+AD|Access Directive;Audit Database;Authentication Domain;Alert Dispatcher|DA;LDAP;AAD;IdP
+LDAP|Logical Data Access Policy;Local Domain Authentication Protocol;Log Data Analysis Platform;Layered Defense Architecture Plan|LADP;DLAP;LDP;AD
+MDM|Malware Detection Module;Master Data Monitoring;Managed Defense Mesh;Multi-Domain Messaging|MMD;DMM;EMM;MAM
+MOA|Mise en Œuvre Applicative;Mission d'Organisation et d'Audit;Modèle Opérationnel d'Architecture;Maintien Opérationnel des Applications|MOE;AMOA;OMA;MCO
+MOE|Mise en Œuvre de l'Exploitation;Modèle d'Organisation des Échanges;Mesure Opérationnelle de l'Efficacité;Mission d'Observation des Équipements|MOA;OME;AMOE;MCO
+AMOA|Audit de Maturité des Objectifs Applicatifs;Analyse des Menaces et Objectifs d'Attaque;Administration des Moyens et Outils d'Authentification;Accord de Mise en Œuvre Applicative|MOA;AMOE;AOMA;PMO
+PMO|Plan de Maintien Opérationnel;Process Monitoring Office;Privileged Management Operations;Policy Maturity Overview|POM;MPO;PMP;MOA
+ESN|Entité de Sécurité Nationale;Environnement de Supervision Numérique;Espace de Stockage en Nuage;Évaluation de Sécurité Normalisée|SSII;ENS;ESR;SNE
 `;
 const DECOYS=Object.fromEntries(RAW_DECOYS.trim().split('\n').filter(Boolean).map(l=>{const p=l.split('|');return[p[0].trim(),{f:p[1].split(';').map(x=>x.trim()).filter(Boolean),r:p[2].split(';').map(x=>x.trim()).filter(Boolean)}]}));
 const LEVELS={1:'Facile',2:'Moyen',3:'Expert'};
-const REGS={rgpd:'RGPD',nis2:'NIS2',dora:'DORA',cra:'CRA',iso:'ISO 27001',aiact:'AI Act',owasp:'OWASP',hyg:'Hygiène ANSSI',nist:'NIST CSF 2.0',attack:'MITRE ATT&CK',ports:'Ports et protocoles',eidas:'eIDAS 2',lpm:'LPM & OIV',hds:'HDS',snc:'SecNumCloud',pci:'PCI DSS',incidents:'Grands incidents',acteurs:'Acteurs de la cyber',textes:'Noms des textes',y2025:'Cyber 2025',y2026:'Cyber 2026'};
-const BANKS=['lv1','lv2','lv3','lvall','reg:rgpd','reg:nis2','reg:dora','reg:cra','reg:iso','reg:aiact','reg:owasp','reg:hyg','reg:nist','reg:attack','reg:ports','reg:eidas','reg:lpm','reg:hds','reg:snc','reg:pci','reg:incidents','reg:acteurs','reg:textes','reg:y2025','reg:y2026'];
+const REGS={rgpd:'RGPD',nis2:'NIS2',dora:'DORA',cra:'CRA',iso:'ISO 27001',aiact:'AI Act',owasp:'OWASP',hyg:'Hygiène ANSSI',nist:'NIST CSF 2.0',attack:'MITRE ATT&CK',ports:'Ports et protocoles',eidas:'eIDAS 2',lpm:'LPM & OIV',hds:'HDS',snc:'SecNumCloud',pci:'PCI DSS',incidents:'Grands incidents',acteurs:'Acteurs de la cyber',textes:'Noms des textes',y2025:'Cyber 2025',y2026:'Cyber 2026',si:"SI d'entreprise"};
+const BANKS=['lv1','lv2','lv3','lvall','reg:rgpd','reg:nis2','reg:dora','reg:cra','reg:iso','reg:aiact','reg:owasp','reg:hyg','reg:nist','reg:attack','reg:ports','reg:eidas','reg:lpm','reg:hds','reg:snc','reg:pci','reg:si','reg:incidents','reg:acteurs','reg:textes','reg:y2025','reg:y2026'];
 const DIRS={fwd:'Acronyme → signification',rev:'Signification → acronyme',mix:'Mixte'};
 const byId=Object.fromEntries(CARDS.map(c=>[c.id,c]));
 function bankCards(k){if(k==='lvall')return CARDS.filter(c=>c.lv>0);if(k.startsWith('lv')){const n=+k.slice(2);return CARDS.filter(c=>c.lv===n)}const r=k.slice(4);return CARDS.filter(c=>c.r.includes(r))}
