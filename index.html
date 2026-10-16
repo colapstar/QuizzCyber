@@ -653,10 +653,10 @@ Action corrective|Action visant à éliminer la cause d'une non-conformité et �
 Audit interne|Audit mené par l'organisme pour vérifier que le SMSI est conforme et efficacement mis en œuvre.||Clause 9.2 de l'ISO/IEC 27001.|0|iso||1
 Cycle de certification|Certification valable 3 ans, avec des audits de surveillance annuels puis un audit de renouvellement.||Audits réalisés par un organisme de certification accrédité.|0|iso||1
 Traitement du risque|Choix d'une option face à un risque : réduire, conserver, éviter ou partager.||Formalisé dans le plan de traitement des risques.|0|iso||1
-RIA|Règlement sur l'Intelligence Artificielle||Nom français de l'AI Act, règlement (UE) 2024/1689.|0|aiact textes|aiact|
-AI Act|Artificial Intelligence Act|Règlement sur l'intelligence artificielle|Nom anglais du RIA, règlement (UE) 2024/1689.|0|aiact|aiact|
-GPAI|General-Purpose AI|IA à usage général|Modèles d'IA polyvalents (ex. grands modèles de langage), soumis à des obligations propres depuis le 2 août 2025.|0|aiact||
-FRIA|Fundamental Rights Impact Assessment|Analyse d'impact sur les droits fondamentaux|Exigée de certains déployeurs de systèmes à haut risque (organismes publics, entités fournissant des services publics…), art. 27 du RIA.|0|aiact||
+RIA|Règlement sur l'Intelligence Artificielle||Nom français de l'AI Act, règlement (UE) 2024/1689.|2|aiact textes|aiact|
+AI Act|Artificial Intelligence Act|Règlement sur l'intelligence artificielle|Nom anglais du RIA, règlement (UE) 2024/1689.|1|aiact|aiact|
+GPAI|General-Purpose AI|IA à usage général|Modèles d'IA polyvalents (ex. grands modèles de langage), soumis à des obligations propres depuis le 2 août 2025.|3|aiact||
+FRIA|Fundamental Rights Impact Assessment|Analyse d'impact sur les droits fondamentaux|Exigée de certains déployeurs de systèmes à haut risque (organismes publics, entités fournissant des services publics…), art. 27 du RIA.|3|aiact||
 Système d'IA|Système automatisé fonctionnant avec différents niveaux d'autonomie, pouvant s'adapter, qui déduit des entrées reçues comment générer des sorties (prédictions, contenus, recommandations, décisions).||Définition de l'art. 3 du RIA.|0|aiact||1
 Approche fondée sur les risques|Classement des systèmes d'IA en quatre niveaux : risque inacceptable (interdit), haut risque, risque limité (obligations de transparence) et risque minimal.||Logique centrale du RIA.|0|aiact||1
 Pratiques interdites|Usages d'IA bannis dans l'UE depuis le 2 février 2025, comme la notation sociale, la manipulation subliminale ou le moissonnage non ciblé d'images faciales.||Art. 5 du RIA. L'omnibus numérique en ajoute de nouvelles à partir du 2 décembre 2026.|0|aiact||1
@@ -697,11 +697,11 @@ API7:2023|Server Side Request Forgery|Falsification de requête côté serveur|L
 API8:2023|Security Misconfiguration (API)|Mauvaise configuration de sécurité|Configurations par défaut, CORS permissif, messages d'erreur trop détaillés…|0|owasp|misconf|2
 API9:2023|Improper Inventory Management|Gestion d'inventaire inadéquate|Versions d'API obsolètes ou non documentées encore exposées.|0|owasp||2
 API10:2023|Unsafe Consumption of APIs|Consommation non sécurisée d'API|Confiance excessive dans les données reçues d'API tierces.|0|owasp||2
-BOLA|Broken Object-Level Authorization|Autorisation défaillante au niveau objet|API1:2023, équivalent API de l'IDOR.|0|owasp|bola|
-BFLA|Broken Function-Level Authorization|Autorisation défaillante au niveau fonction|API5:2023.|0|owasp|bfla|
-BOPLA|Broken Object Property-Level Authorization|Autorisation défaillante au niveau des propriétés d'objet|API3:2023.|0|owasp|bopla|
-ASVS|Application Security Verification Standard|Standard de vérification de la sécurité applicative|Référentiel OWASP d'exigences de sécurité pour concevoir et tester les applications.|0|owasp||
-SAMM|Software Assurance Maturity Model|Modèle de maturité de l'assurance logicielle|Modèle OWASP pour évaluer et améliorer la sécurité du cycle de développement.|0|owasp||
+BOLA|Broken Object-Level Authorization|Autorisation défaillante au niveau objet|API1:2023, équivalent API de l'IDOR.|3|owasp|bola|
+BFLA|Broken Function-Level Authorization|Autorisation défaillante au niveau fonction|API5:2023.|3|owasp|bfla|
+BOPLA|Broken Object Property-Level Authorization|Autorisation défaillante au niveau des propriétés d'objet|API3:2023.|3|owasp|bopla|
+ASVS|Application Security Verification Standard|Standard de vérification de la sécurité applicative|Référentiel OWASP d'exigences de sécurité pour concevoir et tester les applications.|3|owasp||
+SAMM|Software Assurance Maturity Model|Modèle de maturité de l'assurance logicielle|Modèle OWASP pour évaluer et améliorer la sécurité du cycle de développement.|3|owasp||
 Cross-Site Scripting (XSS)|A05:2025 – Injection||Le XSS est rattaché à la catégorie Injection depuis 2021.|0|owasp||3
 Server-Side Request Forgery (SSRF)|A01:2025 – Broken Access Control||Catégorie à part en 2021 (A10), absorbée par le contrôle d'accès en 2025.|0|owasp|a01|3
 Référence directe non sécurisée à un objet (IDOR)|A01:2025 – Broken Access Control||Accéder à la ressource d'autrui en changeant un identifiant est un défaut de contrôle d'accès.|0|owasp|a01|3
@@ -713,7 +713,7 @@ Absence de protection contre le bourrage d'identifiants|A07:2025 – Authenticat
 Mise à jour logicielle non signée|A08:2025 – Software or Data Integrity Failures||Code ou données acceptés sans vérification d'intégrité.|0|owasp||3
 Aucune alerte sur des tentatives d'intrusion|A09:2025 – Security Logging and Alerting Failures||Des journaux sans alerte ne permettent pas de réagir.|0|owasp||3
 Application qui reste ouverte en cas d'erreur|A10:2025 – Mishandling of Exceptional Conditions||Comportement « fail open » face à une condition anormale.|0|owasp||3
-PAS|Plan d'Assurance Sécurité||Document contractuel où le prestataire décrit les dispositions qu'il s'engage à mettre en œuvre pour respecter les exigences de sécurité (mesure 3, infogérance).|0|hyg||
+PAS|Plan d'Assurance Sécurité||Document contractuel où le prestataire décrit les dispositions qu'il s'engage à mettre en œuvre pour respecter les exigences de sécurité (mesure 3, infogérance).|3|hyg||
 Structure du guide d'hygiène|42 mesures réparties en 10 chapitres, de « Sensibiliser et former » à « Pour aller plus loin ».||Version 2.0 de septembre 2017. La première version (2013) comptait 40 règles.|0|hyg||1
 Niveaux standard et renforcé|Deux niveaux d'exigence par mesure : atteindre d'abord le niveau standard partout, puis viser le renforcé.||Mode d'emploi du guide d'hygiène.|0|hyg||1
 Compte d'administration|Compte nominatif distinct du compte utilisateur (ex. adm-pmartin), avec des secrets différents, réservé aux actions d'administration.||Mesure 8.|0|hyg||1
@@ -744,8 +744,8 @@ Composants obsolètes|Systèmes ou logiciels qui ne sont plus supportés par leu
 Protocoles sécurisés|Utiliser dès que possible des protocoles reposant par exemple sur TLS (HTTPS, IMAPS…) ou conçus sécurisés comme SSH, qui remplace TELNET.||Mesure 21.|0|hyg||1
 Redirection vers une messagerie personnelle|À proscrire pour la messagerie professionnelle, car elle constitue une fuite irrémédiable d'informations de l'entité.||Mesure 24.|0|hyg||1
 Méthode d'analyse de risques recommandée|EBIOS, méthode référencée par l'ANSSI pour une gestion structurée des risques.||Mesure 41. La version actuelle est EBIOS Risk Manager.|0|hyg||1
-NIST|National Institute of Standards and Technology|Institut national des normes et de la technologie (États-Unis)|Agence américaine qui publie le CSF et les SP 800 (ex. SP 800-53).|0|nist||
-CSF|Cybersecurity Framework|Cadre de cybersécurité|Cadre du NIST ; la version 2.0 a été publiée le 26 février 2024.|0|nist||
+NIST|National Institute of Standards and Technology|Institut national des normes et de la technologie (États-Unis)|Agence américaine qui publie le CSF et les SP 800 (ex. SP 800-53).|1|nist||
+CSF|Cybersecurity Framework|Cadre de cybersécurité|Cadre du NIST ; la version 2.0 a été publiée le 26 février 2024.|2|nist||
 GV|Govern|Gouverner|Nouvelle fonction du CSF 2.0 : stratégie, attentes et politique de gestion du risque cyber. Elle entoure les cinq autres.|0|nist|csffn|2
 ID|Identify|Identifier|Comprendre les risques cyber actuels de l'organisation (actifs, évaluation des risques, amélioration).|0|nist|csffn|2
 PR|Protect|Protéger|Mesures de protection pour gérer les risques (accès, sensibilisation, données, plateformes, résilience).|0|nist|csffn|2
@@ -779,8 +779,8 @@ Structure du CSF 2.0|6 fonctions, 22 catégories et 106 sous-catégories.||Chaqu
 Profil organisationnel (CSF)|Description de la posture cyber d'une organisation selon les résultats du Core : profil actuel et profil cible.||L'écart entre les deux sert à prioriser un plan d'action.|0|nist||1
 Niveaux de mise en œuvre (Tiers)|Quatre niveaux de rigueur de la gouvernance et de la gestion du risque cyber : Partial, Risk Informed, Repeatable, Adaptive.||À ne pas confondre avec un niveau de maturité certifiable.|0|nist||1
 CSF Core|Taxonomie hiérarchique des résultats de cybersécurité : fonctions, catégories et sous-catégories.||Le Core décrit des résultats à atteindre, pas des moyens imposés.|0|nist||1
-ATT&CK|Adversarial Tactics, Techniques, and Common Knowledge|Tactiques, techniques et connaissances communes des adversaires|Base de connaissances de MITRE sur les comportements observés des attaquants.|0|attack||
-D3FEND|Detection, Denial, and Disruption Framework Empowering Network Defense|Cadre de détection, de déni et de perturbation au service de la défense réseau|Base de MITRE sur les contre-mesures défensives, complémentaire d'ATT&CK.|0|attack||
+ATT&CK|Adversarial Tactics, Techniques, and Common Knowledge|Tactiques, techniques et connaissances communes des adversaires|Base de connaissances de MITRE sur les comportements observés des attaquants.|2|attack||
+D3FEND|Detection, Denial, and Disruption Framework Empowering Network Defense|Cadre de détection, de déni et de perturbation au service de la défense réseau|Base de MITRE sur les contre-mesures défensives, complémentaire d'ATT&CK.|3|attack||
 TA0043|Reconnaissance|Reconnaissance|L'attaquant collecte des informations pour préparer ses opérations.|0|attack|tact|2
 TA0042|Resource Development|Développement de ressources|L'attaquant se dote de ressources (infrastructure, comptes, outils).|0|attack|tact|2
 TA0001|Initial Access|Accès initial|L'attaquant cherche à entrer dans le réseau.|0|attack|tact|2
@@ -855,15 +855,15 @@ Port 6443|API Kubernetes|Serveur d'API Kubernetes|TCP. Point d'entrée d'adminis
 Port 8080|HTTP alternatif|Web non chiffré sur port alternatif (proxy, serveurs d'applications)|TCP.|0|ports|http|2
 Port 27017|MongoDB|Base de données MongoDB|TCP. Nombreuses fuites dues à des instances exposées.|0|ports||2
 Port 51820|WireGuard|VPN WireGuard|UDP, port par défaut.|0|ports||2
-eIDAS|electronic IDentification, Authentication and trust Services|Identification électronique et services de confiance|Règlement (UE) 910/2014, révisé par le règlement (UE) 2024/1183 dit eIDAS 2.|0|eidas textes||
-EUDI Wallet|European Digital Identity Wallet|Portefeuille européen d'identité numérique|Chaque État membre doit en proposer au moins un d'ici fin 2026 (eIDAS 2).|0|eidas||
-QTSP|Qualified Trust Service Provider|Prestataire de services de confiance qualifié (PSCQ)|Inscrit sur la liste de confiance nationale. En France, contrôlé par l'ANSSI.|0|eidas||
-QES|Qualified Electronic Signature|Signature électronique qualifiée|Seul niveau ayant d'office l'effet juridique d'une signature manuscrite dans toute l'UE.|0|eidas||
-QSCD|Qualified Signature Creation Device|Dispositif qualifié de création de signature|Matériel ou service (carte, HSM distant) protégeant la clé de signature qualifiée.|0|eidas||
-QWAC|Qualified Website Authentication Certificate|Certificat qualifié d'authentification de site internet|Certificat qualifié qui atteste l'identité du titulaire d'un site web.|0|eidas||
-EAA|Electronic Attestation of Attributes|Attestation électronique d'attributs|Justificatif numérique (diplôme, permis, qualité professionnelle) stocké dans le portefeuille ; version qualifiée : QEAA.|0|eidas||
-PID|Person Identification Data|Données d'identification personnelle|Données d'identité de base (nom, prénoms, date de naissance) délivrées dans le portefeuille.|0|eidas||
-LRE|Lettre Recommandée Électronique||Service d'envoi recommandé électronique ; la version qualifiée a la même valeur que le recommandé papier.|0|eidas||
+eIDAS|electronic IDentification, Authentication and trust Services|Identification électronique et services de confiance|Règlement (UE) 910/2014, révisé par le règlement (UE) 2024/1183 dit eIDAS 2.|1|eidas textes||
+EUDI Wallet|European Digital Identity Wallet|Portefeuille européen d'identité numérique|Chaque État membre doit en proposer au moins un d'ici fin 2026 (eIDAS 2).|2|eidas||
+QTSP|Qualified Trust Service Provider|Prestataire de services de confiance qualifié (PSCQ)|Inscrit sur la liste de confiance nationale. En France, contrôlé par l'ANSSI.|3|eidas||
+QES|Qualified Electronic Signature|Signature électronique qualifiée|Seul niveau ayant d'office l'effet juridique d'une signature manuscrite dans toute l'UE.|3|eidas||
+QSCD|Qualified Signature Creation Device|Dispositif qualifié de création de signature|Matériel ou service (carte, HSM distant) protégeant la clé de signature qualifiée.|3|eidas||
+QWAC|Qualified Website Authentication Certificate|Certificat qualifié d'authentification de site internet|Certificat qualifié qui atteste l'identité du titulaire d'un site web.|3|eidas||
+EAA|Electronic Attestation of Attributes|Attestation électronique d'attributs|Justificatif numérique (diplôme, permis, qualité professionnelle) stocké dans le portefeuille ; version qualifiée : QEAA.|3|eidas||
+PID|Person Identification Data|Données d'identification personnelle|Données d'identité de base (nom, prénoms, date de naissance) délivrées dans le portefeuille.|3|eidas||
+LRE|Lettre Recommandée Électronique||Service d'envoi recommandé électronique ; la version qualifiée a la même valeur que le recommandé papier.|3|eidas||
 Niveaux de signature électronique|Trois niveaux : simple, avancée et qualifiée, la qualifiée étant équivalente à une signature manuscrite.||eIDAS, art. 25-26.|0|eidas||1
 Cachet électronique|Données électroniques garantissant l'origine et l'intégrité d'un document émis par une personne morale.|Electronic seal|Équivalent de la signature pour une organisation.|0|eidas||1
 Horodatage électronique qualifié|Service qui atteste qu'une donnée existait à une date et une heure précises, avec présomption d'exactitude.||Service de confiance qualifié eIDAS.|0|eidas||1
@@ -874,17 +874,17 @@ Calendrier d'eIDAS 2|Entrée en vigueur le 20 mai 2024, portefeuille européen d
 Divulgation sélective|Capacité de ne partager que l'information nécessaire (ex. « majeur : oui ») sans révéler toute l'attestation.|Selective disclosure|Principe de minimisation appliqué au portefeuille européen.|0|eidas||1
 Partie utilisatrice (eIDAS)|Organisme qui s'appuie sur l'identification électronique ou un service de confiance, et qui doit s'enregistrer pour accepter le portefeuille.|Relying party|Elle déclare les données qu'elle compte demander.|0|eidas||1
 Organe de contrôle eIDAS en France|ANSSI, chargée de superviser les prestataires de services de confiance établis en France.||Elle tient aussi la liste de confiance nationale.|0|eidas||1
-SAIV|Secteurs d'Activités d'Importance Vitale||Secteurs (énergie, santé, transports, etc.) dans lesquels sont désignés les OIV.|0|lpm||
-SIIV|Système d'Information d'Importance Vitale||SI d'un OIV dont l'atteinte pourrait gravement affecter la Nation ; soumis aux règles de sécurité de la LPM.|0|lpm||
-PIV|Point d'Importance Vitale||Site d'un OIV (installation, établissement) protégé au titre du dispositif SAIV.|0|lpm||
-LOPMI|Loi d'Orientation et de Programmation du Ministère de l'Intérieur||Loi du 24 janvier 2023 : l'indemnisation d'une cyber-rançon par l'assureur exige une plainte sous 72 h.|0|lpm textes||
+SAIV|Secteurs d'Activités d'Importance Vitale||Secteurs (énergie, santé, transports, etc.) dans lesquels sont désignés les OIV.|2|lpm||
+SIIV|Système d'Information d'Importance Vitale||SI d'un OIV dont l'atteinte pourrait gravement affecter la Nation ; soumis aux règles de sécurité de la LPM.|3|lpm||
+PIV|Point d'Importance Vitale||Site d'un OIV (installation, établissement) protégé au titre du dispositif SAIV.|3|lpm||
+LOPMI|Loi d'Orientation et de Programmation du Ministère de l'Intérieur||Loi du 24 janvier 2023 : l'indemnisation d'une cyber-rançon par l'assureur exige une plainte sous 72 h.|3|lpm textes||
 Obligations cyber des OIV (LPM 2013)|Règles de sécurité imposées aux SIIV, déclaration des incidents à l'ANSSI, contrôles et recours à des prestataires qualifiés.||Introduites par la LPM 2014-2019 (loi du 18 décembre 2013).|0|lpm||1
 Filtrage de noms de domaine (LPM 2024-2030)|Pouvoir de l'ANSSI de demander le blocage ou la redirection de noms de domaine utilisés par une menace contre la sécurité nationale.||Loi n° 2023-703 du 1er août 2023.|0|lpm||1
 Notification par les éditeurs de logiciels|Obligation pour les éditeurs d'informer l'ANSSI et leurs clients d'une vulnérabilité significative ou d'un incident compromettant la sécurité de leurs produits.||Mesure de la LPM 2024-2030.|0|lpm||1
 Marqueurs de détection|Dispositifs que l'ANSSI peut déployer chez des opérateurs, hébergeurs ou centres de données pour détecter des cyberattaques.||Renforcés par la LPM 2024-2030.|0|lpm||1
 Plainte sous 72 h (cyber-rançon)|Condition pour qu'un assureur indemnise une cyber-rançon : dépôt de plainte au plus tard 72 h après la connaissance de l'atteinte.||LOPMI, en vigueur depuis le 24 avril 2023.|0|lpm||1
 Contrôle de l'ARCEP (LPM)|Contrôle par le régulateur des télécoms de la mise en œuvre de certaines mesures cyber de la LPM par l'ANSSI.||Garde-fou prévu par la LPM.|0|lpm||1
-ANS|Agence du Numérique en Santé||Publie le référentiel HDS et la liste des hébergeurs certifiés.|0|hds||
+ANS|Agence du Numérique en Santé||Publie le référentiel HDS et la liste des hébergeurs certifiés.|2|hds||
 Obligation de certification HDS|Toute personne qui héberge des données de santé à caractère personnel pour le compte de tiers doit être certifiée HDS.||Code de la santé publique, art. L.1111-8.|0|hds||1
 Passage de l'agrément à la certification|Depuis 2018, l'agrément ministériel des hébergeurs est remplacé par une certification délivrée par un organisme accrédité.||L'accréditation est délivrée par le COFRAC.|0|hds||1
 Activités HDS|Six activités certifiables : sites physiques, infrastructure matérielle, infrastructure virtuelle, plateforme applicative, administration et exploitation du SI, sauvegarde externalisée.||Les deux premières relèvent de l'hébergeur d'infrastructure physique, les autres de l'hébergeur infogéreur.|0|hds||1
@@ -894,18 +894,18 @@ Localisation des données (HDS v2)|Les données de santé doivent être héberg�
 Durée d'un certificat HDS|3 ans, avec un audit de surveillance annuel.||Délivré par un organisme certificateur accrédité.|0|hds||1
 Clause de réversibilité (HDS)|Clause obligatoire du contrat d'hébergement organisant la restitution des données, avec coûts et délais.||Exigence renforcée par le référentiel v2.|0|hds||1
 Hébergeur infogéreur|Hébergeur qui fournit infrastructure virtuelle, plateforme, administration du SI ou sauvegarde (activités 3 à 6).||À distinguer de l'hébergeur d'infrastructure physique (activités 1 et 2).|0|hds||1
-PCI SSC|Payment Card Industry Security Standards Council|Conseil des normes de sécurité de l'industrie des cartes de paiement|Créé en 2006 par American Express, Discover, JCB, Mastercard et Visa.|0|pci||
-CDE|Cardholder Data Environment|Environnement des données de titulaires de cartes|Systèmes et personnes qui stockent, traitent ou transmettent des données de carte : le périmètre PCI DSS.|0|pci||
-PAN|Primary Account Number|Numéro de compte principal|Numéro de la carte : élément central des données de titulaire.|0|pci||
-SAD|Sensitive Authentication Data|Données d'authentification sensibles|Cryptogramme, PIN, piste magnétique complète : interdits de stockage après autorisation.|0|pci||
-CHD|Cardholder Data|Données de titulaire de carte|PAN, avec le cas échéant nom du titulaire, date d'expiration et code service.|0|pci||
-QSA|Qualified Security Assessor|Évaluateur de sécurité qualifié|Auditeur externe agréé par le PCI SSC.|0|pci||
-ISA|Internal Security Assessor|Évaluateur de sécurité interne|Salarié formé par le PCI SSC pour mener des évaluations internes.|0|pci||
-ASV|Approved Scanning Vendor|Prestataire de scan agréé|Réalise les scans de vulnérabilités externes trimestriels.|0|pci||
-ROC|Report on Compliance|Rapport de conformité|Rapport d'audit détaillé, rédigé par un QSA ou un ISA.|0|pci||
-SAQ|Self-Assessment Questionnaire|Questionnaire d'auto-évaluation|Pour les entités éligibles (souvent petits marchands) ; plusieurs types selon le mode d'acceptation.|0|pci||
-AOC|Attestation of Compliance|Attestation de conformité|Déclaration signée qui accompagne un ROC ou un SAQ.|0|pci||
-TRA|Targeted Risk Analysis|Analyse de risques ciblée|Nouveauté v4.0 : justifie notamment la fréquence de certains contrôles.|0|pci||
+PCI SSC|Payment Card Industry Security Standards Council|Conseil des normes de sécurité de l'industrie des cartes de paiement|Créé en 2006 par American Express, Discover, JCB, Mastercard et Visa.|3|pci||
+CDE|Cardholder Data Environment|Environnement des données de titulaires de cartes|Systèmes et personnes qui stockent, traitent ou transmettent des données de carte : le périmètre PCI DSS.|3|pci||
+PAN|Primary Account Number|Numéro de compte principal|Numéro de la carte : élément central des données de titulaire.|2|pci||
+SAD|Sensitive Authentication Data|Données d'authentification sensibles|Cryptogramme, PIN, piste magnétique complète : interdits de stockage après autorisation.|3|pci||
+CHD|Cardholder Data|Données de titulaire de carte|PAN, avec le cas échéant nom du titulaire, date d'expiration et code service.|3|pci||
+QSA|Qualified Security Assessor|Évaluateur de sécurité qualifié|Auditeur externe agréé par le PCI SSC.|2|pci||
+ISA|Internal Security Assessor|Évaluateur de sécurité interne|Salarié formé par le PCI SSC pour mener des évaluations internes.|3|pci||
+ASV|Approved Scanning Vendor|Prestataire de scan agréé|Réalise les scans de vulnérabilités externes trimestriels.|3|pci||
+ROC|Report on Compliance|Rapport de conformité|Rapport d'audit détaillé, rédigé par un QSA ou un ISA.|3|pci||
+SAQ|Self-Assessment Questionnaire|Questionnaire d'auto-évaluation|Pour les entités éligibles (souvent petits marchands) ; plusieurs types selon le mode d'acceptation.|3|pci||
+AOC|Attestation of Compliance|Attestation de conformité|Déclaration signée qui accompagne un ROC ou un SAQ.|3|pci||
+TRA|Targeted Risk Analysis|Analyse de risques ciblée|Nouveauté v4.0 : justifie notamment la fréquence de certains contrôles.|3|pci||
 Structure de PCI DSS|12 exigences principales regroupées en 6 objectifs.||Ex. exigence 1 : contrôles de sécurité réseau, exigence 12 : politique de sécurité.|0|pci||1
 Approche personnalisée|Nouveauté v4.0 permettant d'atteindre l'objectif d'une exigence par d'autres moyens que ceux prévus, en le démontrant.|Customized approach|Alternative à l'approche définie.|0|pci||1
 Stockage des SAD|Interdit après autorisation, même chiffré.||Exigence 3.3.1.|0|pci||1
@@ -920,11 +920,11 @@ Tokenisation|Remplacement du PAN par un jeton sans valeur exploitable, pour réd
 SecNumCloud|Qualification de l'ANSSI pour les prestataires de services cloud, combinant sécurité technique et protection contre les lois extraterritoriales.||Couvre notamment l'IaaS, le PaaS et le SaaS.|0|snc||1
 SecNumCloud 3.2|Version du référentiel publiée en mars 2022, qui introduit les critères d'immunité aux lois extraterritoriales.||Siège, décisions et exploitation dans l'UE, capital étranger limité.|0|snc||1
 Durée d'une qualification SecNumCloud|3 ans, avec des audits de surveillance.||Qualification d'État délivrée par l'ANSSI.|0|snc||1
-CLOUD Act|Clarifying Lawful Overseas Use of Data Act|Loi américaine de clarification de l'usage légal des données à l'étranger|Loi de 2018 permettant aux autorités américaines d'exiger des données détenues par des entreprises américaines, même stockées hors des États-Unis.|0|snc textes||
-FISA|Foreign Intelligence Surveillance Act|Loi américaine sur la surveillance du renseignement étranger|Sa section 702 autorise la collecte de communications de non-Américains auprès de fournisseurs américains.|0|snc textes||
+CLOUD Act|Clarifying Lawful Overseas Use of Data Act|Loi américaine de clarification de l'usage légal des données à l'étranger|Loi de 2018 permettant aux autorités américaines d'exiger des données détenues par des entreprises américaines, même stockées hors des États-Unis.|2|snc textes||
+FISA|Foreign Intelligence Surveillance Act|Loi américaine sur la surveillance du renseignement étranger|Sa section 702 autorise la collecte de communications de non-Américains auprès de fournisseurs américains.|3|snc textes||
 Doctrine « cloud au centre »|Politique de l'État (circulaire du 5 juillet 2021) imposant SecNumCloud ou un équivalent européen pour les données sensibles hébergées sur une offre commerciale.||Mise à jour en 2023.|0|snc||1
 Article 31 de la loi SREN|Impose aux administrations traitant des données sensibles des prestataires cloud protégés contre les accès non autorisés par des autorités étrangères.||Rendu opérationnel par l'arrêté du 12 août 2026, qui approuve SecNumCloud 3.2.|0|snc||1
-EUCS|EU Cybersecurity Certification Scheme on Cloud Services|Schéma européen de certification de cybersécurité des services cloud|Schéma préparé par l'ENISA au titre du Cybersecurity Act, débattu sur les critères de souveraineté.|0|snc textes||
+EUCS|EU Cybersecurity Certification Scheme on Cloud Services|Schéma européen de certification de cybersécurité des services cloud|Schéma préparé par l'ENISA au titre du Cybersecurity Act, débattu sur les critères de souveraineté.|3|snc textes||
 Visa de sécurité ANSSI|Label regroupant les qualifications et certifications délivrées par l'ANSSI (SecNumCloud, PASSI, CSPN…).||Garantit un produit ou service évalué par l'ANSSI.|0|snc||1
 WannaCry (mai 2017) : quelle vulnérabilité a permis sa propagation ?|Une faille du protocole SMBv1 de Windows, exploitée par EternalBlue||Le correctif MS17-010 était disponible depuis mars 2017.|0|incidents||5
 WannaCry : comment sa propagation a-t-elle été stoppée ?|Par l'enregistrement d'un nom de domaine servant de « kill switch »||Découvert par le chercheur Marcus Hutchins.|0|incidents||5
@@ -986,30 +986,30 @@ Qui assure la veille et l'accompagnement des incidents de sécurité pour les st
 Quel lieu totem, inauguré en 2022 à La Défense, fédère l'écosystème cyber français ?|Campus Cyber||Réunit entreprises, services de l'État, formations et chercheurs.|0|acteurs||5
 Quel service de renseignement intérieur traite les cybermenaces relevant de l'espionnage ou de l'ingérence ?|DGSI||Direction générale de la sécurité intérieure.|0|acteurs||5
 Quelle instance réunit les autorités de protection des données de l'UE et publie des lignes directrices RGPD ?|CEPD (Comité européen de la protection des données)||À distinguer du Contrôleur européen de la protection des données, qui supervise les institutions de l'UE.|0|acteurs||5
-DMA|Digital Markets Act|Règlement sur les marchés numériques|Règlement (UE) 2022/1925 qui encadre les grandes plateformes « contrôleurs d'accès ».|0|textes||
-DGA|Data Governance Act|Règlement sur la gouvernance des données|Règlement (UE) 2022/868 : réutilisation des données publiques, intermédiaires et altruisme des données.|0|textes||
-CER|Critical Entities Resilience|Directive sur la résilience des entités critiques|Directive (UE) 2022/2557, pendant « physique » de NIS2.|0|textes||
-EHDS|European Health Data Space|Espace européen des données de santé|Règlement (UE) 2025/327 sur le partage et la réutilisation des données de santé.|0|textes||
-PSD2|Payment Services Directive 2|Directive sur les services de paiement 2 (DSP2)|Directive (UE) 2015/2366 : authentification forte du client et ouverture des API bancaires.|0|textes|psd|
-DSP2|Directive sur les Services de Paiement 2||Nom français de PSD2 ; elle impose l'authentification forte des paiements en ligne.|0|textes|psd|
-MiCA|Markets in Crypto-Assets|Marchés de crypto-actifs|Règlement (UE) 2023/1114 qui encadre les crypto-actifs et leurs prestataires.|0|textes||
-LCEN|Loi pour la Confiance dans l'Économie Numérique||Loi française de 2004 : statut des hébergeurs, commerce en ligne, prospection électronique.|0|textes||
-LOPPSI|Loi d'Orientation et de Programmation pour la Performance de la Sécurité Intérieure||Loi française de 2011 (LOPPSI 2) : usurpation d'identité en ligne, captation de données…|0|textes||
-RGAA|Référentiel Général d'Amélioration de l'Accessibilité||Référentiel français d'accessibilité numérique des services en ligne.|0|textes||
-RGESN|Référentiel Général d'Écoconception de Services Numériques||Référentiel français pour réduire l'impact environnemental des services numériques.|0|textes||
-RGI|Référentiel Général d'Interopérabilité||Normes d'interopérabilité imposées aux SI de l'administration française.|0|textes||
-COBIT|Control Objectives for Information and Related Technologies|Objectifs de contrôle de l'information et des technologies associées|Référentiel de gouvernance du SI publié par l'ISACA.|0|textes||
-ITIL|Information Technology Infrastructure Library|Bibliothèque pour l'infrastructure des technologies de l'information|Référentiel de bonnes pratiques de gestion des services informatiques.|0|textes si||
-TOGAF|The Open Group Architecture Framework|Cadre d'architecture de l'Open Group|Référentiel d'architecture d'entreprise.|0|textes||
-SOC 2|System and Organization Controls 2|Contrôles du système et de l'organisation 2|Rapport d'audit américain (AICPA) sur les contrôles de sécurité d'un prestataire.|0|textes||
-SOX|Sarbanes-Oxley Act|Loi Sarbanes-Oxley|Loi américaine de 2002 sur la fiabilité de l'information financière des sociétés cotées.|0|textes||
-HIPAA|Health Insurance Portability and Accountability Act|Loi sur la portabilité et la responsabilité de l'assurance maladie|Loi américaine de 1996 qui protège les données de santé.|0|textes||
-CCPA|California Consumer Privacy Act|Loi californienne sur la vie privée des consommateurs|Loi de 2018, souvent comparée au RGPD.|0|textes||
-GLBA|Gramm-Leach-Bliley Act|Loi Gramm-Leach-Bliley|Loi américaine de 1999 sur la protection des données financières des clients.|0|textes||
-FedRAMP|Federal Risk and Authorization Management Program|Programme fédéral de gestion des risques et des autorisations|Programme américain d'autorisation des services cloud utilisés par les agences fédérales.|0|textes||
-CMMC|Cybersecurity Maturity Model Certification|Certification du modèle de maturité en cybersécurité|Exigée par le département américain de la Défense pour ses sous-traitants.|0|textes||
-TISAX|Trusted Information Security Assessment Exchange|Échange d'évaluations de sécurité de l'information de confiance|Standard d'évaluation de sécurité du secteur automobile.|0|textes||
-C5|Cloud Computing Compliance Criteria Catalogue|Catalogue de critères de conformité du cloud|Référentiel d'audit cloud du BSI, l'agence allemande de cybersécurité.|0|textes||
+DMA|Digital Markets Act|Règlement sur les marchés numériques|Règlement (UE) 2022/1925 qui encadre les grandes plateformes « contrôleurs d'accès ».|2|textes||
+DGA|Data Governance Act|Règlement sur la gouvernance des données|Règlement (UE) 2022/868 : réutilisation des données publiques, intermédiaires et altruisme des données.|3|textes||
+CER|Critical Entities Resilience|Directive sur la résilience des entités critiques|Directive (UE) 2022/2557, pendant « physique » de NIS2.|3|textes||
+EHDS|European Health Data Space|Espace européen des données de santé|Règlement (UE) 2025/327 sur le partage et la réutilisation des données de santé.|3|textes||
+PSD2|Payment Services Directive 2|Directive sur les services de paiement 2 (DSP2)|Directive (UE) 2015/2366 : authentification forte du client et ouverture des API bancaires.|2|textes|psd|
+DSP2|Directive sur les Services de Paiement 2||Nom français de PSD2 ; elle impose l'authentification forte des paiements en ligne.|2|textes|psd|
+MiCA|Markets in Crypto-Assets|Marchés de crypto-actifs|Règlement (UE) 2023/1114 qui encadre les crypto-actifs et leurs prestataires.|2|textes||
+LCEN|Loi pour la Confiance dans l'Économie Numérique||Loi française de 2004 : statut des hébergeurs, commerce en ligne, prospection électronique.|2|textes||
+LOPPSI|Loi d'Orientation et de Programmation pour la Performance de la Sécurité Intérieure||Loi française de 2011 (LOPPSI 2) : usurpation d'identité en ligne, captation de données…|3|textes||
+RGAA|Référentiel Général d'Amélioration de l'Accessibilité||Référentiel français d'accessibilité numérique des services en ligne.|2|textes||
+RGESN|Référentiel Général d'Écoconception de Services Numériques||Référentiel français pour réduire l'impact environnemental des services numériques.|3|textes||
+RGI|Référentiel Général d'Interopérabilité||Normes d'interopérabilité imposées aux SI de l'administration française.|3|textes||
+COBIT|Control Objectives for Information and Related Technologies|Objectifs de contrôle de l'information et des technologies associées|Référentiel de gouvernance du SI publié par l'ISACA.|2|textes||
+ITIL|Information Technology Infrastructure Library|Bibliothèque pour l'infrastructure des technologies de l'information|Référentiel de bonnes pratiques de gestion des services informatiques.|2|textes si||
+TOGAF|The Open Group Architecture Framework|Cadre d'architecture de l'Open Group|Référentiel d'architecture d'entreprise.|3|textes||
+SOC 2|System and Organization Controls 2|Contrôles du système et de l'organisation 2|Rapport d'audit américain (AICPA) sur les contrôles de sécurité d'un prestataire.|2|textes||
+SOX|Sarbanes-Oxley Act|Loi Sarbanes-Oxley|Loi américaine de 2002 sur la fiabilité de l'information financière des sociétés cotées.|2|textes||
+HIPAA|Health Insurance Portability and Accountability Act|Loi sur la portabilité et la responsabilité de l'assurance maladie|Loi américaine de 1996 qui protège les données de santé.|2|textes||
+CCPA|California Consumer Privacy Act|Loi californienne sur la vie privée des consommateurs|Loi de 2018, souvent comparée au RGPD.|3|textes||
+GLBA|Gramm-Leach-Bliley Act|Loi Gramm-Leach-Bliley|Loi américaine de 1999 sur la protection des données financières des clients.|3|textes||
+FedRAMP|Federal Risk and Authorization Management Program|Programme fédéral de gestion des risques et des autorisations|Programme américain d'autorisation des services cloud utilisés par les agences fédérales.|3|textes||
+CMMC|Cybersecurity Maturity Model Certification|Certification du modèle de maturité en cybersécurité|Exigée par le département américain de la Défense pour ses sous-traitants.|3|textes||
+TISAX|Trusted Information Security Assessment Exchange|Échange d'évaluations de sécurité de l'information de confiance|Standard d'évaluation de sécurité du secteur automobile.|3|textes||
+C5|Cloud Computing Compliance Criteria Catalogue|Catalogue de critères de conformité du cloud|Référentiel d'audit cloud du BSI, l'agence allemande de cybersécurité.|3|textes||
 Piratage de Bybit (février 2025) : quel montant de cryptomonnaies a été volé ?|Environ 1,5 milliard de dollars||Plus gros vol de cryptomonnaies de l'histoire.|0|y2025||5
 Piratage de Bybit (février 2025) : à qui le vol a-t-il été attribué ?|Au groupe Lazarus, lié à la Corée du Nord||Attribution confirmée par le FBI.|0|y2025||5
 Attaque de Marks & Spencer (avril 2025) : quel groupe en est à l'origine (également contre le Co-op et Harrods) ?|Scattered Spider||Accès initial par ingénierie sociale visant un prestataire.|0|y2025||5
@@ -1060,31 +1060,31 @@ Campagne iranienne contre les infrastructures américaines (juillet 2026) : quel
 Incident cyber majeur sur un système de surveillance (avril 2026) : quelle agence américaine a été touchée par des espions chinois ?|Le FBI||Des numéros de téléphone de cibles de surveillance pourraient avoir été exposés.|0|y2026||5
 Shadow AI dans le DBIR (mai 2026) : que désigne ce phénomène devenu la 3e action interne non malveillante ?|L'usage d'outils d'IA non autorisés par l'entreprise||Sa part a été multipliée par quatre en un an.|0|y2026||5
 Échéance eIDAS 2 (fin 2026) : que doivent proposer les États membres ?|Proposer au moins un portefeuille européen d'identité numérique (EUDI Wallet)||Les secteurs régulés devront l'accepter fin 2027.|0|y2026||5
-ERP|Enterprise Resource Planning|Progiciel de gestion intégré (PGI)|Logiciel central qui regroupe finance, achats, stocks, production et RH (ex. SAP, Oracle). Sa paralysie arrête toute l'entreprise : cible prioritaire des rançongiciels.|0|si||
-CRM|Customer Relationship Management|Gestion de la relation client|Centralise contacts, ventes et historique client (ex. Salesforce). Contient des données personnelles : soumis au RGPD et souvent visé par les fuites de données.|0|si||
-SIRH|Système d'Information des Ressources Humaines||Gère paie, contrats, congés et carrières. Données personnelles sensibles (salaires, santé, RIB) : accès à restreindre fortement.|0|si||
-WMS|Warehouse Management System|Système de gestion d'entrepôt|Pilote réceptions, stockage, préparation et expéditions. Sa panne bloque la logistique, comme lors de cyberattaques contre des transporteurs.|0|si||
-TMS|Transportation Management System|Système de gestion du transport|Planifie et suit les tournées, transporteurs et livraisons. Souvent interconnecté avec des partenaires externes : surface d'attaque de la chaîne d'approvisionnement.|0|si||
-GMAO|Gestion de Maintenance Assistée par Ordinateur||Planifie la maintenance préventive et curative des équipements. Fait le lien entre l'informatique de gestion et l'informatique industrielle (OT).|0|si||
-MES|Manufacturing Execution System|Système d'exécution de la production|Pilote et trace la production en atelier, entre l'ERP et les automates. Point de jonction IT/OT à segmenter soigneusement.|0|si||
-PLM|Product Lifecycle Management|Gestion du cycle de vie des produits|Gère plans, nomenclatures et versions d'un produit, de la conception à la fin de vie. Contient la propriété intellectuelle : cible de l'espionnage industriel.|0|si||
-SCM|Supply Chain Management|Gestion de la chaîne d'approvisionnement|Coordonne fournisseurs, flux et prévisions. Le risque fournisseur (tiers) est au cœur de NIS2 et DORA.|0|si||
-PIM|Product Information Management|Gestion des informations produit|Référentiel unique des fiches produits (descriptions, prix, visuels) diffusées sur tous les canaux de vente.|0|si||
-GED|Gestion Électronique des Documents||Stocke, indexe, versionne et partage les documents. Les droits d'accès et la durée de conservation doivent y être maîtrisés (RGPD).|0|si||
-BI|Business Intelligence|Informatique décisionnelle|Tableaux de bord et analyses à partir des données de l'entreprise. Agrège beaucoup de données : un compte compromis expose une vue d'ensemble.|0|si||
-EDI|Electronic Data Interchange|Échange de données informatisé|Échange automatisé de documents normalisés (commandes, factures) entre entreprises. Les flux doivent être authentifiés pour éviter la fraude.|0|si||
-ETL|Extract, Transform, Load|Extraire, transformer, charger|Processus qui collecte des données de plusieurs sources, les transforme et les charge dans un entrepôt de données. Ses comptes techniques ont souvent des droits étendus.|0|si||
-GLPI|Gestionnaire Libre de Parc Informatique||Outil open source français de gestion du parc et des tickets d'assistance. Sert d'inventaire des actifs, base de toute démarche de sécurité.|0|si||
-ITSM|IT Service Management|Gestion des services informatiques|Organisation de la DSI autour des services rendus (incidents, demandes, changements), souvent selon ITIL. Ex. : ServiceNow, GLPI.|0|si||
-TMA|Tierce Maintenance Applicative||Maintenance des applications confiée à un prestataire externe. Accès à encadrer par contrat et à tracer (risque tiers).|0|si||
-AD|Active Directory|Annuaire Active Directory|Annuaire Microsoft qui gère comptes, groupes et droits d'un réseau Windows. Sa compromission donne souvent le contrôle de tout le SI.|0|si||
-LDAP|Lightweight Directory Access Protocol|Protocole léger d'accès aux annuaires|Protocole standard d'interrogation des annuaires (port 389, ou 636 en LDAPS chiffré).|0|si||
-MDM|Mobile Device Management|Gestion des appareils mobiles|Administre et sécurise à distance les smartphones et tablettes de la flotte : chiffrement, applications, effacement en cas de perte.|0|si||
-MOA|Maîtrise d'Ouvrage||Le client d'un projet : exprime le besoin, porte le budget et valide le résultat.|0|si||
-MOE|Maîtrise d'Œuvre||Réalise le projet pour le compte de la MOA : conception, développement, tests et livraison.|0|si||
-AMOA|Assistance à Maîtrise d'Ouvrage||Aide la MOA à formuler ses besoins, rédiger le cahier des charges et piloter le projet.|0|si||
-PMO|Project Management Office|Bureau de gestion de projets|Cellule qui pilote le portefeuille de projets : méthodes, suivi, reporting et arbitrages.|0|si||
-ESN|Entreprise de Services du Numérique||Prestataire informatique (ex-SSII) : conseil, développement, infogérance. Fournisseur clé dans l'analyse du risque tiers.|0|si||
+ERP|Enterprise Resource Planning|Progiciel de gestion intégré (PGI)|Logiciel central qui regroupe finance, achats, stocks, production et RH (ex. SAP, Oracle). Sa paralysie arrête toute l'entreprise : cible prioritaire des rançongiciels.|1|si||
+CRM|Customer Relationship Management|Gestion de la relation client|Centralise contacts, ventes et historique client (ex. Salesforce). Contient des données personnelles : soumis au RGPD et souvent visé par les fuites de données.|1|si||
+SIRH|Système d'Information des Ressources Humaines||Gère paie, contrats, congés et carrières. Données personnelles sensibles (salaires, santé, RIB) : accès à restreindre fortement.|1|si||
+WMS|Warehouse Management System|Système de gestion d'entrepôt|Pilote réceptions, stockage, préparation et expéditions. Sa panne bloque la logistique, comme lors de cyberattaques contre des transporteurs.|2|si||
+TMS|Transportation Management System|Système de gestion du transport|Planifie et suit les tournées, transporteurs et livraisons. Souvent interconnecté avec des partenaires externes : surface d'attaque de la chaîne d'approvisionnement.|2|si||
+GMAO|Gestion de Maintenance Assistée par Ordinateur||Planifie la maintenance préventive et curative des équipements. Fait le lien entre l'informatique de gestion et l'informatique industrielle (OT).|2|si||
+MES|Manufacturing Execution System|Système d'exécution de la production|Pilote et trace la production en atelier, entre l'ERP et les automates. Point de jonction IT/OT à segmenter soigneusement.|3|si||
+PLM|Product Lifecycle Management|Gestion du cycle de vie des produits|Gère plans, nomenclatures et versions d'un produit, de la conception à la fin de vie. Contient la propriété intellectuelle : cible de l'espionnage industriel.|2|si||
+SCM|Supply Chain Management|Gestion de la chaîne d'approvisionnement|Coordonne fournisseurs, flux et prévisions. Le risque fournisseur (tiers) est au cœur de NIS2 et DORA.|2|si||
+PIM|Product Information Management|Gestion des informations produit|Référentiel unique des fiches produits (descriptions, prix, visuels) diffusées sur tous les canaux de vente.|3|si||
+GED|Gestion Électronique des Documents||Stocke, indexe, versionne et partage les documents. Les droits d'accès et la durée de conservation doivent y être maîtrisés (RGPD).|1|si||
+BI|Business Intelligence|Informatique décisionnelle|Tableaux de bord et analyses à partir des données de l'entreprise. Agrège beaucoup de données : un compte compromis expose une vue d'ensemble.|1|si||
+EDI|Electronic Data Interchange|Échange de données informatisé|Échange automatisé de documents normalisés (commandes, factures) entre entreprises. Les flux doivent être authentifiés pour éviter la fraude.|2|si||
+ETL|Extract, Transform, Load|Extraire, transformer, charger|Processus qui collecte des données de plusieurs sources, les transforme et les charge dans un entrepôt de données. Ses comptes techniques ont souvent des droits étendus.|2|si||
+GLPI|Gestionnaire Libre de Parc Informatique||Outil open source français de gestion du parc et des tickets d'assistance. Sert d'inventaire des actifs, base de toute démarche de sécurité.|2|si||
+ITSM|IT Service Management|Gestion des services informatiques|Organisation de la DSI autour des services rendus (incidents, demandes, changements), souvent selon ITIL. Ex. : ServiceNow, GLPI.|2|si||
+TMA|Tierce Maintenance Applicative||Maintenance des applications confiée à un prestataire externe. Accès à encadrer par contrat et à tracer (risque tiers).|2|si||
+AD|Active Directory|Annuaire Active Directory|Annuaire Microsoft qui gère comptes, groupes et droits d'un réseau Windows. Sa compromission donne souvent le contrôle de tout le SI.|1|si||
+LDAP|Lightweight Directory Access Protocol|Protocole léger d'accès aux annuaires|Protocole standard d'interrogation des annuaires (port 389, ou 636 en LDAPS chiffré).|2|si||
+MDM|Mobile Device Management|Gestion des appareils mobiles|Administre et sécurise à distance les smartphones et tablettes de la flotte : chiffrement, applications, effacement en cas de perte.|1|si||
+MOA|Maîtrise d'Ouvrage||Le client d'un projet : exprime le besoin, porte le budget et valide le résultat.|2|si||
+MOE|Maîtrise d'Œuvre||Réalise le projet pour le compte de la MOA : conception, développement, tests et livraison.|2|si||
+AMOA|Assistance à Maîtrise d'Ouvrage||Aide la MOA à formuler ses besoins, rédiger le cahier des charges et piloter le projet.|2|si||
+PMO|Project Management Office|Bureau de gestion de projets|Cellule qui pilote le portefeuille de projets : méthodes, suivi, reporting et arbitrages.|2|si||
+ESN|Entreprise de Services du Numérique||Prestataire informatique (ex-SSII) : conseil, développement, infogérance. Fournisseur clé dans l'analyse du risque tiers.|1|si||
 `;
 const CARDS = RAW.trim().split('\n').filter(Boolean).map(l=>{
   const p=l.split('|');
