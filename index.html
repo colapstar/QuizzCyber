@@ -80,6 +80,7 @@ p{margin:0}
 tr.me td{background:color-mix(in srgb,var(--a) 10%,transparent)}
 .mx td.num{font-variant-numeric:tabular-nums}
 .mx .best{font-weight:800}
+.rk .sel{background:color-mix(in srgb,var(--c) 10%,transparent)}
 .fltop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
 .flchip{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:.88rem;font-variant-numeric:tabular-nums;white-space:nowrap}
 .flclue{margin:14px auto 10px;max-width:620px;min-height:48px;background:var(--ink);color:var(--panel);border-radius:10px;padding:10px 14px;display:flex;gap:10px;align-items:center;font-weight:700}
@@ -2036,7 +2037,7 @@ function answer(i){
   if(G.cfg.mode==='train'){
     const {s,newly}=record(c,ok);
     if(newly){G.newly.push(c.id);meta=`Acronyme retenu : 5 bonnes réponses d'affilée. Il ne sera plus proposé.`}
-    else meta=`Série : ${s.st}/5 · Réussite totale ${pc(s.ok/s.n)} · Glissante ${pc(s.h.reduce((a,b)=>a+b,0)/s.h.length)}`;
+    else meta=`Série : ${s.st}/5 · Réussite totale ${pc(s.ok/s.n)}`;
   }
   const last=G.i===G.qs.length-1;
   $('#qFeedback').innerHTML=`<div class="feedback ${ok?'ok':'ko'}" role="status">
@@ -2138,14 +2139,13 @@ function overviewHTML(p){
   const g=agg(p,CARDS);
   const stats=`<div class="stats">
     <div class="stat"><div class="v">${pc(g.pt)}</div><div class="l">Réussite totale</div></div>
-    <div class="stat"><div class="v">${pc(g.pr)}</div><div class="l">Réussite glissante (5 dernières réponses par acronyme)</div></div>
     <div class="stat"><div class="v">${g.ret} / ${CARDS.length}</div><div class="l">Acronymes et termes retenus</div></div>
     <div class="stat"><div class="v">${p.games.length}</div><div class="l">Parties jouées</div></div></div>`;
-  const rows=BANKS.map(k=>{const a=agg(p,bankCards(k));return `<tr><td>${esc(bankLabel(k))}</td><td class="num">${a.seen} / ${a.total}</td><td class="num">${pc(a.pt)}</td><td class="num">${pc(a.pr)}</td><td class="num">${a.ret} / ${a.total}${a.ret===a.total?' ✓':''}</td></tr>`}).join('');
+  const rows=BANKS.map(k=>{const a=agg(p,bankCards(k));return `<tr><td>${esc(bankLabel(k))}</td><td class="num">${a.seen} / ${a.total}</td><td class="num">${pc(a.pt)}</td><td class="num">${a.ret} / ${a.total}${a.ret===a.total?' ✓':''}</td></tr>`}).join('');
   return `${stats}
   <section class="panel" style="margin-top:18px"><h2>Progression</h2><p class="hint" style="margin-top:4px">Score de chaque partie, de la plus ancienne à la plus récente.</p><div style="margin-top:12px">${chartHTML(p.games)}</div></section>
   <h2 style="margin:24px 0 10px">Par niveau et par réglementation</h2>
-  <div class="tablewrap"><table><thead><tr><th>Banque</th><th class="num">Vus</th><th class="num">Total</th><th class="num">Glissant</th><th class="num">Retenus</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  <div class="tablewrap"><table><thead><tr><th>Banque</th><th class="num">Vus</th><th class="num">Réussite</th><th class="num">Retenus</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 function chartHTML(games){
   const gs=games.slice(-40);
@@ -2177,7 +2177,7 @@ function bindCards(p){
     cs=cs.filter(c=>p.cards[c.id]&&p.cards[c.id].n).filter(c=>!q||c.t.toLowerCase().includes(q)||c.d.toLowerCase().includes(q));
     if(!cs.length){$('#cTable').innerHTML=`<p class="empty">Aucun acronyme joué pour ce filtre. Les acronymes apparaissent ici après avoir été rencontrés en mode Entraînement.</p>`;return}
     cs.sort((a,b)=>{const sa=p.cards[a.id],sb=p.cards[b.id];return sa.ok/sa.n-sb.ok/sb.n||a.t.localeCompare(b.t)});
-    $('#cTable').innerHTML=`<div class="tablewrap"><table><thead><tr><th>Terme</th><th>Banque</th><th class="num">Vus</th><th class="num">Total</th><th class="num">Glissant</th><th>Série</th><th>Statut</th></tr></thead><tbody>${cs.map(c=>{const s=p.cards[c.id];return `<tr><td><strong>${esc(c.t)}</strong><br><span class="hint">${esc(c.d)}</span></td><td>${esc(cardBanks(c))}</td><td class="num">${s.n}</td><td class="num">${pc(s.ok/s.n)}</td><td class="num">${pc(s.h.reduce((a,b)=>a+b,0)/s.h.length)}</td><td>${streakHTML(s.st)}</td><td>${s.ret?`<span class="pill ret">Retenu</span><br><button class="linkbtn" data-unret="${esc(c.id)}">Remettre en jeu</button>`:'<span class="pill">En cours</span>'}</td></tr>`}).join('')}</tbody></table></div><p class="hint" style="margin-top:8px">Triés du plus faible au meilleur taux de réussite totale.</p>`;
+    $('#cTable').innerHTML=`<div class="tablewrap"><table><thead><tr><th>Terme</th><th>Banque</th><th class="num">Vus</th><th class="num">Réussite</th><th>Série</th><th>Statut</th></tr></thead><tbody>${cs.map(c=>{const s=p.cards[c.id];return `<tr><td><strong>${esc(c.t)}</strong><br><span class="hint">${esc(c.d)}</span></td><td>${esc(cardBanks(c))}</td><td class="num">${s.n}</td><td class="num">${pc(s.ok/s.n)}</td><td>${streakHTML(s.st)}</td><td>${s.ret?`<span class="pill ret">Retenu</span><br><button class="linkbtn" data-unret="${esc(c.id)}">Remettre en jeu</button>`:'<span class="pill">En cours</span>'}</td></tr>`}).join('')}</tbody></table></div><p class="hint" style="margin-top:8px">Triés du plus faible au meilleur taux de réussite totale.</p>`;
     $$('#cTable [data-unret]').forEach(b=>b.addEventListener('click',()=>{unretain(p,b.dataset.unret);saveDB();draw()}));
   };
   $('#cSearch').addEventListener('input',e=>{profSearch=e.target.value;draw()});
@@ -2327,13 +2327,34 @@ if(ONLINE){
   $('#importBtn2').addEventListener('click',()=>{$('#importFile').value='';$('#importFile').click()});
 }
 $('#privacyBtn').addEventListener('click',()=>ask('Confidentialité et données personnelles',[{label:'Fermer',value:true,primary:true}],`<div style="max-height:55vh;overflow:auto;font-size:.94rem" class="stack">
-<p><strong>Responsable du traitement :</strong> [À COMPLÉTER : nom, qualité, contact].</p>
-<p><strong>Finalité :</strong> permettre aux joueurs de suivre leur progression dans le quiz (statistiques par acronyme, historique des parties).</p>
-<p><strong>Base légale :</strong> [À COMPLÉTER, par exemple l'intérêt légitime de l'organisateur de la formation ou le consentement].</p>
-<p><strong>Données :</strong> pseudo et résultats de jeu uniquement. Aucun mot de passe, aucune adresse e-mail ni autre donnée n'est collectée. La liste des pseudos est visible par toutes les personnes qui accèdent au site.</p>
-<p><strong>Hébergement :</strong> Supabase, dans une région de l'Union européenne ; site hébergé par [À COMPLÉTER].</p>
-<p><strong>Durée de conservation :</strong> [À COMPLÉTER, par exemple jusqu'à la fin de la formation + 6 mois], ou jusqu'à la suppression du compte.</p>
-<p><strong>Vos droits :</strong> accès, rectification, effacement (bouton « Supprimer ce profil » dans le profil), portabilité (bouton « Exporter le profil »), opposition. Contact : [À COMPLÉTER]. Vous pouvez introduire une réclamation auprès de la CNIL.</p></div>`));
+<p><strong>Responsable du traitement :</strong> Moran Toulisse, organisateur du jeu. Contact : <a href="mailto:moran38villard@gmail.com">moran38villard@gmail.com</a>.</p>
+<p><strong>Finalité :</strong> permettre aux joueurs de réviser, de suivre leur progression (quiz et mots fléchés) et de comparer leurs résultats dans le classement.</p>
+<p><strong>Base légale :</strong> intérêt légitime du responsable (article 6.1.f du RGPD) à proposer un outil de révision entre joueurs.</p>
+<p><strong>Données traitées :</strong></p>
+<ul style="margin:0 0 0 18px">
+<li>le pseudo et l'avatar choisis ;</li>
+<li>les statistiques par terme : nombre de réponses, bonnes réponses, série en cours, statut « retenu » ;</li>
+<li>l'historique des parties : date, quiz, score, termes nouvellement retenus ;</li>
+<li>les mots fléchés : progression de la grille, temps, nombre d'aides.</li>
+</ul>
+<p>Aucun mot de passe, aucune adresse e-mail, aucun nom n'est demandé. Évitez d'utiliser votre nom complet comme pseudo.</p>
+<p><strong>Qui voit ces données :</strong> toutes les personnes qui accèdent au site voient la liste des pseudos et avatars, et le classement (parties jouées, mots vus, réussite moyenne, quiz à 90 % ou plus, classement des mots fléchés). Le profil n'étant pas protégé par un mot de passe, toute personne ayant l'adresse du site peut l'ouvrir et le modifier.</p>
+<p><strong>Prestataires techniques :</strong></p>
+<ul style="margin:0 0 0 18px">
+<li><strong>Supabase</strong> : base de données des profils, hébergée dans l'Union européenne ;</li>
+<li><strong>GitHub Pages</strong> (GitHub, États-Unis) : hébergement du site ;</li>
+<li><strong>Google Fonts</strong> (Google, États-Unis) et <strong>jsDelivr</strong> : polices et bibliothèque de code chargées à l'ouverture de la page.</li>
+</ul>
+<p>Ces trois derniers reçoivent techniquement l'adresse IP du visiteur, y compris hors de l'Union européenne. Pour GitHub et Google, le transfert vers les États-Unis est encadré par le Data Privacy Framework UE–États-Unis.</p>
+<p><strong>Stockage sur l'appareil :</strong> le navigateur conserve le dernier joueur utilisé et une copie de travail du profil, nécessaires au fonctionnement du jeu. Pas de cookie, pas de mesure d'audience, pas de publicité.</p>
+<p><strong>Durée de conservation :</strong> jusqu'à la suppression du profil, et au plus 12 mois après la dernière utilisation.</p>
+<p><strong>Vos droits :</strong></p>
+<ul style="margin:0 0 0 18px">
+<li>accès et portabilité : bouton « Exporter le profil » ;</li>
+<li>effacement : bouton « Supprimer ce profil » ;</li>
+<li>rectification, opposition et limitation : par e-mail à l'adresse ci-dessus.</li>
+</ul>
+<p>Vous pouvez introduire une réclamation auprès de la CNIL (cnil.fr).</p></div>`));
 
 /* ============ AVATAR : CHOIX ============ */
 async function pickAvatar(current){
@@ -2347,27 +2368,32 @@ function setAvatar(id){const p=DB.current&&DB.players[DB.current];if(!p||!AVATAR
 $('#avatarBtn').addEventListener('click',async()=>{const p=DB.players[DB.current];if(!p)return;const av=await pickAvatar(avatarOf(DB.current,p.avatar));if(av)setAvatar(av)});
 
 /* ============ CLASSEMENT ============ */
-const BOARD_MIN=10;
-let bdBank='all',bdMetric='mastery',bdView='rank';
+const BOARD_MIN=10,Q90_MIN=10;
+let bdBank='all',bdMetric='games',bdView='rank';
 const METRICS={
-  mastery:{l:'Maîtrise',d:'Part des termes de la catégorie retenus (5 bonnes réponses d\'affilée)'},
-  total:{l:'Réussite totale',d:`Bonnes réponses / réponses données, à partir de ${BOARD_MIN} réponses dans la catégorie`},
-  rolling:{l:'Réussite récente',d:`Sur les 5 dernières réponses de chaque terme, à partir de ${BOARD_MIN} réponses dans la catégorie`},
-  volume:{l:'Activité',d:'Nombre total de réponses données dans la catégorie'}
+  games:{l:'Parties jouées',d:'Nombre de parties terminées'},
+  seen:{l:'Mots vus',d:'Nombre de termes différents rencontrés au moins une fois'},
+  total:{l:'Réussite moyenne',d:`Bonnes réponses / réponses données, à partir de ${BOARD_MIN} réponses`},
+  q90:{l:'Quiz ≥ 90 %',d:`Nombre de quiz dont le meilleur score atteint 90 % (parties de ${Q90_MIN} questions ou plus). Dans une seule catégorie : meilleur score obtenu`}
 };
 const boardCards=k=>k==='all'?CARDS:bankCards(k);
 const boardLabel=k=>k==='all'?'Toutes les banques':bankLabel(k);
-function metricVal(a,m){if(m==='volume')return a.n;if(a.n===0)return null;if(m==='mastery')return a.total?a.ret/a.total:0;if(a.n<BOARD_MIN)return null;return m==='total'?a.pt:a.pr}
-const fmtMetric=(v,m)=>v==null?'—':m==='volume'?String(v):Math.round(v*100)+' %';
+function bestScore(games,k){let b=null;for(const g of games)if(g.key===k&&g.n>=Q90_MIN){const v=g.score/g.n;if(b==null||v>b)b=v}return b}
+function boardStats(p,k){const a=agg({cards:p.cards},boardCards(k));
+  return{a,games:k==='all'?p.games.length:p.games.filter(g=>g.key===k).length,seen:a.seen,
+    total:a.n>=BOARD_MIN?a.pt:null,q90:k==='all'?BANKS.filter(x=>(bestScore(p.games,x)??0)>=0.9).length:bestScore(p.games,k)}}
+const isCount=(m,k)=>m==='games'||m==='seen'||(m==='q90'&&k==='all');
+const ranked=(v,m,k)=>v!=null&&(!isCount(m,k)||v>0);
+function fmtMetric(v,m,k){if(v==null)return '—';if(m==='q90')return k==='all'?`${v} / ${BANKS.length}`:`${v>=0.9?'✓ ':''}${Math.round(v*100)} %`;return m==='total'?Math.round(v*100)+' %':String(v)}
 async function boardPlayers(){
+  const gm=a=>Array.isArray(a)?a.filter(g=>g&&typeof g==='object').map(g=>({key:String(g.key||''),n:+g.n||0,score:+g.score||0})):[];
   if(ONLINE){const {data,error}=await sb.rpc('classement');if(error)throw error;
-    return (data||[]).map(r=>({pseudo:r.pseudo,avatar:avatarOf(r.pseudo,r.avatar),cards:r.cards&&typeof r.cards==='object'?r.cards:{},games:r.nb_parties||0}))}
-  return Object.entries(DB.players).map(([n,p])=>({pseudo:n,avatar:avatarOf(n,p.avatar),cards:p.cards,games:p.games.length}));
+    return (data||[]).map(r=>({pseudo:r.pseudo,avatar:avatarOf(r.pseudo,r.avatar),cards:r.cards&&typeof r.cards==='object'?r.cards:{},games:gm(r.parties)}))}
+  return Object.entries(DB.players).map(([n,p])=>({pseudo:n,avatar:avatarOf(n,p.avatar),cards:p.cards,games:gm(p.games)}));
 }
 function rankRows(players,k,m){
-  const list=boardCards(k);
-  return players.map(p=>{const a=agg({cards:p.cards},list);return{...p,a,v:metricVal(a,m)}})
-    .sort((x,y)=>(y.v!=null)-(x.v!=null)||(y.v||0)-(x.v||0)||y.a.n-x.a.n||x.pseudo.localeCompare(y.pseudo));
+  return players.map(p=>{const st=boardStats(p,k);return{...p,st,v:st[m]}})
+    .sort((x,y)=>ranked(y.v,m,k)-ranked(x.v,m,k)||(y.v||0)-(x.v||0)||y.st.games-x.st.games||x.pseudo.localeCompare(y.pseudo));
 }
 async function renderBoard(){
   const el=$('#boardBody');el.innerHTML='<p class="hint">Chargement du classement…</p>';
@@ -2375,11 +2401,13 @@ async function renderBoard(){
   try{if(ONLINE)await flushSync();players=await boardPlayers()}
   catch(e){el.innerHTML='<p class="empty">Classement indisponible pour le moment. Réessayez dans quelques instants.</p>';return}
   if(!players.length){el.innerHTML='<p class="empty">Aucun joueur pour l\'instant.</p>';return}
+  const k=bdView==='rank'?bdBank:'all';
+  const desc=bdMetric==='q90'&&bdView==='rank'&&bdBank!=='all'?`Meilleur score obtenu dans ce quiz (parties de ${Q90_MIN} questions ou plus), ✓ à partir de 90 %`:METRICS[bdMetric].d;
   const controls=`<div class="tabs" role="tablist"><button role="tab" data-bv="rank" aria-selected="${bdView==='rank'}">Classement par catégorie</button><button role="tab" data-bv="matrix" aria-selected="${bdView==='matrix'}">Comparaison de toutes les catégories</button></div>
   <div class="stack" style="margin-top:16px">
-    ${bdView==='rank'?`<div class="row"><label class="hint" for="bdBank">Catégorie</label><select id="bdBank">${['all',...BANKS].map(k=>`<option value="${k}" ${k===bdBank?'selected':''}>${esc(boardLabel(k))}</option>`).join('')}</select></div>`:''}
-    <div><div class="seg" role="group" aria-label="Critère">${Object.entries(METRICS).map(([k,x])=>`<button data-metric="${k}" aria-pressed="${k===bdMetric}">${x.l}</button>`).join('')}</div>
-    <p class="hint" style="margin-top:8px">${esc(METRICS[bdMetric].d)}.</p></div>
+    ${bdView==='rank'?`<div class="row"><label class="hint" for="bdBank">Catégorie</label><select id="bdBank">${['all',...BANKS].map(x=>`<option value="${x}" ${x===bdBank?'selected':''}>${esc(boardLabel(x))}</option>`).join('')}</select></div>`:''}
+    <div><div class="seg" role="group" aria-label="Critère">${Object.entries(METRICS).map(([x,o])=>`<button data-metric="${x}" aria-pressed="${x===bdMetric}">${o.l}</button>`).join('')}</div>
+    <p class="hint" style="margin-top:8px">${esc(desc)}.</p></div>
   </div>`;
   el.innerHTML=controls+'<div id="bdContent" style="margin-top:18px"></div>';
   $$('[data-bv]').forEach(b=>b.addEventListener('click',()=>{bdView=b.dataset.bv;renderBoard()}));
@@ -2388,30 +2416,32 @@ async function renderBoard(){
   $('#bdContent').innerHTML=bdView==='rank'?rankHTML(players):matrixHTML(players);
 }
 function rankHTML(players){
-  const rows=rankRows(players,bdBank,bdMetric),m=bdMetric;
-  const ranked=rows.filter(r=>r.v!=null&&(m!=='volume'||r.v>0));
-  const top=ranked.slice(0,3);
-  const maxV=m==='volume'?Math.max(1,...rows.map(r=>r.v||0)):1;
-  const podium=top.length?`<div class="podium">${[1,0,2].map(i=>{const r=top[i];return r?`<div class="pod p${i+1}">${avatarSVG(r.avatar,i===0?76:60)}<div class="pn">${esc(r.pseudo)}</div><div class="pv">${fmtMetric(r.v,m)}</div><div class="step">${i+1}</div></div>`:'<div class="pod"></div>'}).join('')}</div>`:'<p class="empty">Personne n\'est encore classé dans cette catégorie.</p>';
+  const k=bdBank,m=bdMetric,rows=rankRows(players,k,m);
+  const top=rows.filter(r=>ranked(r.v,m,k)).slice(0,3);
+  const podium=top.length?`<div class="podium">${[1,0,2].map(i=>{const r=top[i];return r?`<div class="pod p${i+1}">${avatarSVG(r.avatar,i===0?76:60)}<div class="pn">${esc(r.pseudo)}</div><div class="pv">${fmtMetric(r.v,m,k)}</div><div class="step">${i+1}</div></div>`:'<div class="pod"></div>'}).join('')}</div>`:'<p class="empty">Personne n\'est encore classé dans cette catégorie pour ce critère.</p>';
+  const q90l=k==='all'?'Quiz ≥ 90 %':'Meilleur score';
+  const cols=[['games','Parties'],['seen','Mots vus'],['total','Réussite'],['q90',q90l]];
   let rank=0;
-  const body=rows.map(r=>{const ok=r.v!=null&&(m!=='volume'||r.v>0);if(ok)rank++;const pct=r.v==null?0:Math.min(100,(m==='volume'?r.v/maxV:r.v)*100);
-    return `<tr class="${r.pseudo===DB.current?'me':''}"><td class="num">${ok?rank:'—'}</td><td><span class="rkname">${avatarSVG(r.avatar,32)}<span><strong>${esc(r.pseudo)}</strong>${r.pseudo===DB.current?' <span class="pill">vous</span>':''}</span></span></td>
-    <td class="num"><strong>${fmtMetric(r.v,m)}</strong>${r.v==null&&r.a.n>0&&m!=='mastery'?`<br><span class="hint">${r.a.n} / ${BOARD_MIN} réponses</span>`:''}</td><td style="width:30%"><div class="rkbar"><i style="width:${pct}%"></i></div></td>
-    <td class="num">${r.a.seen} / ${r.a.total}</td><td class="num">${r.a.ret}</td></tr>`}).join('');
-  return podium+`<div class="tablewrap"><table><thead><tr><th class="num">Rang</th><th>Joueur</th><th class="num">${esc(METRICS[m].l)}</th><th></th><th class="num">Vus</th><th class="num">Retenus</th></tr></thead><tbody>${body}</tbody></table></div>
-  <p class="hint" style="margin-top:8px">Catégorie : ${esc(boardLabel(bdBank))}.</p>`;
+  const cell=(r,x)=>{const v=r.st[x];const on=x===m;let t=x==='seen'?`${v} / ${r.st.a.total}`:fmtMetric(v,x,k);
+    if(x==='total'&&v==null&&r.st.a.n>0)t+=`<br><span class="hint">${r.st.a.n} / ${BOARD_MIN} réponses</span>`;
+    return `<td class="num${on?' sel':''}">${on?`<strong>${t}</strong>`:t}</td>`};
+  const body=rows.map(r=>{const ok=ranked(r.v,m,k);if(ok)rank++;
+    return `<tr class="${r.pseudo===DB.current?'me':''}"><td class="num">${ok?rank:'—'}</td><td><span class="rkname">${avatarSVG(r.avatar,32)}<span><strong>${esc(r.pseudo)}</strong>${r.pseudo===DB.current?' <span class="pill">vous</span>':''}</span></span></td>${cols.map(([x])=>cell(r,x)).join('')}</tr>`}).join('');
+  return podium+`<div class="tablewrap"><table class="rk"><thead><tr><th class="num">Rang</th><th>Joueur</th>${cols.map(([x,l])=>`<th class="num${x===m?' sel':''}">${esc(l)}${x===m?' ▼':''}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div>
+  <p class="hint" style="margin-top:8px">Catégorie : ${esc(boardLabel(k))}. Tri : ${esc(METRICS[m].l)}.</p>`;
 }
 function matrixHTML(players){
   const m=bdMetric,cols=['all',...BANKS];
-  const vals=players.map(p=>cols.map(k=>metricVal(agg({cards:p.cards},boardCards(k)),m)));
-  const best=cols.map((k,j)=>{const v=vals.map(r=>r[j]).filter(x=>x!=null&&(m!=='volume'||x>0));return v.length?Math.max(...v):null});
+  const vals=players.map(p=>cols.map(k=>boardStats(p,k)[m]));
+  const best=cols.map((k,j)=>{const v=vals.map(r=>r[j]).filter(x=>ranked(x,m,k));return v.length?Math.max(...v):null});
   const colMax=cols.map((k,j)=>Math.max(1,...vals.map(r=>r[j]||0)));
   const order=players.map((p,i)=>i).sort((a,b)=>(vals[b][0]??-1)-(vals[a][0]??-1));
-  const cell=(v,j)=>{if(v==null)return '<td class="num hint">—</td>';const t=m==='volume'?v/colMax[j]:v;const isBest=best[j]!=null&&v===best[j];
-    return `<td class="num${isBest?' best':''}" style="background:color-mix(in srgb,var(--c) ${Math.round(t*45)}%,transparent)">${isBest?'★ ':''}${fmtMetric(v,m)}</td>`};
+  const cell=(v,j)=>{const k=cols[j];if(!ranked(v,m,k))return '<td class="num hint">—</td>';const t=m==='q90'&&k==='all'?v/BANKS.length:isCount(m,k)?v/colMax[j]:v;const isBest=best[j]!=null&&v===best[j];
+    return `<td class="num${isBest?' best':''}" style="background:color-mix(in srgb,var(--c) ${Math.round(t*45)}%,transparent)">${isBest?'★ ':''}${fmtMetric(v,m,k)}</td>`};
+  const note=m==='q90'?' Colonne Global : nombre de quiz à 90 % ou plus ; autres colonnes : meilleur score dans le quiz.':'';
   return `<div class="tablewrap mx"><table><thead><tr><th>Joueur</th>${cols.map(k=>`<th class="num">${esc(k==='all'?'Global':bankLabel(k))}</th>`).join('')}</tr></thead><tbody>
   ${order.map(i=>{const p=players[i];return `<tr class="${p.pseudo===DB.current?'me':''}"><td><span class="rkname">${avatarSVG(p.avatar,28)}<strong>${esc(p.pseudo)}</strong></span></td>${vals[i].map(cell).join('')}</tr>`}).join('')}
-  </tbody></table></div><p class="hint" style="margin-top:8px">★ meilleur joueur de la catégorie. Critère : ${esc(METRICS[m].l)}.</p>`;
+  </tbody></table></div><p class="hint" style="margin-top:8px">★ meilleur joueur de la catégorie. Critère : ${esc(METRICS[m].l)}.${note}</p>`;
 }
 
 /* ============ MOTS FLÉCHÉS (grilles générées chaque nuit dans grilles/) ============ */
