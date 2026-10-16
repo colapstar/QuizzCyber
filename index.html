@@ -50,6 +50,8 @@ p{margin:0}
 .seg button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--panel)}
 .seg button .n{display:block;font-size:.8rem;opacity:.75}
 .seg button .bn{font-weight:700}
+.seg button .gs{display:block;font-size:.72rem;opacity:.6;margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.seg button .gs b{font-weight:700}
 .modecard{flex:1 1 240px}
 .whobtn{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;font-weight:700;font-size:.9rem}
 .players{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:12px}
@@ -1861,6 +1863,13 @@ function renderHome(){
     const cs=bankCards(b.dataset.bank);
     b.setAttribute('aria-pressed',b.dataset.bank===cfg.bank);
     b.querySelector('.n').textContent=p?`${cs.filter(c=>!isRet(p,c)).length} à apprendre sur ${cs.length}`:`${cs.length} termes`;
+    let gs=b.querySelector('.gs');if(!gs){gs=document.createElement('span');gs.className='gs';b.appendChild(gs)}
+    const gm=p?p.games.filter(g=>g.key===b.dataset.bank&&g.n>0):[];
+    if(!p){gs.hidden=true}else{gs.hidden=false;
+      if(!gm.length)gs.textContent='Jamais jouée';
+      else{const bg=gm.reduce((m,g)=>g.score/g.n>m.score/m.n||(g.score/g.n===m.score/m.n&&g.n>m.n)?g:m);
+        gs.innerHTML=`▶ ${gm.length} · 🏆 <b>${Math.round(bg.score/bg.n*100)} %</b> <span style="opacity:.8">(${bg.score}/${bg.n})</span>`;
+        gs.title=`${gm.length} partie${gm.length>1?'s':''} jouée${gm.length>1?'s':''} · meilleur score ${bg.score}/${bg.n}`}}
   });
   $$('[data-count]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.count===cfg.count));
   {const cs=bankCards(cfg.bank);const n=p?cs.filter(c=>!isRet(p,c)).length:cs.length;$('#allN').textContent=`(${n})`;}
