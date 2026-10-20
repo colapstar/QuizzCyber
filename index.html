@@ -358,7 +358,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
   </main>
 </div>
 
-<footer class="wrap" style="padding-bottom:28px"><button class="linkbtn" id="privacyBtn" style="font-weight:400">Confidentialité et données personnelles</button></footer>
+<footer id="privacyFoot" class="wrap" style="padding-bottom:28px"><button class="linkbtn" id="privacyBtn" style="font-weight:400">Confidentialité et données personnelles</button></footer>
 <div id="modal" class="modal" hidden><div class="mbox" role="dialog" aria-modal="true" aria-labelledby="mText"><p id="mText"></p><div id="mExtra"></div><div class="row" id="mBtns"></div></div></div>
 <input type="file" id="importFile" accept=".json,application/json" hidden>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1866,7 +1866,7 @@ const fmtDate=t=>new Date(t).toLocaleString('fr-FR',{day:'2-digit',month:'2-digi
 
 /* ============ NAVIGATION ============ */
 const SCREENS=['login','home','quiz','result','done','profile','board','fleche'];
-function show(id){updateWho();SCREENS.forEach(s=>$('#'+s).hidden=s!==id);$$('[data-nav]').forEach(b=>{b.toggleAttribute('aria-current',b.dataset.nav===id);if(b.dataset.nav===id)b.setAttribute('aria-current','page')});window.scrollTo(0,0)}
+function show(id){updateWho();SCREENS.forEach(s=>$('#'+s).hidden=s!==id);$('#privacyFoot').hidden=!['home','profile','board','login'].includes(id);$$('[data-nav]').forEach(b=>{b.toggleAttribute('aria-current',b.dataset.nav===id);if(b.dataset.nav===id)b.setAttribute('aria-current','page')});window.scrollTo(0,0)}
 $$('[data-nav]').forEach(b=>b.addEventListener('click',async()=>{
   if(!await leaveGameOK())return;
   if(FL.g&&!$('#fleche').hidden)flSave();
