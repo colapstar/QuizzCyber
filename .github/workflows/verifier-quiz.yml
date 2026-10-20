@@ -1,0 +1,17 @@
+name: Contrôle des leurres du quiz
+
+on:
+  push:
+    paths: ['index.html']
+  workflow_dispatch:
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Vérifier la longueur des leurres
+        run: node scripts/verifier-leurres.js
