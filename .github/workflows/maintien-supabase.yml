@@ -1,0 +1,30 @@
+name: Maintien en éveil de Supabase
+
+# Le projet Supabase gratuit est mis en pause après 7 jours sans requête.
+# Ce workflow interroge la base tous les 3 jours pour l'éviter.
+on:
+  schedule:
+    - cron: '23 6 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Appeler la fonction lister_joueurs
+        env:
+          # Mêmes valeurs que dans index.html (clé publique, déjà visible sur le site)
+          SUPABASE_URL: https://mvisirsyzydnciyernof.supabase.co
+          SUPABASE_KEY: sb_publishable_YASOr_-tSWIKznm4cElajw_yT_M8zX8
+        run: |
+          code=$(curl -s -o reponse.json -w '%{http_code}' -X POST \
+            "$SUPABASE_URL/rest/v1/rpc/lister_joueurs" \
+            -H "apikey: $SUPABASE_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}')
+          echo "Code HTTP : $code"
+          if [ "$code" != "200" ]; then
+            echo "La base ne répond pas : le projet est peut-être déjà en pause. Relancez-le depuis le tableau de bord Supabase (Restore project)."
+            exit 1
+          fi
+          echo "Base active, $(grep -o '"pseudo"' reponse.json | wc -l) joueur(s)."
